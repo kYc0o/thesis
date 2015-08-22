@@ -1,0 +1,73 @@
+% rc-spanish.def
+
+\decimalpoint
+\spanishdeactivate{~".}        
+
+\def\programname{Programa}
+\def\listprogramname{\'Indice de programas}
+
+\def\tablename{Tabla}  % Some babel distributions use `Cuadro'
+\def\listtablename{\'Indice de tablas}
+
+\def\listfigurename{\'Indice de figuras}
+
+\def\contdname{bis}
+
+\def\questionname{CUESTI\'ON}
+%\def\answername{RESPUESTA}
+\def\exercisename{EJERCICIO}
+\def\problemname{PROBLEMA}
+\def\testname{TEST}
+%\def\solutionname{SOLUCI\'ON}
+\def\answerschaptername{Respuestas}
+\def\stepname{Paso}
+
+\def\theoremname{Teorema}
+\def\corollaryname{Corolario}
+\def\lemmaname{Lema}
+\def\propositionname{Proposici\'on}
+\def\examplename{Ejemplo}
+\def\definitionname{Definici\'on}
+\def\proofname{Prueba}
+\def\ifname{si}
+\def\wherename{donde}
+
+\def\supportname{Financiaci\'on}
+\def\trademarkname{Marcas registradas}
+\def\classificationname{Categorías}
+
+\def\bibetalname{y~otros}
+\def\bibandname{y}
+\def\bibinname{en}
+\def\bibInname{En}
+\def\bibeditorsname{editores}
+\def\bibeditorname{editor}
+\def\bibvolumename{volumen}
+\def\bibVolumename{Volumen}
+\def\bibnumbername{n\'umero}
+\def\bibNumbername{N\'umero}
+\def\bibofname{de}
+\def\bibeditionname{edici\'on}
+\def\bibpagesname{p\'aginas}
+\def\bibpagename{p\'agina}
+\def\bibtechnicalreportname{Informe t\'ecnico}
+\def\bibMasterthesisname{Proyecto fin de carrera}
+\def\bibPhDthesisname{Tesis doctoral}
+\def\bibchaptername{cap{\'\i}tulo}
+\def\bibAvailableatname{Disponible en}
+
+\def\bibcommaand{}
+    
+\def\bibjanname{enero}
+\def\bibfebname{febrero}
+\def\bibmarname{marzo}
+\def\bibaprname{abril}
+\def\bibmayname{mayo}
+\def\bibjunname{junio}
+\def\bibjulname{julio}
+\def\bibaugname{agosto}
+\def\bibsepname{setiembre}
+\def\biboctname{octubre}
+\def\bibnovname{noviembre}
+\def\bibdecname{diciembre}
+

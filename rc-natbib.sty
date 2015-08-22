@@ -1,0 +1,108 @@
+% rc-natbib.sty alpha v0.0
+%
+% Copyright (c) 2000-2005 Rafael Corchuelo (corchu@us.es)
+%
+% This class provides new commands for typesetting the bibliography
+%
+% This class IS NOT re-distributable.  Only members of the TDG are allowed to
+% use it.  If you happen to have this file, please, use it at your own risk.
+% No support is available.  Don't send me e-mail asking me about RC-NatBib.
+% A day, RC-NatBib will be made available to LaTeX users, but that day still
+% has to come!
+
+% alpha v0.0 2007/08/31
+%
+% New features
+%   - Everything is new today!
+%   - This package provides the following commands:
+%       * \cite{ref} --> [9]
+%       * \citeauthor{ref} --> John et al.
+%       * \citeauthor*{ref} --> John, Williams, and Roberts.
+%       * \citeyear{ref} --> 1990
+%       * \citet{ref} John et al. [9]
+%       * \cite{ref1, ref2, ref3, ref4} --> [3, 8-12]
+%   - This package provides the following options:
+%       * shownote --> shows the note field in your bibtex entries
+%       * showabstract --> shows the abstract field in your bibtex entries
+
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+
+\ProvidesPackage{rc-natbib}
+   [2007/08/31 alpha v0.0 Copyright (C) 2007 The Distributed Group]
+
+\typeout{rc-natbib.sty alpha v0.0 Copyright (C) 2007 The Distributed Group}
+
+\newif\@if@shownote
+\def\@shownotetrue{\let\@if@shownote\iftrue}
+\def\@shownotefalse{\let\@if@shownote\iffalse}
+\@shownotefalse
+
+\newif\@if@showabstract
+\def\@showabstracttrue{\let\@if@showabstract\iftrue}
+\def\@showabstractfalse{\let\@if@showabstract\iffalse}
+\@showabstractfalse
+
+\DeclareOption{shownote}{%
+    \@shownotetrue%
+}
+\DeclareOption{showabstract}{%
+    \@showabstracttrue%
+}
+\DeclareOption{showall}{%
+    \ExecuteOptions{shownote,showabstract}%
+}
+\DeclareOption*{%
+    \PassOptionsToPackage{\CurrentOption}{natbib}%
+}
+
+\ProcessOptions
+
+\RequirePackage{natbib}
+
+% \RCLisTinG
+
+\newcommand{\RCNatBib}%
+{%
+    R%
+    \kern-.1667em\raise.25ex\hbox{C}%
+    \kern-.25em\raise.25ex\hbox{--}%
+    N%
+    \kern-.0em\raise.5ex\hbox{a}%
+    \kern-.1em\lower.2ex\hbox{t}%
+    \kern-.1em\lower.4ex\hbox{B}%
+    \kern-.0em\lower.2ex\hbox{i}%
+    \kern-.0em\lower.1ex\hbox{b}%
+    \xspace%
+}
+
+% Internals
+
+\def\RCNB@beginquote#1{%
+    \bgroup%
+        \csname @if@show#1\endcsname
+            %\list{}{\leftmargin=3em\rightmargin\leftmargin}%
+                %\item\relax
+                \smallbreak\small\itshape\ignorespaces%
+        \else
+            \setbox0=\hbox\bgroup
+        \fi
+}
+
+\def\RCNB@endquote#1{%
+        \csname @if@show#1\endcsname
+            %\endlist%
+        \else
+            \egroup
+        \fi
+    \egroup
+}
+
+\newenvironment{RCNBnote}%
+    {\RCNB@beginquote{note}}%
+    {\RCNB@endquote{note}}
+
+\newenvironment{RCNBabstract}
+    {\RCNB@beginquote{abstract}}%
+    {\RCNB@endquote{abstract}}
+
+\endinput

@@ -1,0 +1,64 @@
+% rc-frenchb.def
+
+\def\programname{Programme}
+\def\listprogramname{Table de programmes}
+
+\def\contdname{bis}
+
+\def\questionname{QUESTION}
+%\def\answername{R\'EPONSE}
+\def\exercisename{EXERCICE}
+\def\problemname{PROBL\`EME}
+\def\testname{TEST}
+%\def\solutionname{SOLUTION}
+\def\answerschaptername{R\'eponses}
+\def\stepname{Pas}
+
+\def\theoremname{Th\'eor\`eme}
+\def\corollaryname{Corollaire}
+\def\lemmaname{Lemma}
+\def\propositionname{Proposition}
+\def\examplename{Example}
+\def\definitionname{Definition}
+\def\proofname{Preuve}
+\def\ifname{si}
+\def\wherename{avec}
+
+\def\supportname{Financement}
+\def\trademarkname{Marques enregistr\'ees}
+\def\classificationname{Cat\'egories}
+
+\def\bibetalname{et~alii}
+\def\bibandname{et}
+\def\bibinname{dans}
+\def\bibInname{Dans}
+\def\bibeditorsname{r\'edacteurs}
+\def\bibeditorname{r\'edacteur}
+\def\bibvolumename{tome}
+\def\bibVolumename{Tome}
+\def\bibnumbername{num\'ero}
+\def\bibNumbername{num\'ero}
+\def\bibofname{de}
+\def\bibeditionname{\'edition}
+\def\bibpagesname{pages}
+\def\bibpagename{page}
+\def\bibtechnicalreportname{rapport technique}
+\def\bibMasterthesisname{M\'emoire de ma\^itrise}
+\def\bibPhDthesisname{Th\`ese de doctorat}
+\def\bibchaptername{chapitre}
+\def\bibAvailableatname{Disponible \`a}
+
+\def\bibcommaand{}
+    
+\def\bibjanname{janvier}
+\def\bibfebname{f\'evrier}
+\def\bibmarname{mars}
+\def\bibaprname{april}
+\def\bibmayname{mai}
+\def\bibjunname{juin}
+\def\bibjulname{juillet}
+\def\bibaugname{ao\^ut}
+\def\bibsepname{septembre}
+\def\biboctname{octobre}
+\def\bibnovname{novembre}
+\def\bibdecname{d\'ecembre}

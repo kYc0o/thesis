@@ -1,0 +1,65 @@
+% rc-catalan.def
+
+\def\programname{Programa}
+\def\listprogramname{\'Index de programas}
+
+\def\contdname{bis}
+
+\def\questionname{PREGUNTA}
+%\def\answername{RESPOSTA}
+\def\exercisename{EXERCICI}
+\def\problemname{PROBLEMA}
+\def\testname{TEST}
+%\def\solutionname{SOLUCI\'O}
+\def\answerschaptername{Respostas}
+\def\stepname{Pas}
+
+\def\theoremname{Teorema}
+\def\corollaryname{Corol$\cdot$lari}
+\def\lemmaname{Lemma}
+\def\propositionname{Proposici\'o}
+\def\examplename{Exemple}
+\def\definitionname{Definici\'o}
+\def\proofname{Proba}
+\def\ifname{si}
+\def\wherename{on}
+
+\def\supportname{Finançament}
+\def\trademarkname{Trademarks}
+\def\classificationname{Categorie}
+
+\def\bibetalname{i~altres}
+\def\bibandname{i}
+\def\bibinname{dins}
+\def\bibInname{Dins}
+\def\bibeditorsname{editors}
+\def\bibeditorname{editor}
+\def\bibvolumename{volum}
+\def\bibVolumename{Volum}
+\def\bibnumbername{n\'umero}
+\def\bibNumbername{N\'umero}
+\def\bibofname{de}
+\def\bibeditionname{edici\'o}
+\def\bibpagesname{p`agines}
+\def\bibpagename{p\`agines}
+\def\bibtechnicalreportname{Report t\`ecnic}
+\def\bibMasterthesisname{Tesina de Llicenciatura}
+\def\bibPhDthesisname{Tesi de Doctorat}
+\def\bibchaptername{cap{\'\i}tol}
+\def\bibAvailableatname{Disponible a}
+
+\def\bibcommaand{}
+    
+\def\bibjanname{gener}
+\def\bibfebname{febrer}
+\def\bibmarname{mar\c{c}}
+\def\bibaprname{abril}
+\def\bibmayname{maig}
+\def\bibjunname{juni}
+\def\bibjulname{juliol}
+\def\bibaugname{agost}
+\def\bibsepname{setembre}
+\def\biboctname{octubre}
+\def\bibnovname{novembre}
+\def\bibdecname{desembre}
+

@@ -1,0 +1,45 @@
+% andalusian.ldf
+\ProvidesLanguage{andalusian}
+        [2003/10/13 v1.0 Andalusian support from the babel system]
+
+\LdfInit{andalusian}
+\captionsandalusian
+\ifx\l@andalusian\@undefined
+  \@nopatterns{andalusian}
+  \adddialect\l@andalusian0
+\fi
+
+\addto\captionsandalusian{%
+  \def\prefacename{Prefacio}%
+  \def\refname{Referencias}%
+  \def\abstractname{Resumen}%
+  \def\bibname{Bibliograf\'{\i}a}%
+  \def\chaptername{Cap\'{\i}tulo}%
+  \def\appendixname{Ap\'endice}%
+  \def\contentsname{\'Indice General}%
+  \def\listfigurename{\'Indice de Figuras}%
+  \def\listtablename{\'Indice de Tablas}%
+  \def\indexname{\'Indice de T\'erminos}%
+  \def\figurename{Figura}%
+  \def\tablename{Tabla}%
+  \def\partname{Parte}%
+  \def\enclname{Adjunto}%
+  \def\ccname{Copia a}%
+  \def\headtoname{A}%
+  \def\pagename{P\'agina}%
+  \def\seename{consulte}%
+  \def\alsoname{consulte tambi\'en}%
+  \def\proofname{Demostraci\'on}%
+  }%
+
+\def\dateandalusian{%
+  \def\today{\number\day~de\space\ifcase\month\or
+    enero\or febrero\or marzo\or abril\or mayo\or junio\or
+    julio\or agosto\or septiembre\or octubre\or noviembre\or
+    diciembre\fi
+    \space de~\number\year}}
+
+\addto\extrasandalusian{\languageshorthands{andalusian}}
+
+\ldf@finish{andalusian}
+\endinput

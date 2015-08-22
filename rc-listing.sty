@@ -1,0 +1,349 @@
+% rc-listing.sty alpha v0.3
+%
+% Copyright (c) 2000-2005 Rafael Corchuelo (corchu@us.es)
+%
+% This class provides new commands for typesetting exercises and answers
+%
+% This class IS NOT re-distributable.  Only members of the TDG are allowed to
+% use it.  If you happen to have this file, please, use it at your own risk.
+% No support is available.  Don't send me e-mail asking me about RC-LisTinG.
+% A day, RC-LisTing will be made available to LaTeX users, but that day still
+% has to come!
+
+% alpha v0.0 2004/09/01
+%
+% New features
+%   - Redefine \listingfont to get your favourite listing font.
+%   - Use \inline{text} to typeset a piece of text using the listing font.
+%   - Use \begin{listing}[pattern] text \end{listing} to typeset a listing.
+%     See the documentation of RC-BooK to get a picture of what this
+%     environment brings to you.
+
+% alpha v0.1 2006/04/11
+%
+% Fixed bugs, I mean... features
+%   - \label didn't work well in a listing environment inside a float.
+
+% alpha v0.2 2006/14/04
+%
+% New features
+%   - Use environment interface to typeset the description of the members of an
+%     interface.  For instance
+%
+%     \begin{interface}
+%     \item int Count: Number of records in this table.
+%     \item int Count(object obj): Number of times \inline{obj} is in this table
+%     \end{interface}
+%
+%     Within the interface environment, \item is redefined as follows:
+%
+%     \item member : description
+%
+%     The member is typeset as if you had written \inline{member}, and the
+%     description is typeset normally.
+%
+% Fixed bugs, I mean... features
+%   - \url, \path and \inline do now share the same font, which may be changed by
+%     redefining \listingfont.
+%   - \inline{<T>} didn't work work well since TeX complained about > not
+%     being right there.  The workaround was to use \inline{<T>{}}, instead,
+%     but the bug is now fixed.
+%   - \tab didn't work well after \newline.
+%   - The listing environment is now properly indented inside list environments.
+%   - Hanging lines in a listing environment do now hang properly
+%   - A listing inside a table or a figure does not produce extra space before
+%     or after the listing.
+%   - \inline didn't work well when moved to a table of contents.  For instance
+%
+%     \section{\inline{foo}, \inline{bar} and \inline{baz}}
+%
+%     produced the following entry in the table of contents
+%
+%     foo, barand baz...................................................123
+
+% alpha v0.3 2007/08/31
+%
+% Fixed bugs, I mean... features
+%   - The spacing before and after listing has been improved.
+%   - I forgot to require ifthen.sty
+%   - Interline spacing is correct now.
+
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+
+\ProvidesPackage{rc-listing}
+   [2006/14/04 alpha v0.2 Copyright (C) 2004-2006 The Distributed Group]
+
+\RequirePackage{verbatim}
+\RequirePackage{xspace}
+\RequirePackage{ifthen}
+
+\typeout{rc-listing.sty alpha v0.2 Copyright (C) 2004-2006 The Distributed Group}
+
+% \RCLisTinG
+
+\newcommand{\RCLisTinG}%
+{%
+    R%
+    \kern-.1667em\raise.25ex\hbox{C}%
+    \kern-.25em\raise.25ex\hbox{--}%
+    L%
+    \kern-.0em\raise.5ex\hbox{i}%
+    \kern-.1em\lower.2ex\hbox{s}%
+    \kern-.1em\lower.4ex\hbox{T}%
+    \kern-.0em\lower.2ex\hbox{i}%
+    \kern-.0em\lower.1ex\hbox{n}%
+    \kern-.2em\raise.5ex\hbox{G}%
+    \xspace%
+}
+
+% Save the label command so that it works well in floating listings
+
+\let\listing@savelabel\relax
+\let\listing@originallabel\label
+
+% Counters, ifs, and the like
+
+\newif\if@listing
+\def\@listingtrue{\let\if@listing\iftrue}
+\def\@listingfalse{\let\if@listing\iffalse}
+\@listingfalse
+
+\newcounter{listinglineno}
+\newcounter{listing@begin@lineno}
+
+\newsavebox{\listing@Number@Box}
+\newlength{\listing@Number@Width}
+
+\newsavebox{\listing@Brakets@Box}
+\newlength{\listing@Brakets@Width}
+
+% Some useful routines to change catcodes quickly
+
+\def\dospecials{%
+  \do\ \do\\\do\{\do\}\do\$\do\&%
+  \do\#\do\^\do\_\do\%\do\~%
+  \do\>\do\<\do\-%
+}
+
+\def\makeescape#1{\catcode`#1=0\relax}
+\def\makeactive#1{\catcode`#1=13\relax}
+\def\makeother#1{\catcode`#1=12\relax}
+
+\def\makemathother%
+{%
+    \makeother\^%
+    \makeother\_%
+    \makeother\#%
+    \everymath={\protect\catcode`\#=6 \protect\catcode`\^=7 \protect\catcode`\_=8}%
+}
+
+\def\uncatcodespecials{%
+    \def\do##1{\catcode`##1=12}%
+    \dospecials%
+}
+
+\gdef\predefinedcats%
+{%
+        \catcode`\^^I=\active \catcode`\ =\active%
+        \catcode`\\=0 \catcode`\{=1 \catcode`\}=2%
+        \catcode`\$=3 \catcode`\&=4 \catcode`\^^M=5%
+        \catcode`\#=6 \catcode`\^=7 \catcode`\_=8%
+        \catcode`\%=14 \catcode`\\=0%
+        \relax% DON'T REMOVE THIS LINE
+}
+
+% \inline{text}
+
+% \listingfont \string#1\egroup haría que todo lo que se pone dentro fuera verbatim
+
+\newcommand{\inline}[1]{{\bgroup\listingfont #1\egroup}}
+
+% \tab[n] inserts n tabulators. n=1 by default
+
+\newcommand{\tab}[1][1]{
+    \mbox{}\hskip #1em\relax%
+}
+
+% \listingfont
+
+\newcommand{\listingfont}{\usefont{T1}{cmtt}{m}{n}}
+% \begin{listing}[pattern] text \end{listing}
+
+\def\listing@pattern{}%
+
+{\obeyspaces\global\let =\ }
+
+% \begingroup
+%     \makeactive\<%
+%     \gdef\escape{%
+%         \begingroup%
+%             \makeactive\<%
+%             \def<##1>{##1\endgroup}%
+%             \normalfont\normalsize%
+%             \predefinedcats%
+% %            \catcode`\^^I=\active \catcode`\ =\active%
+% %            \catcode`\\=0 \catcode`\{=1 \catcode`\}=2%
+% %            \catcode`\$=3 \catcode`\&=4 \catcode`\^^M=5%
+% %            \catcode`\#=6 \catcode`\^=7 \catcode`\_=8%
+% %            \catcode`\%=14 \catcode`\\=0%
+%     }
+% \endgroup
+
+\def\listing@check@error#1{%
+    \ifthenelse{\equal{#1}{listing}}%
+    {%
+      \endlisting\endgroup%
+    }%
+    {%
+%        \ifthenelse{\equal{#1}{program}}%  NOT NECESSARY
+%        {%
+%          \endprogram\endgroup%
+%        }%
+        {%
+            \errhelp{Simply write `listing' instead of `#1'}
+            \errmessage{\noexpand\begin\noexpand{listing\noexpand} on
+            input line \arabic{listing@begin@lineno} ended by
+            \noexpand\end\noexpand{#1\noexpand}}%
+        }%
+    }%
+}
+
+\begingroup
+    \catcode `|=0   \catcode `[= 1  \catcode`]=2
+    \catcode `\{=12 \catcode `\}=12 \catcode`\\=12
+    |gdef|@xendlisting{#1}[%
+      |listing@check@error[#1]%
+    ]%
+|endgroup
+
+\def\listingcatcodes%
+{%
+    \makeescape\\%
+    \catcode`\$=3%
+    \catcode`\{=1%
+    \catcode`\}=2%
+}
+
+\def\makenumberbox#1#2{%
+    \ifthenelse{\equal{#1}{[]}\or\equal{\listing@pattern}{}}%
+    {%
+        \savebox{\listing@Number@Box}{\mbox{}}%
+    }{%
+        \savebox{\listing@Number@Box}{\listingfont\listing@pattern:\hskip 3pt}%
+        \settowidth{\listing@Number@Width}{\usebox{\listing@Number@Box}}%
+        \advance \listing@Number@Width -\listing@Brakets@Width%
+        \savebox{\listing@Number@Box}{\makebox[\listing@Number@Width][r]{\listingfont#2:\hskip 3pt}}%
+    }%
+    \noindent\usebox{\listing@Number@Box}%
+}
+
+\newdimen\rc@hanginglinewidth%
+\newdimen\rc@hangingleftmargin%
+
+\def\listing#1 % PRESERVE THIS SPACE!!!
+{%
+    % Try to use \@ifnextchar[
+    \if@listing%
+        \errmessage{The listing in line \arabic{listing@begin@lineno}~%
+                    must be closed before you begin a new listing}%
+    \fi%
+    \@listingtrue%
+    \ifhmode%
+        \par%
+    \fi%
+    \addvspace{\abovedisplayskip}%    
+    \def\listing@curr@leftmargin{\leftmargin}%
+    \def\listing@curr@rightmargin{\rightmargin}%
+    \begingroup%
+        \let\listing@savelabel\label%
+        \let\label\listing@originallabel%
+        \setcounter{listing@begin@lineno}{\the\inputlineno}
+        \savebox{\listing@Brakets@Box}{\listingfont{[]}}%
+        \settowidth{\listing@Brakets@Width}{\usebox{\listing@Brakets@Box}}%
+        \let\oldpar\par%
+        %\def\par{\ensuremath{\mathstrut}\parskip=0pt\endgraf}%
+        \def\par{\ifnum\prevgraf=1\mbox{}\fi\hbox to 0pt{}\oldpar}%
+        \setcounter{listinglineno}{0}%
+        \def\listing@pattern{#1}%
+        \everypar={%
+            \refstepcounter{listinglineno}% TODO: Maybe stepcounter
+            \makenumberbox{\listing@pattern}{\arabic{listinglineno}}%
+            \rc@hanginglinewidth=\linewidth%
+            \rc@hangingleftmargin=\@totalleftmargin%
+            \setbox0=\hbox{\makenumberbox{\listing@pattern}{\listing@pattern}}%
+            \advance\rc@hangingleftmargin by \wd0%
+            \advance\rc@hanginglinewidth by -\wd0%
+            \parshape 2 \@totalleftmargin\linewidth\rc@hangingleftmargin\rc@hanginglinewidth%
+            \parskip=3pt%
+        }%
+        %\def\end{\@xendlisting}%  NECESARIO SI QUIERO UN VERBATIM, VERBATIM
+        \uncatcodespecials%
+        \listingcatcodes%
+        \everymath={\predefinedcats\catcode`\ =10\relax}
+        \everydisplay={\predefinedcats\catcode`\ =10\relax}
+        \raggedright%
+        \obeylines%
+        \obeyspaces%
+        \parindent=0pt%
+        %\baselineskip=0.7\baselineskip%
+        \baselineskip=0.9\baselineskip%
+        \listingfont%
+        \endgraf%
+        %\trivlist\item[]\relax%
+}%
+
+\def\endlisting
+{%
+        %\endtrivlist%
+        \let\label\listing@savelabel%
+    \endgroup%
+    \setcounter{listing@begin@lineno}{0}%
+    %\vskip\belowdisplayskip%
+    %\unskip%
+    \par\addvspace{\belowdisplayskip}%
+    \@listingfalse%
+}%
+
+% interface
+
+\def\interface{%
+    \list
+        {$\triangleright$}
+        {%
+            %\leftmargin=\defaultparindent%
+            %\advance\leftmargin by \labelwidth%
+            %\rightmargin\leftmargin%
+            \topsep=0pt%
+            %\itemindent=-12pt%
+            \def\makelabel##1{\hss\llap{##1}}%
+        }%
+        \let\saveitem=\item%
+        \def\item##1:{\saveitem \inline{##1}:}%
+}
+
+\def\endinterface{\endlist}
+
+% \newenvironment{interface}%
+% {%
+%     \list{$\triangleright$}%
+%         {%
+%             \leftmargin=\defaultparindent%
+%             \rightmargin\leftmargin%
+%             \topsep=0pt%
+%             %\listparindent=0pt%
+%             %\itemindent=0pt%
+%             %\def\makelabel##1{\hss\llap{##1}}
+%         }%
+%         \let\saveitem=\item%
+%         \def\item##1:{\saveitem \inline{##1}:\hspace{3pt}\mbox{}}%
+%         \ignorespaces%
+% }%
+% {%
+%         \ignorespaces%
+%     \endlist%
+% }%
+
+
+\endinput
+
+% EOF rc-listing.sty

@@ -1,0 +1,132 @@
+\documentclass[titlepage,nocrop,doubleisomargin,final,nomarginalnotes]{rc-book}
+
+\usepackage[utf8x]{inputenc} 
+\usepackage[english]{babel}
+\usepackage{framed,color, colortbl}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{soul}
+%\usepackage{caption}
+\usepackage{pifont}
+\usepackage{rc-language}
+\usepackage{subfig}
+\usepackage{rc-hyperlink}
+\usepackage{wrapfig}
+\usepackage{textpos}
+
+\hyphenation{permitido momentos animarme}
+
+
+%To put/remove 
+%\newcommand{\Spl}{Software product line\xspace}
+%\newcommand{\Spls}{Software product lines\xspace}
+%\newcommand{\spl}{software product line\xspace}
+%\newcommand{\spls}{software product lines\xspace}
+%\newcommand{\fm}{feature model\xspace}
+%\newcommand{\Fm}{Feature model\xspace}
+%\newcommand{\fms}{feature models\xspace}
+%\newcommand{\Fms}{Feature models\xspace}
+
+%tesalia
+%\newcommand{\feature}{mobile platform feature\xspace}
+%\newcommand{\features}{mobile platform features\xspace}
+%\newcommand{\product}{mobile platform configuration\xspace}
+%\newcommand{\products}{mobile platform configurations\xspace}
+%\newcommand{\toolname}{TESALIA\xspace}
+%\newcommand{\longtoolname}{TESting vAriAbiLity Intensive Systems\xspace}
+
+%vane
+%\newcommand{\solution}{VANE\xspace}
+%\newcommand{\solutionLong}{VariAbility testiNg for fEature models\xspace}
+%\newcommand{\systems}{variability intensive systems\xspace}
+%\newcommand{\Systems}{Variability intensive systems\xspace}
+%\newcommand{\system}{variability intensive system\xspace}
+%\newcommand{\System}{Variability intensive system\xspace}
+
+%invar
+%\newcommand{\invar}{{$\mathsf{I}n\mathsf{v}ar$}\xspace}
+%\newcommand{\keywd}[1]{{\small{\textsf{#1}}}}
+%\newcommand{\famaovm}{FaMa-OVM\xspace}
+%\newcommand{\famafw}{FaMa framework\xspace}
+%\newcommand{\DOPLER}{\textsc{Dopler}\xspace}
+
+%sets of papers
+%\newcommand{\alltesting}{\cite{Rothermel1997,Boehm2005,Lamancha2010,Perrouin2010,Withey1996,Perrouin2011,
+%Boehm1992,Sneed2009,Johansen2012a,Oster2010,Johansen2012,Binkley1997,Srikanth,6606595,Henard2013,Olaechea:2012}\xspace}
+%\newcommand{\allreverse}{\cite{lopez12-ssbse,she-reverse, 4339252, 6079856,Acher-2012,yves}\xspace}
+%\newcommand{\alltwise}{\cite{Lamancha2010,Perrouin2010,Perrouin2011,Johansen2012a,Oster2010,henard2012bypassing,Henard20131245}\xspace}
+
+%colors
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\definecolor{Gray}{gray}{0.9}
+\definecolor{shadecolor}{rgb}{1,0.8,0.3}
+
+
+
+%todos
+\newcommand{\todo}[1]{\colorbox{red}{#1}}
+\crop[off]
+%\title{Evolution, testing and configuration of variability intensive systems} 
+%\author{Jos\'{e} A. Galindo}
+%\institution{University of Seville}
+%\advisor{ Advised by:\\ Dr. David Benavides Cuevas and Dr.Benoit Baudry}    
+
+\begin{document}
+%	\input{cover/cover.tex}
+	\input{cover/french.tex}
+
+%    \maketitle%
+%    \input{cover/jurada}
+%    \input{cover/revisions}
+%\ifffalse    
+%\begin{titlepage}
+%\title{Evolution, testing and configuration of variability intensive systems} 
+%\author{Jos\'{e} A. Galindo}
+%\institution{University of Seville}
+%\advisor{ Advised by:\\ Dr. David Benavides Cuevas and Dr.Benoit Baudry}    
+%\end{titlepage}
+%\maketitle
+%\fi
+\input{chapters/dedicatoria.tex}
+\tableofcontents
+\listoffigures
+\listoftables
+
+\input{chapters/abstract.tex}
+\part{Introduction}
+\input{chapters/introduction.tex}
+\part{Background}
+\input{chapters/InternetOfThings.tex}
+%\input{chapters/ModelsAtRuntime.tex}
+%\input{chapters/CBSE.tex}
+
+%\part{Motivation}
+
+%\part{Contributions}
+
+%\part{Validation}
+
+
+%\part{Final Remarks}
+
+%\part{~Appendix}
+%\chapter{WindRose}
+%\chapter{Foras where the community publish}
+
+
+\bibliographystyle{rc-natbib}
+%\bibliographystyle{plain}
+
+\bibliography{bibliography}
+\newpage
+\thispagestyle{empty}
+~
+\newpage
+\thispagestyle{empty}
+~
+\newpage
+
+\end{document}

@@ -1,0 +1,51 @@
+% rc-language.sty alpha v0.0
+%
+% Copyright (c) 2000-2007 Rafael Corchuelo (corchu@us.es)
+%
+% This class localises your text and your bibliography automatically.
+%
+% This class IS NOT re-distributable.  Only members of the TDG are allowed to
+% use it.  If you happen to have this file, please, use it at your own risk.
+% No support is available.  Don't send me e-mail asking me about RC-Language.
+% A day, RC-Language will be made available to LaTeX users, but that day still
+% has to come!
+
+% alpha v0.0 2007/08/31
+%
+% New Features
+%   - Support for Spanish, Catalan, English, French, German, and Portuguese is provided
+
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+
+\ProvidesPackage{rc-language}
+   [2007/08/31 alpha v0.0 Copyright (C) 2007 The Distributed Group]
+
+\typeout{rc-language.sty alpha v0.0 Copyright (C) 2007 The Distributed Group}
+
+% \RCLanguage
+
+\newcommand{\RCLanguage}%
+{%
+    R%
+    \kern-.1667em\raise.25ex\hbox{C}%
+    \kern-.25em\raise.25ex\hbox{--}%
+    L%
+    \kern-.1em\raise.4ex\hbox{a}%
+    \kern-.1em\lower.4ex\hbox{n}%
+    \kern-.1em\lower.5ex\hbox{g}%
+    \kern-.1em\raise.2ex\hbox{u}%
+    \kern-.1em\hbox{a}
+    \kern-.1em\hbox{g}
+    \kern-.1em\raise.6ex\hbox{e}
+    \xspace%
+}
+
+% Options
+
+\RequirePackageWithOptions{babel}
+
+\AtBeginDocument{%
+    \input{rc-book/locale/rc-\languagename .def}%
+}
+
+\endinput

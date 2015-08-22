@@ -1,0 +1,363 @@
+% rc-hyperlink.sty alpha v0.0
+%
+% Copyright (c) 2000-2007 Rafael Corchuelo (corchu@us.es)
+%
+% This class provides new commands for hyperlinking your text.
+%
+% This class IS NOT re-distributable.  Only members of the TDG are allowed to
+% use it.  If you happen to have this file, please, use it at your own risk.
+% No support is available.  Don't send me e-mail asking me about RC-HyperLink.
+% A day, RC-HyperLink will be made available to LaTeX users, but that day still
+% has to come!
+
+% alpha v0.0 2007/08/31
+%
+% New Features
+%   - Include this package to hyperlink your output files.  Note that this package
+%     may be used standalone since it does not depend on RC-BooK, but interacts with
+%     it if it is available.  \cite is linked properly as long as the natbib or the
+%     the standard LaTeX \cite command is used.  Do not expect it to work with
+%     other bibliography styles!
+%   - Simply put a \ref or a \cite in your  document and both the .dvi and .dpf will
+%     include a hyper-link to the target label. Note that hyperlinks are highlighted
+%     in blue as long as the document is compiled in draft mode; highlighting in
+%     final mode depends on your dvi or pdf viewer.
+%   - Use \hyperlink{link}{text} to include an explicit hyperlink in your document.
+%     For instance, \hyperlink{mailto:corchu@us.es}{click here to mail me!} to include a
+%     hyperlink to me email box in your document; similarly,
+%     \hyperlink{http://www.tdg-seville.info/corchu}{click here to visit my web site!}
+%     includes a hyperlink to my web site.
+%   - Use \url to typeset urls, \email to typeset emails, and \doi to typeset DOIs.
+%     Notice that \hyperlink is intended to hyperlink a piece of text in your document,
+%     whereas \url, \email, or \doi are intended to include a hyperreferenced url,
+%     email, or doi in your text.  For DOIs, the standard http://dx.doi.org server is used.
+%   - Use \path to typeset paths, file names, extensions, and so on.  Paths are not
+%     hyperlinked.
+%
+% Known bug... I mean features
+%
+%   - As of version 2.5.2419, Yap is not very good at hyperlinks.  Some times you see
+%     a link, but you can't click it.  For instance, try
+%
+%       Take a look at \url{http://www.tdg-seville.info}!
+%
+%     Yap think that the hyperlink is at the `t' in `at'.  Acrobat places hyperlinks
+%     properly, of course!  Use dvi2pdf to transform your dvi files into pdf and the
+%     links will be right.
+
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+
+\ProvidesPackage{rc-hyperlink}
+   [2007/08/31 alpha v0.0 Copyright (C) 2007 The Distributed Group]
+
+\typeout{rc-hyperlink.sty alpha v0.0 Copyright (C) 2007 The Distributed Group}
+
+\RequirePackage{url}
+\RequirePackage{color}
+\RequirePackage{xspace}
+\PassOptionsToPackage{allowmove}{url}
+
+% Options
+
+\newtoks\RCHL@beginhighligh
+\RCHL@beginhighligh={}
+
+\newtoks\RCHL@endhighligh
+\RCHL@endhighligh={}
+
+\DeclareOption{final}{}
+\DeclareOption{draft}{%
+    \RCHL@beginhighligh={\bgroup\color{blue}}%
+    \RCHL@endhighligh={\egroup}%
+}
+
+\ProcessOptions
+
+% \RCHyperLink
+
+\newcommand{\RCHyperLink}%
+{%
+    R%
+    \kern-.1667em\raise.25ex\hbox{C}%
+    \kern-.25em\raise.25ex\hbox{--}%
+    H%
+    \kern-.1em\raise.4ex\hbox{y}%
+    \kern-.1em\lower.4ex\hbox{p}%
+    \kern-.1em\lower.5ex\hbox{e}%
+    \kern-.1em\raise.2ex\hbox{r}%
+    \kern-.1em\hbox{L}
+    \kern-.1em\hbox{i}
+    \kern-.1em\hbox{n}
+    \kern-.1em\raise.6ex\hbox{k}
+    \xspace%
+}
+
+
+% Redefine \ref so as to add a \S in front of each reference, and include hyperlinks
+
+\def\ref#1{%
+    \hyperref@ref{#1}{\textsection\RCHL@refno{#1}}%
+}
+
+\def\pageref#1{%
+    \hyperref@ref{#1}{\RCHL@pageno{#1}}%
+}
+
+\let\RCHL@savelabel\label
+\def\label#1{%
+    \hyperref@label{#1}%
+    \RCHL@savelabel{#1}%
+}
+
+\let\RCHL@savesublabel\sublabel
+\def\sublabel#1#2{%
+    \hyperref@label{#2}%
+    \RCHL@savesublabel{#1}%
+}
+
+\def\addcontentsline#1#2#3{%
+  \RCHL@addcontentsline{\protect\hyperref@ref{#2:\csname the#2\endcsname}{\thepage}}{#1}{#2}{#3}%
+}
+
+\def\RCHL@addcontentsline#1#2#3#4{%
+    \addtocontents{#2}{\protect\contentsline{#3}{#4}{#1}}%
+}
+
+\def\hyperlink#1#2{\hyperref@eref{#1}{#2}}
+
+% Interaction with natbib and standard LaTeX
+
+\AtBeginDocument{
+    \@ifpackageloaded{natbib}
+    {
+        \def\hyper@natlinkstart#1{\RCHL@linkstart{citation:#1}}
+        \def\hyper@natlinkend{\RCHL@linkend}
+        \def\hyper@natanchorstart#1{\RCHL@anchorstart{citation:#1}}
+        \def\hyper@natanchorend{\RCHL@anchorend}
+    }
+    {
+        \@latex@warning{
+            RC-HyperLink has been designed to work with\MessageBreak
+            package natbib.  Unfortunately, this package\MessageBreak
+            was not loaded in your preamble, so I'll do\MessageBreak
+            the best I can do to hyperlink your cites.\MessageBreak
+            Don't expect this to work well if other\MessageBreak
+            bibliographic packages such as aguplus, nlinproc\MessageBreak
+            and the like are loaded.
+        }
+
+        \def\@citex[#1]#2{%
+            \leavevmode%
+            \let\@citea\@empty%
+            \@cite{%
+                \@for\@citeb:=#2\do
+                {%
+                    \@citea%
+                    \def\@citea{,\penalty\@m\ }%
+                    \edef\@citeb{\expandafter\@firstofone\@citeb\@empty}%
+                    \if@filesw%
+                        \immediate\write\@auxout{\string\citation{\@citeb}}%
+                    \fi%
+                    \@ifundefined{b@\@citeb}%
+                    {%
+                        \hbox{\reset@font\bfseries(\@citeb?)}%
+                        \G@refundefinedtrue%
+                        \@latex@warning{Citation `\@citeb' on page \thepage \space undefined}%
+                    }%
+                    {%
+                        \hyperref@ref{citation:\@citeb}{\csname b@\@citeb\endcsname}%
+                    }%
+                }%
+            }{#1}%
+        }
+
+        \def\@lbibitem[#1]#2{%
+            \item[\@biblabel{#1}\hfill]%
+            \if@filesw%
+                {%
+                    \let\protect\noexpand%
+                    \immediate\write\@auxout{\string\bibcite{#2}{#1}}
+                }%
+            \fi%
+            \hyperref@label{citation:#2}%
+            \ignorespaces%
+        }
+
+        \def\@bibitem#1{%
+            \item%
+            \if@filesw%
+            \immediate\write\@auxout{\string\bibcite{#1}{\the\value{\@listctr}}}%
+            \fi%
+            \hyperref@label{citation:#1}%
+            \ignorespaces%
+        }
+    }
+}
+
+% Internals
+
+\def\RCHL@refno#1{%
+    \expandafter\@setref\csname r@#1\endcsname\@firstoftwo{#1}%
+}
+
+\def\RCHL@pageno#1{%
+    \expandafter\@setref\csname r@#1\endcsname\@secondoftwo{#1}%
+}
+
+\def\RCHL@anchorstart#1{%
+    \special{html:<a name="#1">}%
+    %\setbox0=\hbox{{\color{red}\scriptsize[#1]}}\wd0=0pt\ht0=0pt\dp0=0pt\relax\smash{\raisebox{1em}{\box0}}%
+}
+\def\RCHL@anchorend{%
+    \special{html:</a>}%
+}
+
+\def\hyperref@label#1{%
+    \RCHL@anchorstart{#1}%
+    \RCHL@anchorend%
+}
+
+\def\RCHL@linkstart#1{%
+    %\bgroup%
+    \special{html:<a href="\string###1">}%
+    \the\RCHL@beginhighligh%
+}
+
+\def\RCHL@linkend{%
+    \the\RCHL@endhighligh%
+    \special{html:</a>}%
+    %\egroup%
+}
+
+\def\hyperref@ref#1#2{%
+    \RCHL@linkstart{#1}%
+    #2%
+    \RCHL@linkend%
+}
+
+\def\RCHL@elinkstart#1{%
+    \special{html:<a href="#1">}%
+    \the\RCHL@beginhighligh%
+}
+
+\def\RCHL@elinkend{%
+    \the\RCHL@endhighligh%
+    \special{html:</a>}%
+}
+
+\def\hyperref@eref#1#2{%
+    \RCHL@elinkstart{#1}%
+    #2%
+    \RCHL@elinkend%
+}
+
+% Patch url.sty
+
+\edef\RCHY@hash{\string#}
+\edef\RCHY@tilde{\string~}
+\edef\RCHY@quote{\string"}
+
+\long\def\RCHY@ReturnAfterFi#1\fi{\fi#1}
+
+\begingroup
+  \endlinechar=-1
+  \catcode`\^^M\active
+  \catcode`\%\active
+  \catcode`\#\active
+  \catcode`\_\active
+  \catcode`\$\active
+  \gdef\RCHY@normalise{
+    \begingroup
+    \catcode`\^^M\active
+    \def^^M{ }
+    \catcode`\%\active
+    \let%\@percentchar
+    \let\%\@percentchar
+    \catcode`\#\active
+    \def#{\RCHY@hash}
+    \def\#{\RCHY@hash}
+    \@makeother\&
+    \edef\textunderscore{\string_}
+    \let\_\textunderscore
+    \catcode`\_\active
+    \let_\textunderscore
+    \let~\RCHY@tilde
+    \let\~\RCHY@tilde
+    \let\textasciitilde\RCHY@tilde
+    \let\\\@backslashchar
+    \edef${\string$}
+    \ifx\@safe@activestrue\@undefined\else\@safe@activestrue\fi
+    \RCHY@n@rmalise
+  }
+  \catcode`\#=6
+  \gdef\RCHY@n@rmalise#1#2{
+    \edef\RCHY@tempa{
+      \endgroup
+      \noexpand#1{\RCHY@RemovePercentCr#2%^^M\@nil}
+    }
+    \RCHY@tempa
+  }
+  \gdef\RCHY@RemovePercentCr#1%^^M#2\@nil{
+    #1
+    \ifx\limits#2\limits
+    \else
+      \RCHY@ReturnAfterFi{
+        \RCHY@RemovePercentCr #2\@nil
+      }
+    \fi
+  }
+\endgroup
+
+\let\RCHY@saveurl\url
+\def\RCHY@url{\begingroup \Url}
+
+\def\UrlFont{\sffamily}%
+
+\DeclareRobustCommand*{\url}{\RCHY@normalise\url@}
+\def\url@#1{\hyperlink{#1}{\RCHY@url{#1}}}
+
+\DeclareRobustCommand*{\path}{\RCHY@normalise\path@}
+\def\path@#1{\RCHY@url{#1}}
+
+\DeclareRobustCommand*{\email}{\RCHY@normalise\email@}
+\def\email@#1{\hyperlink{mailto:#1}{\RCHY@url{#1}}}
+
+\DeclareRobustCommand*{\doi}{\RCHY@normalise\doi@}
+\def\doi@#1{\hyperlink{http://dx.doi.org/#1}{\RCHY@url{#1}}}
+
+%% The following definitions do not work when a URL contains a %... which is very common in
+%% urls typeset in the bibliografy since BibTex introduces a lot of % :(
+%
+%%\DeclareUrlCommand\url{%
+%%    \def\UrlLeft##1\UrlRight{\hyperref@eref{##1}{##1}}
+%%}
+%%
+%%\DeclareUrlCommand\email{%
+%%    \def\UrlLeft##1\UrlRight{\hyperref@eref{mailto:##1}{##1}}
+%%}
+%%
+%%\DeclareUrlCommand\doi{%
+%%    \def\UrlLeft##1\UrlRight{\hyperref@eref{http://dx.doi.org/##1}{##1}}
+%%}
+%
+%% The following definitions do work, but no hyperlinks are available in DVI
+%
+%%\def\UrlLeft#1\UrlRight{\hyperref@eref{\RCHY@urlprefix#1}{#1}}
+%
+%%\DeclareUrlCommand\url{%
+%%    \def\RCHY@urlprefix{}
+%%}
+%%
+%%\DeclareUrlCommand\email{%
+%%    \def\UrlLeft{mailto:}
+%%    \def\UrlRight{}
+%%    \def\RCHY@urlprefix{mailto:}%
+%%}
+%
+%%\DeclareUrlCommand\doi{%
+%%    \def\UrlLeft{http://dx.doi.org/}
+%%    \def\UrlRight{}
+%%    \def\RCHY@urlprefix{http://dx.doi.org/}%
+%%}
+
+\endinput 

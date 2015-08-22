@@ -1,0 +1,53 @@
+- Hacer los siguientes companions
+     - rc-minutes con la página de minutes
+     - rc-rules para los rules y el bodywide
+     - rc-pack, que permita empaquetar rc-book para distribuir los puetes que sean encesarios en caso de enviar un artículo a una revista. Investigar el \begin{file} de LaTeX.
+
+- Mejoras
+    - Que RC-Math soporte también transiciones negadas: \not\transition no queda bien centrado.
+    - Que \M y \B se puedan usar líbremente en cualquier entorno formulae
+    - En RC.MATH debería añadir los entornos class, state etc del Z OO
+    - \hyphenpenalty=10000 para evitar que una página pueda romperse justo en mitad de una palabra guionada.
+    - Crear un entorno rcdisplay que se encargue de dejar el espacio correcto en todo lo que se tiene que mostrar en modo display
+    - Crear un \qedhere para resolver el problema de los qed en teoremas que no terminan en una línea de texto, sino en una formulae o en un itemize y cosas así.
+    - La interfaz de \makefront de manera que se le pueda pasar una
+    lista de secciones extra.  Puede ser útil con el nuevo rc-floats.
+    - Comprobar que rc-language permite cambiar bien el lenguaje cuando
+    se usa un \begin{otherlanguage}{...}
+    - En rc-listing poner un \listingescape{`\\}{`\{}{`\}}{`\$} que facilite
+    la definición de los caracteres de escape.
+    - Usar el método basado en \RCHY@normalise para definir un \inline chachi, chachi
+    que se comporte exactamente igual que listing y comparta con él los caracteres
+    de escape y los puntos de ruptura de las líneas.
+    - Los footnotes, que no se hyperreferencian.
+    - bodywide no puede atravesar dos páginas y eso da problemas.  MIrar supertabular.
+    - Meter un entorno para CSP en RC-MATH.  min f(x) st x > 4
+    - Poner a RC-Math una opción euler que cargue este tipo de letra en modo matemático.
+    - Que en el futuro ^ y _ sean caracters normales, pero que \everymath recuperen
+    su significado.  Esto se podría meter en un rc-input.sty
+    - Añadir un \citereference{pepe09} que meta todo el texto de la cita en línea.
+    Se puede hacer en el natbib definiendo en cada cita un comando que sea
+    \citeref@pepe09 que se expanda por todo el texto de la cita.
+    - Que en los índices si el número de sección es muy grande se
+    agrande automáticamente la caja
+    - Para determinar si un parámetro opcional está vacio basta con
+    \ifx\\#1\\...  Esto puede eliminar algunas variables temporales que creo
+    para ver si está vacio con un \ifx\temp\empty...
+    - Las subsecciones en el frontmatter no salen en el índice
+    - Que los cites entren directamente en el fichero .idx si se quiere.  se
+    puede controlar con natbib
+    - La numeración de líneas no funciona bien en el index cuando hay marginal notes.
+    - Que labeleqn salte automáticamente el número de columnas que le falta par evitar tener que escribir &&&\labeleqn{xxx}
+
+- Refactorings
+    - rc-floats para que se puedan crear los floats que sean precisos de
+    una forma sencilla.  Por ejemplo \newfloat{program}{lop}{tbph}
+    - Los ficheros de localización deberían tener extensión ldf (como babel)
+    No puede haber confusión pues se cargan como rc-book/locale/#1.def
+    Sería bueno, no obstante, llamarlos rc-spanish, rc-english...
+    - El entorno program debería ser definido por rc-listings haciendo uso
+    del nuevo rc-floats
+
+- Ideas
+    - Sería buena idea quitar los entornos contd y simplemente poner un \Contdfloat
+    que haga que el floar al que se aplica conserve la etiqueta del anterior?
