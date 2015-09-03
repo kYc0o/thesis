@@ -1,16 +1,42 @@
 \chapter{The Internet Of Things}
 \label{sec:IoT}
-
 The Internet of Things (IoT) is a paradigm to which we put more and more attention in the scientific community.
-But, what we understand by \textit{Internet of Things}?.
+It comes as a necessity, since new services must be provided to the new era of \textit{\textbf{"Smart Things"}}, which leverages existing infrastructure and communication technologies.
+Such \textit{Smart} capabilities of future facilities will bring a radical change in human relationships with his everyday environment.
+Moreover, most of the efforts to create this new services for people should focus in the seamless integration of new technologies, following the vision of ubiquitous computing proposed by Mark Weiser\cite{weiser1999ubiquitous}.
+Yet humans will interact with this IoT infrastructure, their activity should be limited to the activation/deactivation of services, as well as a very small amount of configurations.
+This systems are already present in everyday's life, such as sensor networks in smart cities, personal smartphones, RFID tags in most of retail stores, and so on.
+However, this seamless integration still have several issues, from the development and deployment of services, to the usability.
 
-Some organizations\footnote{IEEE, towards an IoT definition http://goo.gl/u4AjEd} are trying to give a complete definition to this, but it still hard to have a common consensus.
-However, for this thesis I will adopt a definition from my experience and my own understanding, also based in those definitions.
-Since many protocols \textit{for} the Internet of Things exists, I will name those I used during my PhD, in order to explain an IoT infrastructure based in examples and experiences.
+\todo{develop more}
+
+Some organizations, like the IEEE\footnote{IEEE, towards an IoT definition http://goo.gl/u4AjEd}, are proposing a complete definition to the IoT, but it is hard to have a common consensus.
+However, for this thesis I will propose a definition from my experience and my own understanding, also based in those definitions.
+
+\section{The IoT at a glance}
+Nowadays, the current Internet, or the Internet of people, is driven by a set of technologies which were developed, extended and improved for the sake of human beings.
+This \textit{\textbf{classical}} Internet technologies are those which are used, for instance, in computers, tablets, smart-phones, smart TVs and streaming boxes, just to name a few.
+Users reach this Internet in form of web pages, audio and video streaming, mobile applications, and so on.
+In the literature, these are called \textit{\textbf{web services}}, which are provided from other machines known as \textit{\textbf{web servers}}.
+Web technologies are very well standardized, which allows a direct use of this information for any device implementing such standards.
+
+On the other hand, systems that does not provide direct communication to the user, but on the contrary, communicate exclusively with other machines, should use different means to reach the Internet.
+For this, a new infrastructure that provides connectivity to devices of this kind is necessary, and must leverage, as much as possible, existing frameworks to ease their integration and exploitation.
+That's why the Internet of Things make use of different approaches, since the nature of their data and provided services differs significantly from classical web services.
+The \textit{\textbf{web of things}}\cite{duquennoy2009webofthings} is the goal to achieve for this new infrastructure.
 
 \section{Towards an infrastructure for IoT}
 \label{sec:IoTInfra}
-An IoT infrastructure can be defined as a set of interconnected objects that use one or more different \textit{\textbf{classical}} Internet protocols, in order to exchange information about the tasks for which they were programmed.
+An IoT infrastructure can be defined as a set of interconnected objects that leverage one or more Internet protocols, in order to exchange information about the tasks for which they were programmed.
+
+This infrastructure must be ready to support connectivity and interoperability for a huge number of devices of all nature, from a very small sensor to the cloud.
+Furthermore, a compatibility with the current Internet basis should be developed, in order to take advantage of its robustness.
+
+Existing deployments similar to the described above, such as smart cities, can serve as an example of the large scale this systems could reach.
+
+\todo{start with the smart city example}
+
+
 I highlight \textit{classical} because interoperability between objects is easier to achieve using the Internet infrastructure that already exists.
 However, the objects participating into this new infrastructure could not be able  to run the existing Internet protocols implementations, since the available hardware resources can vary from an object to another.
 
@@ -124,7 +150,7 @@ This represents the "L" field in the frame.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=1\columnwidth]{chapters/background.images/ipv6Details.jpg}
-	\caption{6loWPAN header}
+	\caption{IPv6 header}
 	\label{fig:IPv6Header}
 \end{figure}
 As a comparison, the IPv6 header shown in figure \ref{fig:IPv6Header} would left only 72 bytes for payload, in the worse case.
@@ -199,16 +225,6 @@ Built as a monolithic event-driven kernel, as well as modular, Contiki offers a 
 Written in C, this OS and their applications can be compiled for several infrastructures, as Contiki provides enough abstractions to be platform independent.
 The most common MCU architectures using this OS are msp430, AVR, ARM, among others.
 The amount of memory needed in a 16-bit microprocessor (i.e. msp430) is about 2KB of RAM and 40KB of ROM.
-In addition to a very complete IP stack, Contiki integrates other useful features:
-
-\begin{itemize}
-	\item Multitasking kernel.
-	\item Preemptive multi-threading.
-	\item Proto-threads\cite{dunkels2006protothreads}.
-	\item The RIME communication stack\cite{dunkels2007rime}.
-	\item The Coffee file system\cite{tsiftes09enabling}.
-	\item A dynamic loader of new modules\cite{dunkels06runtime}.
-\end{itemize}
 
 \subsubsection{IoT protocol stack}
 \begin{figure}[htb]
@@ -227,8 +243,33 @@ Moreover, Contiki provides the following additional features:
 	\item Routing. ContikiRPL\cite{tsiftes2010contikirpl} implements the RPL\cite{rfc6550} protocol, which is an IPv6 Routing Protocol for Low-Power and Lossy Networks. RPL organizes a	topology as a Directed Acyclic Graph (DAG) that is partitioned into one or more Destination Oriented DAGs (DODAGs), one DODAG per sink.
 \end{itemize}
 
+\subsubsection{Mainly used features}
+In addition to a very complete IP stack, Contiki integrates other useful features:
+
+\begin{itemize}
+	\item Multitasking kernel.
+	\item Preemptive multi-threading.
+	\item Proto-threads\cite{dunkels2006protothreads}.
+	\item The RIME communication stack\cite{dunkels2007rime}.
+	\item The Coffee file system\cite{tsiftes09enabling}.
+	\item A dynamic loader of new modules\cite{dunkels06runtime}.
+\end{itemize}
+
+For this thesis, the Coffee file system and the dynamic loader were crucial for the experiments that validates this research work.
+
+\subsubsection{The Coffee file system}
+In a classical OS a file system is a mandatory feature.
+Indeed, storing files and programs is one of the main functionalities that an OS can provide.
+This is needed as much as for program execution, as for 
+
+
 \subsection{RIOT}
-bla
+RIOT is an IoT operating system\cite{baccelli2013riot}, with a microkernel architecture.
+It supports a full IP stack for smart objects, offering interoperability with other OS like Contiki.
+It's very low memory footprint make it idea for IoT, since it can be compiled for several architectures, from 8-bit to modern 32-bit microcontrollers.
+
+google thread
+manifeste usba
 
 \section{Other embedded OS}
 bla
