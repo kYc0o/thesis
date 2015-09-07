@@ -1,17 +1,37 @@
 \chapter{The Internet Of Things}
 \label{sec:IoT}
-The Internet of Things (IoT) is a paradigm to which we put more and more attention in the scientific community.
-It comes as a necessity, since new services must be provided to the new era of \textit{\textbf{"Smart Things"}}, which leverages existing infrastructure and communication technologies.
-Such \textit{Smart} capabilities of future facilities will bring a radical change in human relationships with his everyday environment.
+The Internet of Things (IoT) is a paradigm to which we put more and more attention in the scientific community\cite{atzori2010iotsurvey}.
+\todo{It comes as a necessity}, since new services must be provided to cope the new era of \textit{\textbf{"Smart Things"}}, which leverages existing networking infrastructure and communication technologies.
+Such \textit{smart} capabilities of future facilities will bring a radical change in human relationships with his everyday environment.
+
 Moreover, most of the efforts to create this new services for people should focus in the seamless integration of new technologies, following the vision of ubiquitous computing proposed by Mark Weiser\cite{weiser1999ubiquitous}.
-Yet humans will interact with this IoT infrastructure, their activity should be limited to the activation/deactivation of services, as well as a very small amount of configurations.
-This systems are already present in everyday's life, such as sensor networks in smart cities, personal smartphones, RFID tags in most of retail stores, and so on.
-However, this seamless integration still have several issues, from the development and deployment of services, to the usability.
+Even though when humans might interact with this IoT infrastructure, their activity should be limited to the activation/deactivation of services, as well as a very small amount of configurations.
 
-\todo{develop more}
+Pieces of the IoT are already present in everyday's life, such as sensor networks in smart cities, personal smartphones, RFID tags in many retail stores, and so on.
+However, the seamless integration of this pieces still have several issues, from the development and deployment of services, to the usability.
 
-Some organizations, like the IEEE\footnote{IEEE, towards an IoT definition http://goo.gl/u4AjEd}, are proposing a complete definition to the IoT, but it is hard to have a common consensus.
-However, for this thesis I will propose a definition from my experience and my own understanding, also based in those definitions.
+Likewise, a huge variety of connected objects are now available in the market for a specific use, most of them known as \textit{"wearables"}.
+While its usability is quite friendly, the interaction with other devices is very limited.
+Usually it communicates with the user through a smart phone, and in some cases they embed a user interface (UI), i.e. a display in the case of smart watches.
+
+Into this category we can also include other objects called "smart sensors", like plant monitors\cite{bolliger2007koubachi}, which are able to give environmental measurements through Bluetooth Low Energy(BLE) notifications, or web based notifications for a more sophisticated sensor\footnote{http://www.koubachi.com/products/pro/}.
+
+This devices are also part of the IoT\cite{wei2014wearables}, however, most of the used technologies to create them are proprietary, which complicates interoperability with other similar devices.
+In addition, most of the services provided by this objects are merely extensions of a bigger device, making them a subset of the IoT.
+For instance, a smart watch will provide notifications and small messages that the smart phone is already able to manage, with the advantage that we can put attention more quickly, contrasting the vision of ubiquitous computing stated above.
+However, one main benefit of this is that the wave radiation emitted by a wearable is, by far, less important than the phone's, allowing a distancing from the phone radio emissions.
+
+Another important area of research for the IoT is in the industrial field\cite{lidaxu2014iiotsurvey}.
+Applications in this area are emerging along with the robustness that new network infrastructures provide, since most of the usages require real-time responsiveness.
+Industries can leverage the IoT to increase performance and reduce waste of resources.
+While sensor networks are already present in all industrial scenarios, they are intended exclusively for automation and productivity.
+Resource availability, production tracking and non-supervisory process monitoring can be improved by an ad-hoc data analysis, which industrial IoT (IIoT) can provide.
+This new infrastructure can be deployed to obtain data about resources usage, such as electricity, water, gas, and so on.
+It exists big data based solutions\todo{\cite{}Erwan energiency} which could leverage all the generated data, in order to find energy leaks, which can bring considerable savings. 
+
+
+%Some organizations, like the IEEE\footnote{IEEE, towards an IoT definition http://goo.gl/u4AjEd}, are proposing a complete definition to the IoT, but it is hard to have a common consensus.
+%However, for this thesis I will propose a definition from my experience and my own understanding, also based in those definitions.
 
 \section{The IoT at a glance}
 Nowadays, the current Internet, or the Internet of people, is driven by a set of technologies which were developed, extended and improved for the sake of human beings.
@@ -21,21 +41,75 @@ In the literature, these are called \textit{\textbf{web services}}, which are pr
 Web technologies are very well standardized, which allows a direct use of this information for any device implementing such standards.
 
 On the other hand, systems that does not provide direct communication to the user, but on the contrary, communicate exclusively with other machines, should use different means to reach the Internet.
-For this, a new infrastructure that provides connectivity to devices of this kind is necessary, and must leverage, as much as possible, existing frameworks to ease their integration and exploitation.
-That's why the Internet of Things make use of different approaches, since the nature of their data and provided services differs significantly from classical web services.
+For this, a new infrastructure that provides connectivity to devices of this kind is then necessary, and must leverage, as much as possible, existing frameworks to ease their integration and exploitation.
+That's why the Internet of Things make use of different approaches, since the nature of their data and provided services differ  significantly from classical web services.
 The \textit{\textbf{web of things}}\cite{duquennoy2009webofthings} is the goal to achieve for this new infrastructure.
 
 \section{Towards an infrastructure for IoT}
 \label{sec:IoTInfra}
 An IoT infrastructure can be defined as a set of interconnected objects that leverage one or more Internet protocols, in order to exchange information about the tasks for which they were programmed.
 
-This infrastructure must be ready to support connectivity and interoperability for a huge number of devices of all nature, from a very small sensor to the cloud.
-Furthermore, a compatibility with the current Internet basis should be developed, in order to take advantage of its robustness.
+This infrastructure must be able to support connectivity and interoperability for a huge number of devices of all nature, from a very small sensor to the cloud.
+Furthermore, compatibility with the current Internet basis should be mandatory, in order to take advantage of its robustness.
 
-Existing deployments similar to the described above, such as smart cities, can serve as an example of the large scale this systems could reach.
+Existing deployments similar to the described above, such as smart cities, can be an example of large scale systems that could represent an IoT infrastructure.
+Indeed, the services provided by smart cities can be compared in scale and complexity to those that the IoT aims to bring.
+Such features make its deployment very challenging, since the heterogeneity of the participants complicate the development of standard communication protocols and cross-platform applications.
 
-\todo{start with the smart city example}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapters/background.images/SmartCity_comm.pdf}
+	\caption{A Smart City deployment}
+	\label{fig:SmartCity}
+\end{figure}
 
+In a smart city deployment\cite{smartsantander}, users can benefit from the services derived from different interactions performed between each participant.
+In figure \ref{fig:SmartCity} we can observe the diverse participants and its very particular nature, which comes from small embedded environmental sensors to connected cars and smart grids.
+A smart city envelops a wide range of devices that differs, mainly, in its communication capabilities.
+For instance, networks already deployed in smart buildings make use of particular technologies, as known as "building automation" (BA) protocols.
+In contrast, environmental sensors deployed in the city to measure pollution and air quality, utilize protocols typical of Wireless Sensor Networks (WSN)\cite{Akyildiz2002WSN}.
+However, such deployments have many points in common.
+Both are of a very distributed nature, which means that services provided come from the combination of all data produced by each device, and finally available for exploitation as a whole.
+In addition, devices being part of this networks have comparable hardware capabilities, which allows a similar application development environment.
+
+In a typical use case, an user who inhabits a smart building can know if his electric car is fully charged and ready to go, while checking in his smart phone the traffic conditions from there to his office.
+At the same time, the smart building could use the electric car as a storage of the building's produced energy, and publish its performance.
+Moreover, this system is able to propose other options for transportation, since it is connected to the public mobility network, which provides real time information about buses, public bike availability, and so on.
+In addition, the user can also know which are the conditions of air quality and temperature, using the smart city's weather service.
+All this \textit{\textbf{"connected world"}} will bring lots of improvements to life quality, as well as a better performance of energy consumption and production, which is a major concern.
+
+In the French Building Automation field, organizations like the Smart Building Alliance\footnote{http://www.smartbuildingsalliance.org/} are engaged to ease the development of this kind of smart environments, in order to respond to the challenges \todo{raised by the climate change, pollution and better quality of life demand in modern cities.}
+
+In this very particular scenario of smart buildings, several needed features could be pointed out:
+
+\begin{enumerate}
+	\item Interoperability between local equipment
+	\item Web services APIs
+	\item Data access
+	\item Privacy and security
+\end{enumerate}
+
+Thus far, this requirements can be met by present building automation technologies.
+However, the current issue consist in upgrade existing buildings to this new claims.
+This is very challenging, since classical solutions for BA are developed in a statical fashion, i.e. allowing the control and supervision of services like heating, ventilation, and air conditioning (HVAC), without taking into account the future evolutions that buildings can perform.
+Furthermore, the very complex deployment of this systems make its adoption very costly, since configuration and further changes must be made by experts.
+
+Let's take the example of an old building that are being refurbished to meet the new energy consumption requirements.
+First of all, the building must be analyzed.
+A sensor deployment is necessary to find its current performance and the parts that need urgent attention, like structural damages or thermal leaks.
+Once the information is gathered and the possible reparations are done, a second step is to replace all the previous sensors for new ones, which will perform the supervision and control of the new added features.
+This could be avoid if the first deployment offer adaptive characteristics, reducing costs and time.
+
+In a similar way, a new building which already have sensors an actuators, can change its use and consequently its behavior.
+For instance, let's imagine a complete floor full of offices that changes its occupants, from a logistics enterprise to a government agency.
+A complete change in the policies for the services provided by the building will be needed, forcing the deployment of new configurations for all sensors and actuators that could be present in the floor, such as new access controls, lighting and HVAC requirements and parking assignment, just to name a few.
+Again, an adaptive approach could facilitate this tasks.
+
+Solutions that come from the Information and Communication Technologies (ICT) field could be studied, in order to find a new way to develop, deploy and maintain this systems.
+In particular, the research done in Software Engineering (SE) could be useful to explore the issues mentioned above, since solutions for distributed systems, which are very close to the IoT systems, have been studied since long time ago by this branch.
+
+\todo{Make the link}
+-----------------------------------------------------------------------------------
 
 I highlight \textit{classical} because interoperability between objects is easier to achieve using the Internet infrastructure that already exists.
 However, the objects participating into this new infrastructure could not be able  to run the existing Internet protocols implementations, since the available hardware resources can vary from an object to another.
@@ -72,10 +146,10 @@ Such kind of devices wouldn't last a day running in batteries, since the big amo
 The very low-cost of MCU based objects, coupled with their very low-power capabilities, make them very easy to produce and could be spread in most of physical environments, such as forests, streets, buildings and homes, since it is possible to make them run in batteries.
 We can call this objects \textit{\textbf{smart objects}}.
 
-In this thesis, I will put emphasis on MCU based smart objects, since most of the scientific challenges come with the constrained resources in memory and energy of such devices.
+In this thesis, I will put emphasis on MCU based smart objects, since most of the scientific challenges come with the constrained resources in memory and energy of such devices. 
+Objects such as the M3 open node, are considered the upper limit of a constrained device, and are used in this thesis for studies and experimentations.
 
-\subsection{Why smart objects are too resource constrained?}
-This question arises when complex software developments are required to solve the "typical" problems already found in the classical Internet, that also exist in the IoT.
+\subsection{The very constrained nature of MCU based smart objects}
 Web technologies are nowadays well investigated and offer many tools for fast development and maintenance, however, they rely in modern equipment: fast microprocessors with many cores, tens of gigabytes in RAM and several terabytes in hard disks.
 While computers, mobile phones, and similar devices grow constantly in computing capacities, for microcontrollers the evolution is much less evident.
 This avoids the use of most of already developed technologies, since the differences between this two kind of devices is enormous.
@@ -260,7 +334,8 @@ For this thesis, the Coffee file system and the dynamic loader were crucial for 
 \subsubsection{The Coffee file system}
 In a classical OS a file system is a mandatory feature.
 Indeed, storing files and programs is one of the main functionalities that an OS can provide.
-This is needed as much as for program execution, as for 
+This is needed as much as for program execution, as for data logging and configurations storage.
+While constrained smart objects have often a persistent data storage, such as flash memory or EEPROM, a versatile and easy to use approach to access the saved data is always useful.
 
 
 \subsection{RIOT}
@@ -269,7 +344,7 @@ It supports a full IP stack for smart objects, offering interoperability with ot
 It's very low memory footprint make it idea for IoT, since it can be compiled for several architectures, from 8-bit to modern 32-bit microcontrollers.
 
 google thread
-manifeste usba
+manifeste sba
 
 \section{Other embedded OS}
 bla
