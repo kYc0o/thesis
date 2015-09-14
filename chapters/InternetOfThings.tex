@@ -1,7 +1,7 @@
 \chapter{The Internet Of Things}
 \label{sec:IoT}
 The Internet of Things (IoT) is a paradigm to which we put more and more attention in the scientific community\cite{atzori2010iotsurvey}.
-Pieces of the IoT are already present in everyday life, such as sensor networks in cities, personal smartphones, RFID tags in many retail stores, and so on.
+Pieces of the IoT are already present in everyday life, such as environmental sensor networks in streets, personal smartphones, RFID tags in many retail stores, and so on.
 The existence of this devices is becoming important, since the services provided are now part of a new modern environment, facilitating the most common human tasks.
 This plethora of objects, or \textit{small computers}, embed software in many levels, from the very small sensor to smart buildings equipment.
 Regarding the ubiquitous computing vision of Mark Weiser\cite{weiser1999ubiquitous}, modern cities are being equipped with complex software deployments, to integrate plenty of new services, such as traffic monitoring, instantaneous weather, public transport availability, food services, and so on.
@@ -60,6 +60,7 @@ This infrastructure must be able to support connectivity and interoperability fo
 Furthermore, compatibility with the current Internet basis should be mandatory, in order to take advantage of the robustness of the network.
 
 \subsection{The smart city environment}
+\label{sec:SmartCityEnv}
 In a smart city deployment\cite{smartsantander}, inhabitants can benefit from the services derived from different interactions performed between each participant.
 This is what an IoT infrastructure aims to provide, facilitating such interactions.
 
@@ -107,15 +108,51 @@ All this \textit{\textbf{"connected world"}} will bring many improvements to lif
 \label{sec:BAScenario}
 As stated in the previous subsection, buildings are of vital importance in a modern smart city.
 This buildings offer several services to their inhabitants, such as Heating, Ventilation and Air Conditioning (HVAC), lighting, parking places and waste disposal, just to name the most common ones.
-Some buildings are able to produce their own electricity, making use of Photo-Voltaic (PV) panels and small windmills.
+Moreover, some buildings are able to produce their own electricity, making use of Photo-Voltaic (PV) panels and small windmills.
+
+%Management of all this features must be done in all buildings 
 
 \subsection{The need of an efficient building}
-%*****************************************************************
-----------------------------------------------------------------------
+Being residential and commercial buildings one of the most energy consuming components\cite{perezLombard2008energy} of a city, solutions to this important problem must be found.
+The importance of resources utilization increased with the knowledge of the impact that misuse has in global warming, pollution and climate change.
+Thus, efficiency in resources usage is of vital importance.
+In order to cope with this situation, new policies for resource savings must be put in place.
+To do that, a building needs to be monitored with sensors and controlled through actuators.
+This Building Management Systems (BMS) are built in top of many devices which are spread inside buildings.
+Plenty of different sensors, such as temperature, humidity, air quality, luminosity, etc., are exploited to gather different data that could be used instantly to control or regulate a given service.
+Instant data such as presence and temperature, can lead to a instant reaction through actuators.
+For instance, when a presence is detected in a corridor, ballasts are triggered to turn on the lights.
+Moreover, a room in which a presence is detected and a very low temperature is sensed, an actuator will immediately open a valve to heat the place.
+Data can also be stored for further use.
+The most common utility of this data is supervision.
+This is useful to have a current or previous vision of the building's behavior, since historical data can be analyzed to generate visualizations at any time.
+Indeed, the results of the data analysis can help managers to take decisions in the usage of resources, in order to make savings as much as possible.
+
+This scenario is only possible if an infrastructure composed of all the features described above is deployed in current buildings, as well as fitted by default in new ones.
+Let's take the example of an old building that are being refurbished to meet the new energy consumption requirements.
+First of all, the building must be analyzed.
+A sensor deployment is necessary to find its current performance and the parts that need urgent attention, like structural damages or thermal leaks.
+Once the information is gathered and the possible reparations are done, a second step is to replace all the previous sensors for new ones, which will perform the supervision and control of the new added features.
+This building which already have sensors an actuators, can change its use and consequently its behavior.
+For instance, a complete floor full of offices that changes its occupants, from a logistics enterprise to a government agency.
+A complete change in the policies for the services provided by the building will be needed, forcing the deployment of new configurations for all sensors and actuators that could be present in the floor, such as new access controls, HVAC requirements and parking assignment, just to name a few.
+
+%understand the use of resources, such as electricity, gas, and so on.
+%Actuators are also essential to control and regulate the use of 
+%
+\subsection{Devices used in Building Automation}
+A smart building must be equipped with sensors and actuators that make possible to supervise and control building services, which were already mentioned above.
+This is known as Building Automation (BA).
+This sensors and actuators are built using components that must be cheap, easy to install and place, since some environments can be difficult to access or require special installation\cite{younis2008placement}.
+Available devices of this kind are on the market, and specialized enterprises are in charge of their deployment.
+In the most common cases, this work consists the physical installation, configuration and tests of the functionalities which are given by the devices' manufacturers.
+
+%It encloses all equipment and activities to know and monitor the current and past status of the building, making accessible all the data generated for further use.
+%This is intended to detect unexpected behaviors that could waste energy and other resources.
 
 
-Being residential and commercial buildings one of the most energy consuming components\cite{perezLombard2008energy} of a city, solutions to this important problem must be proposed.
-Building Automation (BA) aims to solve this problem by reducing this energy consumption, controlling services like  and lighting, just to name the most consuming ones.
+
+%Building Automation (BA) aims to solve this problem by reducing this energy consumption, controlling services like  and lighting, just to name the most consuming ones.
 
 
 ----------------------------------------------------------------------
@@ -139,19 +176,8 @@ Furthermore, the very complex deployment of this systems make its adoption very 
 %	\item Privacy and security
 %\end{enumerate}
 %********************************************************************
-
-
-
-Let's take the example of an old building that are being refurbished to meet the new energy consumption requirements.
-First of all, the building must be analyzed.
-A sensor deployment is necessary to find its current performance and the parts that need urgent attention, like structural damages or thermal leaks.
-Once the information is gathered and the possible reparations are done, a second step is to replace all the previous sensors for new ones, which will perform the supervision and control of the new added features.
-This could be avoid if the first deployment offer adaptive characteristics, reducing costs and time.
-
-In a similar way, a new building which already have sensors an actuators, can change its use and consequently its behavior.
-For instance, let's imagine a complete floor full of offices that changes its occupants, from a logistics enterprise to a government agency.
-A complete change in the policies for the services provided by the building will be needed, forcing the deployment of new configurations for all sensors and actuators that could be present in the floor, such as new access controls, lighting and HVAC requirements and parking assignment, just to name a few.
-Again, an adaptive approach could facilitate this tasks.
+%This could be avoid if the first deployment offer adaptive characteristics, reducing costs and time.
+%Again, an adaptive approach could facilitate this tasks.
 
 Solutions that come from the Information and Communication Technologies (ICT) field should be studied, in order to find a new way to develop, deploy and maintain this infrastructure.
 In particular, the research done in Software Engineering (SE) could be useful to explore the issues mentioned above, since solutions for distributed systems, which are very close to the IoT environment, have been studied since long time ago by this branch.
