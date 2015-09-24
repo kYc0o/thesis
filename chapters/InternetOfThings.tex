@@ -75,7 +75,7 @@ This is what an IoT infrastructure aims to provide, facilitating such interactio
 In figure \ref{fig:SmartCity} we can observe the diverse participants and its very particular nature, which comes from small embedded environmental sensors to connected cars and smart grids.
 
 All the characteristics of this scenario can be decoupled by sectors.
-For instance, the electricity network is being monitored and controlled by the smart grid\cite{}.
+For instance, the electricity network is being monitored and controlled by the smart grid\todo{\cite{}}.
 This provides a better understanding to the electricity consumption, which allows a fine control of the production.
 Moreover, electricity leaks can also be found, resulting in instant energy savings when the detected problem is solved.
 In the domain of public transport, the services are provided through the tracking of buses and the availability of bikes and electric cars, which are present in several modern cities.
@@ -110,6 +110,7 @@ Thus, efficiency is the main challenge for Building Managers.
 The human surveillance efforts in addition to management algorithms running in top of the automation layer would deal with this challenge.
 
 \subsection{The need of an efficient building}
+\label{subsec:effBuilding}
 Being residential and commercial buildings one of the most energy consuming components\cite{perezLombard2008energy} of a city, solutions to this important problem must be found.
 The importance of resources utilization increased with the knowledge of the impact that misuse has in global warming, pollution and climate change.
 Thus, efficiency in resources usage is of vital importance.
@@ -630,12 +631,20 @@ Given that configuration files must be stored in external flash memory, and a dy
 %bla
 
 \section{Enabling adaptation and reconfiguration in the IoT}
-One of the main goals of the proposed IoT infrastructure is to offer their capabilities through web services.
-Once this goal achieved by related research, our goal in this thesis is to leverage this new web technologies to provide adaptation and reconfiguration capabilities.
+Having described how an IoT environment is composed, we start to look at the main issues that this new infrastructure arise.
+%As the IoT devices are very heterogeneous, a higher abstraction level is required to manage the provided services.
+Focusing in our Smart Building example, this new devices participating in our IoT infrastructure are no longer simple sensors or actuators, but a more complex object which can provide more than a service, and are reachable through web APIs.
+The ability of a device to add or upgrade existing features in their firmware is not enough to cope with the coexistence with other devices, since they can be hundreds or thousands.
+Therefore, we cannot update them separately in order to provide a new service for a whole subsystem, in the case of a Smart Building.
+In order to deploy new capabilities, a more abstract vision of the whole subsystem is then necessary.
+Subsystems of this kind already exist in the classical Internet, and are known as \textbf{distributed systems}.
+This same issue about making changes in the software layer for many nodes at the same time was also detected in distributed systems, leading to new research axes to propose new solutions.
+Comparing the behavior of both IoT and classical Internet nodes, we found that they have very few differences, being one of the most important the computational resources availability and the multi-hop network architecture.
+However, the resemblances such as the quantity of nodes, the application layer and the distributed nature, were enough to think about the already proposed solutions.
 Previous works using approaches typical of Model Driven Engineering (MDE), have obtained good results adding self-adaptation and reconfiguration mechanisms to distributed systems.
-
 One of this approaches is Models@runtime\cite{morin2009mar}.
 Under this perspective, we aim to represent the IoT infrastructure described in this chapter, in the form of a model at runtime.
 We leverage its main properties to provide an easy way to manage reconfigurations, new software deployment and updates.
+Moreover, new research was conducted to deal with the main differences, proposing new methods to work with scarce resources and to reduce the inherent energy consumption of the extra network traffic.
 Further discussion about this topic is conducted in the next chapter.
 

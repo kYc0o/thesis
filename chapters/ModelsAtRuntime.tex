@@ -1,10 +1,64 @@
 \chapter{Models@Runtime}
 \label{sec:MAR}
-bla bla bla
+While information systems are essential in our modern everyday life to ease plenty of activities, IoT systems will be critical for the management of vital resources such as energy, aiming to improve its efficient use.
+Human activities dedicated to this efficient energy use, can be in charge of an IoT infrastructure in the background, bringing comfort and time saving that can be used for familiar activities, sports, and hobbies, for instance.
+Therefore, an approach to deal with software development and maintenance for this critical and complex systems should be proposed.
 
-\section{Overview}
+\section{Model Driven Engineering}
+With a view to ease software development for these very complex information systems, Model Driven Engineering (MDE) focus on, at first, giving simple, abstract and different points of view of information systems, without modify the actual system. 
+In a second place, a variant of the MDE approach, called Model Driven Architecture (MDA)\cite{kleppe2003mda} aims to provide, through Domain Specific Languages (DSLs) coupled with code generators, software development tools and methods.
+This approach is able to generate executable code from the abstract model, that can be generated for different hardware architectures.
+Moreover, while heterogeneity of target architectures is taken into account through multiple generators, they also imposes a V cycle of development\cite{fouquet2013kevoree}, which consists in:
+\begin{itemize}
+	\item Context design of the abstract system ("Meta-model" and code generators)
+	\item Use-case design (model)
+	\item Executable code from the model
+\end{itemize}
+Even if this V cycle responds to the large complexity, it could not be enough to respond in terms of software plasticity present in very changing environments, such as IoT systems, for instance.
 
-\section{M@R in distributed systems}
+Classical information systems are nowadays a critical piece of many important processes as well as industrial than commercial.
+Downtime of this systems can represent a big economic loss, therefore robustness and continuous availability should be assured.
+Thus, we can treat them as \textit{eternal systems}.
+Furthermore, the evolution of the needs and the rapid obsolescence of features imposes an openness to new functionalities that were not predictable at design time.
+In IoT systems, we can take the example given in subsection \ref{subsec:effBuilding}, in which evolutions of a building were complicated to predict.
+It was even more difficult to provide a prepared software platform able to deal with new features and devices, avoiding the rapid availability of new services.
+However, this new behavior must be implemented in the future due to the new energy policies, without alter the current given services.
+
+We can consider this critical systems as \textit{Dynamic Adaptive Systems} (DAS)\cite{mckinley2004composing}, \cite{morin2009taming}.
+Continuous update mechanisms are then carried into the target platforms, in order to change at runtime the software already deployed.
+Taking into account this dynamic behavior, DAS are defined using a paradigm based on components, which allows to decouple this big systems into software pieces that are easily maintainable\cite{crnkovic2002building}.
+
+DAS were typically deployed in critical platforms such as airports or banks, which had no tolerance to downtimes.
+However, in the last years the pervasiveness of software in all domains demand a downtime rate near to 0, including phones, domestic Internet gateways and domotic services\cite{nain2008using}.
+This requirements need to be supported by continuous updates, even for this non-critical systems.
+Even if today IoT systems are not widely deployed, its importance in the near future justify its design in the form of a DAS.
+
+The development model was also changed drastically, in order to follow the software plasticity present in this systems.
+When V cycle was widely used and preferred over other development methods in the 80's, coming from the design and initial specification to the code generation or implementation, nowadays Agile methods\cite{stolberg2009enabling}, which aim to bring in shorter development cycles, are more recommended and used, in order to respond more quickly to specification evolutions thanks to users feedback.
+Combined to this, the new approach of Continuous Integration (CI) introduces a new test system able to be updated with new artifacts of continuous development.
+By adopting such a methodology, non-critical systems and DAS specified constraints are brought more closely, supporting the idea of move together abstractions of this two domains.
+
+Therefore, the V approach from the 80's is becoming obsolete, while agile methods tend to expand it at every development cycle.
+It is then possible to develop and deploy software for critical and non-critical systems in a continuous manner.
+MDE approaches to generate code, and especially the MDA unidirectional approach which leverages a model to produce code, must take into account the inherent bidirectional development model of this continuous cycle.
+Moreover, generators must provide reverse operations to allow cyclic code, which can be present at design time.
+This can be useful to deal with legacy code as much as at design time, which is one of the main concerns of MDE, as in the tooling, beyond an approach of design to code.
+
+\section{M@R in Dynamic Adaptive Systems}
+A new paradigm named \textit{Model@Runtime} (M@R) aim to combine MDE techniques with tangible systems, in order to respond to the problem of cyclic design stated previously.
+As MDE, M@R were useful at first as a thoughtful visualization of a system, for simulation purposes\cite{oreizy1999architecture}, \cite{blair2009models}, \cite{zhang2006model}.
+A \textit{permanent updated} model is then used to represent abstractly a DAS at runtime.
+Every different element composing this model can be represented in a schema, providing an easy navigation and introspective analysis through the model layer.
+Reasoning about the state of the system is also possible using the same layer.
+Leveraging not only the introspection capability of the model, but also the intersection, Brice Morin\cite{morin2010leveraging} worked with this Model@Runtime layer aiming to modify it, through the reflexive model representation.
+
+
+\section{Component Based Software Engineering (CBSE)}
+\label{sec:CBSE}
+
+\section{Classical CBSE approaches}
+
+\section{Constrained resources approaches}
 
 \subsection{Special distributed systems: Wireless Sensor Networks}
 
