@@ -1,7 +1,7 @@
 \chapter{Models@Runtime}
 \label{sec:MAR}
 While information systems are essential in our modern everyday life to ease plenty of activities, IoT systems will be critical for the management of vital resources such as energy, aiming to improve its efficient use.
-Human activities dedicated to this efficient energy use, can be in charge of an IoT infrastructure in the background, bringing comfort and time saving that can be used for familiar activities, sports, and hobbies, for instance.
+Human activities dedicated to this efficient energy use (remember to turn off lights or HVAC equipment), can be in charge of an IoT infrastructure in the background, bringing comfort and time saving that can be used for familiar activities, sports, and hobbies, for instance.
 Therefore, an approach to deal with software development and maintenance for this critical and complex systems should be proposed.
 
 \section{Model Driven Engineering}
@@ -14,7 +14,7 @@ Moreover, while heterogeneity of target architectures is taken into account thro
 	\item Use-case design (model)
 	\item Executable code from the model
 \end{itemize}
-Even if this V cycle responds to the large complexity, it could not be enough to respond in terms of software plasticity present in very changing environments, such as IoT systems, for instance.
+Even if this V cycle responds to the large complexity, it could not be enough to respond in terms of software plasticity that will be present in the very changing IoT environment.
 
 Classical information systems are nowadays a critical piece of many important processes as well as industrial than commercial.
 Downtime of this systems can represent a big economic loss, therefore robustness and continuous availability should be assured.
@@ -48,17 +48,53 @@ This can be useful to deal with legacy code as much as at design time, which is 
 A new paradigm named \textit{Model@Runtime} (M@R) aim to combine MDE techniques with tangible systems, in order to respond to the problem of cyclic design stated previously.
 As MDE, M@R were useful at first as a thoughtful visualization of a system, for simulation purposes\cite{oreizy1999architecture}, \cite{blair2009models}, \cite{zhang2006model}.
 A \textit{permanent updated} model is then used to represent abstractly a DAS at runtime.
-Every different element composing this model can be represented in a schema, providing an easy navigation and introspective analysis through the model layer.
+Every different element composing this model can be represented in a schema, providing an easy navigation and an introspective analysis through the model layer.
 Reasoning about the state of the system is also possible using the same layer.
 Leveraging not only the introspection capability of the model, but also the intersection, Brice Morin\cite{morin2010leveraging} worked with this Model@Runtime layer aiming to modify it, through the reflexive model representation.
+Using intersection allows to modify the internal state of a system\cite{paepcke1993object}.
+Morin's M@R approach aim to build systems with reflexive capacities, having also intersection and introspection features present in the same layer.
+As an abstract layer, the proposed reflexivity can be asynchronous, allowing modifications before affecting the real system, i.e. for testing purposes. 
 
+This asynchronous properties separate strongly the actual system and the model, giving to MDE techniques the possibility to manipulate the reflexive layer without affecting at all the running platform.
+Moreover, a schematic representation leveraging the reflexive layer can be extracted from the actual system, in order to modify it.
+This modification can be in the form of component adding or removal in the extracted model, then thanks to a version comparison between both the actual and the modified model, it is possible to actually trigger updates on the platform.
+A bidirectional connexion also exists, since any modification to the external platform will be reflected in the M@R layer.
+Modifications in the model can be manipulated before the deployment allowing verifications, in addition to a more flexible way to test different configurations.
+For instance, if we want to deploy components with dependencies, the platform itself will avoid the deployment if any of the dependency is not met.
+At the model level, the same changes can be executed regardless of the order, if the adaptation execution is done after the adding/removal of the components, being the model less constrained than the platform.
+While the restrictions of the platform avoid the direct use of MDE approaches to manage the adaptations, the model can be manipulated to delay this restrictions in the application of the reflexive model, allowing to MDE approaches manipulate the model without following any order.
+
+Approaches such as feature models or aspects\cite{morin2009taming} coupled with composition algorithms, can leverage the asynchronous capabilities of M@R in order to compose a model from the DAS architecture.
+Since all operations can be done \textit{offline}, no constraints are imposed by the tangible platform before the deployment, while the system can decide when to synchronize.
+Conceiving and composing models is then essential to assemble a whole DAS.
+Several paradigms of composition are also needed, based in previous works\cite{morin2009mar},\cite{ko2012low},\cite{rouvoy2009music}, that encourage the use of software components to encapsulate the life cycle and composition operators.
+Moreover, this paradigms are also needed to explore the exploitation viability at this granularity level, in order to manage the different parts of DAS application layer. 
+
+\subsection{A DAS based on the IoT: Challenges}
+Given the complexity and the vast heterogeneity of an IoT architecture, this thesis proposes the use of a M@R approach to manage the life cycle of the software deployed in this systems.
+The approach will follow the directions given by the research already done by Fran{\c{c}}ois Fouquet\cite{fouquet2013kevoree}, previously based on Brice Morin's thesis\cite{morin2010leveraging}.
+The DAS representation of the IoT will result, as in the mentioned thesis, in a Dynamic DAS (DDAS), in which we found a very different behavior than in traditional DDAS, such as Data Centers or Cloud Computing.
+The challenges raised by such an approach in an IoT environment are, first of all, linked to the constrained environment already described in section \ref{subsec:constrainedObj}.
+As the current implementations of the M@R paradigm are done in high level languages, one main challenge is to adapt such implementations to development environments for embedded systems in which we cannot make use of such languages, resulting in a difficult development task.
+Moreover, the decoupling of components in modern operating systems is facilitated by Inter Process Communication (IPC) APIs already provided.
+In the OS described in section \ref{subsec:IoTOS}, and more particularly in Contiki, which is used in this thesis, IPC are less evident nor standard.
+Thus, a new way to implement components must be proposed.
+A second challenge resides in the network topology typical of IoT.
+Being a multi-hop communication the mainly used approach to reach nodes in the IoT, different abstractions are needed to take it into account.
+Furthermore, the network traffic must be reduced to a minimum, since wireless devices use batteries to work, and being this communication the most consuming task of an IoT node.
+
+
+An IoT system is very complex and should be implemented as a DAS.
+This is important because the management of IoT infrastructures is impossible if the current approaches still being used, since each subsystem is treated as a separated entity of the whole system.
+The limitations given by the hardware of IoT devices must be taken into account, while providing the means to reach an abstraction level typical of DAS design.
+The very hard task to decouple an embedded application into small pieces should be coped using a CBSE approach, since works converge in the use of this method for DAS
 
 \section{Component Based Software Engineering (CBSE)}
 \label{sec:CBSE}
 
-\section{Classical CBSE approaches}
+\subsection{Classical CBSE approaches}
 
-\section{Constrained resources approaches}
+\subsection{CBSE for constrained devices}
 
 \subsection{Special distributed systems: Wireless Sensor Networks}
 

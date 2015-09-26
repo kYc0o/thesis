@@ -1,7 +1,8 @@
 \chapter{The Internet Of Things (IoT)}
 \label{sec:IoT}
+
 The Internet of Things (IoT) is a paradigm to which we put more and more attention in the scientific community\cite{atzori2010iotsurvey}.
-Pieces of the IoT are already present in everyday life, such as environmental sensor networks in streets, personal smartphones, RFID tags in many retail stores, and so on.
+Isolated pieces of the IoT are already present in everyday life, such as environmental sensor networks in streets, personal smartphones, RFID tags in many retail stores, and so on.
 The existence of this devices is becoming important, since the services provided are now part of a new modern environment, facilitating the most common human tasks.
 This plethora of objects, or \textit{small computers}, embed software in many levels, from the very small sensor to smart buildings equipment.
 Regarding the ubiquitous computing vision of Mark Weiser\cite{weiser1999ubiquitous}, modern cities are being equipped with complex software deployments, to integrate plenty of new services, such as traffic monitoring, instantaneous weather, public transport availability, food services, and so on.
@@ -55,7 +56,7 @@ The \textit{\textbf{web of things}}\cite{duquennoy2009webofthings} is the goal t
 \section{Towards an infrastructure for IoT}
 \label{sec:IoTInfra}
 %Smart city -> system of systems
-An IoT infrastructure can be defined as a set of interconnected objects that leverage one or more Internet protocols (IP), in order to exchange information about the tasks for which they were programmed.
+An IoT infrastructure can be defined as a set of interconnected objects that leverage one or more Internet protocols (IP), in order to exchange information about the tasks for which they were programmed, being part of a highly connected environment including several and very different domains.
 
 This infrastructure must be able to support connectivity and interoperability for a huge number of devices of all nature, including, for instance, the services mentioned in the introduction of this chapter.
 Furthermore, compatibility with the current Internet basis should be mandatory, in order to take advantage of the robustness of the network.
@@ -63,7 +64,7 @@ Furthermore, compatibility with the current Internet basis should be mandatory, 
 \subsection{The smart city environment}
 \label{sec:SmartCityEnv}
 In a smart city deployment\cite{smartsantander}, inhabitants can leverage the services derived from different interactions performed between each participant.
-This is what an IoT infrastructure aims to provide, facilitating such interactions.
+This is what an IoT infrastructure aims to provide, making possible such interactions.
 
 \begin{figure}[htb]
 	\centering
@@ -87,6 +88,7 @@ This part is one of the most important, since commercial and residential buildin
 Monitor and control this buildings can lead to significant energy savings.
 Savings are achieved when a building, automatically, can turn on/off the lights when needed, as well as controlling the temperature of a room only if someone is inside, adjusting it to an optimal level.
 This is possible thanks to sensors that provides information about the environment (presence, temperature) and to actuators that change it (valves for radiators, lights).
+The IoT is then crucial to interconnect all this domains, which until now are working separately. 
 
 %**************************************************************
 
@@ -96,6 +98,10 @@ At the same time, the smart grid can use the electric car as a storage of the re
 Moreover, this system is able to propose other options for transportation, since it is connected to the public mobility network, which provides real time information about buses, public bike availability, and so on.
 In addition, the user can also know which are the conditions of air quality and temperature, using the smart city's weather service.
 All this \textit{\textbf{"connected world"}} will bring many improvements to life quality, as well as a better performance of energy consumption and production, which is a major concern.
+
+The need of an IoT infrastructure which manages all this connections is then justified, acting as a catalyst to provide new services.
+Traditional setups can actually offer services such as availability of parking places in a mall, however, it is not possible to know where the places are nor to be reserved in advance.
+Connecting through the IoT this two entities (a parking and a car) will allow to do it, resulting in efficient distribution of traffic and time savings.
 
 \subsection{A Building Automation scenario}
 \label{sec:BAScenario}
@@ -121,23 +127,28 @@ Plenty of different sensors, such as temperature, humidity, air quality, luminos
 Instant data such as presence and temperature, can lead to a instant reaction through actuators.
 For instance, when a presence is detected in a corridor, ballasts are triggered to turn on the lights.
 Moreover, a room in which a presence is detected and a very low temperature is sensed, an actuator will immediately open a valve to heat the place.
-Data can also be stored for further use.
-The most common utility of this data is supervision.
-This is useful to have a current or previous vision of the building's behavior, since historical data can be analyzed to generate visualizations at any time.
-Indeed, the results of the data analysis can help managers to take decisions in the usage of resources, in order to make savings as much as possible.
+In addition to the instant energy savings given by such actions (turn off the lights when nobody is in a room and reduce the heating), the need of more versatile sensors and actuators equipped with IoT technologies comes with the evolution of services, in which a simple sensor can embed algorithms to predict the ideal temperature conditions to save even more energy, by analyzing data coming from a weather station or even anticipate the occupant's arrival by getting information from his car.
+%Data can also be stored for further use.
+%The most common utility of this data is supervision.
+%This is useful to have a current or previous vision of the building's behavior, since historical data can be analyzed to generate visualizations at any time.
+%Indeed, the results of the data analysis can help managers to take decisions in the usage of resources, in order to make savings as much as possible.
 
-This scenario is only possible if an infrastructure composed of all the features described above is deployed in current buildings, as well as fitted by default in new ones.
+This scenario is only possible if an infrastructure composed of all the features described above is deployed in current buildings, as well as fitted by default in new ones being IoT ready.
 Let's take the example of an old building that are being refurbished to meet the new energy consumption requirements.
 First of all, the building must be analyzed.
-A sensor deployment is necessary to find its current performance and the parts that need urgent attention, like structural damages or thermal leaks.
+A sensor deployment is then necessary to find its current performance and the parts that need urgent attention, like structural damages or thermal leaks.
 Once the information is gathered and the possible reparations are done, a second step is to replace all the previous sensors for new ones, which will perform the supervision and control of the new added features.
 This building which already have sensors an actuators, can change its use and consequently its behavior.
 For instance, a complete floor full of offices that changes its occupants, from a logistics enterprise to a government agency.
 A complete change in the policies for the services provided by the building will be needed, forcing the deployment of new configurations for all sensors and actuators that could be present in the floor, such as new access controls, HVAC requirements and parking assignment, just to name a few.
+With this very changing conditions, buildings cannot be efficient if the automation is done in such a statical way, and even less if the building continue to be unaware of external events.
+
+Thus, the IoT find its place in this kind of applications, since in addition to provide connectivity to the rest of external entities, can leverage the full capacities of the devices deployed in buildings to expose its own services. Being a building exposed in this way can enable the evolution of such services, allowing to be updated or new ones to be added.
+Special attention must be put in the design of devices needed to perform this new tasks, in which the IoT capabilities will be deployed.
 
 \subsection{Devices used in Building Automation (BA)}
 \label{subsec:Devices4BA}
-A smart building must be equipped with sensors and actuators that make possible to supervise and control building services, which were already mentioned above.
+A building must be equipped with sensors and actuators that make possible to supervise and control its services, which were already mentioned above.
 This is known as Building Automation (BA).
 Small, lightweight and often battery powered, this sensors and actuators need components that should be cheap and robust, since some environments can be difficult to access or require special installation\cite{younis2008placement}.
 The fact of being powered by batteries adds much more flexibility of placement, since they can use wireless communications, sacrificing autonomy.
@@ -146,7 +157,7 @@ Most battery powered devices are sensors rather than actuators, which are less n
 In a different way, actuators are often forced to be wired, since it is complicated to use batteries for very consuming tasks, such as motor control for valves or blinds, for instance.
 On the other hand, actuators like lighting ballasts or ventilation engines are inherently connected to the main building's electricity network, thus, they do not present autonomy issues.
 One interesting approach to increase self-sufficiency is the use of energy harvesting\cite{grassl2006energy}.
-This devices are able to run without batteries or cables, since they are able to produce their own energy.
+This devices are able to run without batteries or cables, since they are equipped with energy harvesters which produce their own energy.
 Indeed, energy harvesting can be done by mechanical effort (i.e. pushing a switch), through small solar panels, or even with thermocouples.
 Many devices of this kind are available on the market from lots of manufacturers, and specialized enterprises are in charge of their deployment.
 In the most common cases, this work consists on the physical installation, configuration and tests of the functionalities which are preloaded by devices' manufacturers.
@@ -159,9 +170,9 @@ In the most common cases, this work consists on the physical installation, confi
 	\label{fig:SmartServices}
 \end{figure}
 
-Once a deployment of this kind exists in a building, we can define it as a \textbf{Smart Building}.
-Devices like Programmable Logic Controllers\todo{\cite{}} and supervision software\todo{\cite{}} are needed to enable local data processing, which can lead to a better understanding of the building's behavior. Thus "intelligent actions" can be triggered for the actuators previously defined.
-In this smart building environment, we can found several technologies that require many skills and players, since complexity is divided in different levels.
+%Devices like Programmable Logic Controllers\todo{\cite{}} and supervision software\todo{\cite{}} are needed to enable local data processing, which can lead to a better understanding of the building's behavior. 
+%Thus "intelligent actions" can be triggered on the actuators previously defined.
+
 In a bottom-up manner, as shown in figure \ref{fig:SmartServices}, we found in the first place the common sensors present in a building, such as temperature, humidity, luminosity, gas, and so on. 
 It also includes all meters like electricity, water and gas, which are the common services available in a building.
 In addition, this layer contains all the necessary actuators to control this services, the most common being valves for heating, dampers for ventilation, lights, blinds, and so on.
@@ -169,6 +180,14 @@ Afterwards, there is an automation layer, which obtains the instantaneous data c
 A supervision layer then store all the generated data locally, to provide visualizations of the state of the building, either present or past.
 Supervisors are often deployed in industrial PCs, servers, or other high-end computer.
 This is required due to the very complex data processing needed to represent all the functional features present in the building, as well as a very rich dynamic visual imagery offered to buildings managers.
+
+Once a deployment of this kind exists in a building, we can define it as a \textbf{Smart Building}.
+In this new environment, we can found several technologies that require many skills and players, since complexity is divided in different levels.
+
+A deep change in this devices is then needed in order to respond to the new requirements that IoT connectivity imposes.
+Indeed, \textit{"intelligence"} cannot be achieved with the existing sensors and actuators by itself, entrusting this activities to more sophisticated components.
+This adds lots of complexity which is difficult to manage, and can be avoided if it is distributed to the devices of the first layer.
+Replacement of this layer with new devices which are able to process much more information than the current ones will be needed, facilitating the implementation of IoT communication protocols.
 
 \subsection{Communication between BA devices}
 While sensors and actuators can send and receive data, it must be transmitted using an specific communication way.
@@ -185,6 +204,9 @@ Fortunately, the small size of the data messages that come from sensors needs a 
 Batteries should last as long as possible, sending data periodically (i.e. one message every 30 minutes or so) with no need of acknowledge or feedback.
 On the other hand, maintenance-free energy harvesting devices presented in the previous section should be able to send wireless messages using protocols intended to, facilitating its deployment.
 
+This communication approaches can be reused \textit{as is}, in an IoT infrastructure, since the physical medium still the same.
+However, a more detailed energy management for wireless devices will be needed, since IoT protocols are more complex and could increase the network traffic.
+
 \subsection{Software for Smart Buildings}
 All the infrastructure described above is able to produce many important data.
 New services can be provided if all this data is analyzed, then structured to give a better understanding to end users.
@@ -192,6 +214,8 @@ Typical exploitation of this services are, for instance, smart-phone or tablet a
 Furthermore, devices can be controlled remotely using this kind of applications, i.e. turning on/off a light using a phone or a remote computer.
 Alerts of unexpected building behavior are also very useful, thanks to a software layer that can be used to send SMS to notify about an event of this kind.
 This new services need a software management that must run inside the building, either using computers, PLC, or other type of centralized server.
+IoT devices will need to embed this kind of services in a distributed way.
+It means that access to the instant data and, in the better case, a minimum of historical data, is needed from the devices itself, being independent of centralized servers.
 
 Therefore, an important effort in software development is needed in all levels of a BA deployment.
 From embedded software to supervision engines, the presence of algorithms that manage the sensing and actuating layer is required to provide an easy to use interface between the other layers.
@@ -207,7 +231,7 @@ Depicted in figure \ref{fig:SmartCity}, the heterogeneity between actors in a sm
 Indeed, development environments can differ drastically from an scenario to another.
 %Several solutions have been proposed, addressing the very small sensor as well as the management of entire buildings and cities.
 Following the example given previously, the smart building is one of the main sectors which need more attention, since energy savings can be more considerable than any others.
-New buildings must be equipped with all the necessary infrastructure already described in the preceding sections, in order to be efficient.
+New buildings must be equipped with all the necessary IoT infrastructure already described in the preceding sections, in order to be efficient.
 However, the current issue consist in upgrade existing buildings to this new claims.
 This is very challenging, since classical solutions for BA are developed in a statical fashion, without taking into account the future evolutions that buildings can perform.
 Furthermore, the very complex deployment of this systems make its adoption very costly, since configuration and further changes must be made by experts.
@@ -234,6 +258,7 @@ However, current BA devices make use of field buses carrying protocols which are
 While reconfigurations are possible, the very complex protocols make this task very difficult, much more when equipment from different constructors is present.
 Indeed, current BA deployments seem to be very difficult to adapt and reconfigure, therefore a new deployment should be proposed.
 Since the most viable way to allow evolution of services resides in the adaptation capabilities of the lower layer devices, the research efforts will be conducted to this particular case.
+Smart objects need to be conceived in a general manner, since it should be possible to change completely their behavior by reconfiguring them or deploying new software services, being the IoT a means to reach this devices, using standard IoT protocols.
 
 %********************************************************************
 %In the French Building Automation domain, organizations like the Smart Building Alliance\footnote{http://www.smartbuildingsalliance.org/} are engaged to ease the development of this kind of smart environments, in order to respond to the challenges \textbf{raised by the climate change, pollution and better quality of life demand in modern cities.}
@@ -261,6 +286,7 @@ Since the most viable way to allow evolution of services resides in the adaptati
 %The red circle shown in figure \ref{fig:SmartServices} enclose the proposed alternative to the BA approach, which will be explained in the next section.
 
 \subsubsection{Focusing on constrained devices}
+\label{subsec:constrainedObj}
 As explained in subsection \ref{subsec:Devices4BA}, the lower layer of a BA infrastructure is composed of devices which have low cost, flexible placement and rapid software development as their main features.
 Since the goal is to enhance this devices with web features, a new layer must be proposed to replace the existing one, in which web services could be deployed.
 However, due to the constrained computational resources of this objects, \textbf{classical} implementations of Internet protocols cannot run in this constrained environment.
@@ -277,8 +303,8 @@ The communication method can determine the way we power the device, either using
 Thus, two kind of objects with different hardware capabilities can be present in this IoT infrastructure, which we can separate into:
 
 \begin{itemize}
-	\item Constrained devices. These are battery powered wireless devices which have no more than 1MB of RAM and 2MB of ROM (program data), offering a very efficient energy management. The mono-core CPU clock runs at less than a hundred megahertz.
-	\item Non-constrained devices. Wall-powered System on a Chip (SoC) devices counting with several megabytes of RAM (hundreds or thousands), having an external storage for program and user data. Connectivity is often achieved by a wired Ethernet interface. Its CPU can run at several hundred megahertz, which results in a high power consumption. Multi-core versions also exists, which increase even more the energy consumption.
+	\item \textbf{Constrained devices}. These are battery powered wireless devices which have no more than 1MB of RAM and 2MB of ROM (program data), offering a very efficient energy management. The mono-core CPU clock runs at less than a hundred megahertz.
+	\item \textbf{Non-constrained devices}. Wall-powered System on a Chip (SoC) devices embedding several megabytes of RAM (hundreds or thousands), having an external storage for program and user data. Connectivity is often achieved by a wired Ethernet interface. Its CPU can run at several hundred megahertz, which results in a high power consumption. Multi-core versions also exists, which increase even more the energy consumption.
 \end{itemize}
 
 Non-constrained devices (i.e. \cite{RPi}) are often able to run modern implementations of Internet protocols, since the hardware capabilities provided by objects powered by the electricity network are usually high.
@@ -298,7 +324,7 @@ While the price and the resources of SoC systems is very attractive, power consu
 Such kind of devices wouldn't last a day running in batteries, since the big amount of memory and the high speed processor are very power consuming.
 
 The very low-cost of MCU based objects, coupled with their very low-power capabilities, make them very easy to produce and could be spread in most of physical environments, such as forests, streets, buildings and homes, since it is possible to make them run in batteries.
-We can call this objects \textit{\textbf{smart objects}}.
+We can call this objects \textit{\textbf{smart objects}}, since deployment of algorithms with considerable complexity can be done.
 
 In this thesis, I will put emphasis on MCU based smart objects, since most of the scientific challenges come with the constrained resources in memory and energy of such devices.
 \begin{figure}[htb]
@@ -309,7 +335,7 @@ In this thesis, I will put emphasis on MCU based smart objects, since most of th
 \end{figure}
 The working group light-weight implementation guidance (lwig) from the Internet Engineering Task Force (IETF) provides the very useful RFC7228\cite{rfc7228}, which separates constrained devices into classes, as depicted in figure \ref{fig:DeviceClass}.
 
-Objects such as the M3 open node, are considered the upper limit of a constrained device, being of class 2, and are used in this thesis as the main platform for experimentations.
+Objects such as the M3 open node, are considered the upper limit of a constrained device, being of class 2, and are used in this thesis as the main IoT platform for experimentations.
 
 \subsubsection{The very constrained nature of MCU based smart objects}
 Web technologies are nowadays well investigated and offer many tools for fast development and maintenance, however, they rely in modern equipment: fast microprocessors with many cores, tens of gigabytes in RAM and several terabytes in hard disks.
@@ -350,6 +376,8 @@ Several wireless devices manufacturers and research institutes worked together t
 One of the standards that came from these efforts was the IEEE 802.15.4\cite{ieee802.15.4}.
 It was created specifically for low-power transceivers, allowing communication ranges near to 802.11, but offering a very low bandwidth.
 This limitation avoid the exchange of large data packets, which also limits the protocols that can be managed by the interface, before having considerable fragmentation.
+Moreover, the protocol support communication in various topologies, such as star, ring, and mesh, being the latter the most used, since every device can act as a router, overcoming the range limitations.
+However, using a complex topology reduces the reliability of the network, being necessary the implementation of acknowledge messages in almost all layers.
 
 \begin{figure}[htb]
 	\centering
@@ -375,34 +403,34 @@ Montenegro et al. proposed a new specification\cite{rfc4944} for constrained res
 This specification, called 6loWPAN (IPv6 for low-power Wireless Personal Area Networks) was successfully implemented\cite{durvy08making} and was able to provide interoperability with IPv6 ready devices, as it fulfilled all the requirements to have an IPv6 label\footnote{https://www.ipv6ready.org/}.
 The main feature of the loWPAN adaptation layer is the compression of the IPv6 header, along with fragmentation and mesh addressing features.
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapters/background.images/6lowpanvsipv6.jpg}
-	\caption{IPv6 vs. 6loWPAN \cite{shelby2010embedded}}
-	\label{fig:IPv6vs6loWPAN}
-\end{figure}
+%\begin{figure}[htb]
+%	\centering
+%	\includegraphics[width=1\columnwidth]{chapters/background.images/6lowpanvsipv6.jpg}
+%	\caption{IPv6 vs. 6loWPAN \cite{shelby2010embedded}}
+%	\label{fig:IPv6vs6loWPAN}
+%\end{figure}
 
-A size comparison is done in figure \ref{fig:IPv6vs6loWPAN}.
-We can appreciate that the header compression done by 6loWPAN reduces considerably its size, which is very important, given the size of IEEE 802.15.4 frames.
+%A size comparison is done in figure \ref{fig:IPv6vs6loWPAN}.
+%We can appreciate that the header compression done by 6loWPAN reduces considerably its size, which is very important, given the size of IEEE 802.15.4 frames.
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapters/background.images/6lowpanDetails.jpg}
-	\caption{6loWPAN header}
-	\label{fig:6loWPANmin}
-\end{figure}
+%\begin{figure}[htb]
+%	\centering
+%	\includegraphics[width=1\columnwidth]{chapters/background.images/6lowpanDetails.jpg}
+%	\caption{6loWPAN header}
+%	\label{fig:6loWPANmin}
+%\end{figure}
 
-In an ideal case, 6loWPAN headers can be as small as 6 bytes, shown in figure \ref{fig:6loWPANmin}.
-This represents the "L" field in the frame.
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapters/background.images/ipv6Details.jpg}
-	\caption{IPv6 header}
-	\label{fig:IPv6Header}
-\end{figure}
-As a comparison, the IPv6 header shown in figure \ref{fig:IPv6Header} would left only 72 bytes for payload, in the worse case.
+%In an ideal case, 6loWPAN headers can be as small as 6 bytes, shown in figure \ref{fig:6loWPANmin}.
+%This represents the "L" field in the frame.
+%\begin{figure}[htb]
+%	\centering
+%	\includegraphics[width=1\columnwidth]{chapters/background.images/ipv6Details.jpg}
+%	\caption{IPv6 header}
+%	\label{fig:IPv6Header}
+%\end{figure}
+%As a comparison, the IPv6 header shown in figure \ref{fig:IPv6Header} would left only 72 bytes for payload, in the worse case.
 
-Thanks to 6loWPAN compression, we have a first real \textit{"Internet of Things"} where every smart object can be reached from anywhere on Internet.
+Thanks to 6loWPAN compression, we have a first \textit{"Internet of Things"} approach where every smart object can be reached from anywhere on Internet.
 This enable the development of web services, since the objects themselves can already be part of a network where they can offer their embedded services, hosted in their small amount of memory.
 A new way to represent this services is then required, that could meet the current web services specifications and approaches.
 
@@ -443,9 +471,15 @@ In figure \ref{fig:IPLayers} we can appreciate a layered representation of both 
 This view allows a general understanding of some of the protocols that can enable the Internet of Things infrastructure.
 Both stacks are able to communicate between them, allowing users and developers to mix different types of smart objects, as well as other types of devices that can participate in the same network, such as PCs, servers and so on.
 
-In section \ref{sec:BAScenario} the representation of the building services shows that, after an IP layer, the data access is done through cloud services, which provide web APIs for further use by any web application.
-The presented protocol stack is the proposed way to directly communicate with this cloud services, using a standard way to ease the development, test, and continuous integration of web services.
+In section \ref{sec:BAScenario} the representation of the building services shows that, after an IP layer, the data access can be done through cloud services, which provide web APIs for further use by any web application.
+The presented protocol stack is the proposed way to directly communicate with cloud services, using a standard way to ease the development, test, and continuous integration of web services.
+Moreover, the use of a standard web API enables a straightforward method to make communicate devices from very different entities.
+Taking again the example of a car driver looking for a parking, a simple GET method from the car asking to the parking if there is a place and where is its location would be enough to do the task.
 
+An implementation of this stack by itself would be complicate for a single device, since the goal is to provide easy deployment of different web services being unaware of the hardware platform.
+Thus, abstractions at hardware level are needed, in order to develop the applications more quickly.
+Operating systems (OS) for the IoT already exists, which have made such abstractions.
+The next section presents two widely used IoT OS and their main advantages/drawbacks.
 
 
 %\subsection{Other IP stacks for smart objects}
@@ -457,17 +491,19 @@ The presented protocol stack is the proposed way to directly communicate with th
 %Thus, there is no a transparent nor easy way to communicate with this objects.
 %This main drawback makes not viable the use of these protocols in an IoT infrastructure.
 
-\section{All-in-one: IoT operating systems}
+\subsection{All-in-one: IoT operating systems}
+\label{subsec:IoTOS}
 In the classical Internet, several operating systems (OS) are used to take advantage of the services provided on the web.
 An operating system provides all the necessary software to manipulate web content, based on user needs.
 We can find, for instance, web browsers, mail clients, file managers, audio streamers, and so on, which use several Internet protocols already provided by the OS.
 
 A similar need comes with the IoT.
-However, web content in the IoT is not intended to be used directly by humans, but for other machines that gather such content and process it to offer new services.
+However, web content in the IoT is not intended to be used directly by humans, but for other machines that gather such content and process it to offer the needed services.
 Therefore, an operating system for the IoT should integrate all the necessary tools to provide a full communication stack, as well as a friendly environment to ease the development of applications.
-In this section, some operating systems that provides such functionalities are described.
+%In this section, some operating systems that provides such functionalities are described.
 
 \subsection{Contiki}
+\label{subsec:contiki}
 Developed at the beginning for Wireless Sensor Networks (WSN) management, the Contiki OS\cite{dunkels2004contiki} provides a full network stack composed of several communication protocols, from the network to the application layers.
 Built as a monolithic event-driven kernel, as well as modular, Contiki offers a standard way to develop applications, following a structured architecture of \textit{processes}.
 
@@ -542,6 +578,10 @@ This means that any other module can be replaceable by a new one (i.e. network s
 
 Figure \ref{fig:ContikiModules} shows the minimal modules embedded in Contiki, leaving free space for new ones.
 
+One of the main drawbacks of Contiki is its programming model.
+Even if the language is plain C, the implementation of processes and proto-threads make use of specific macros, diminishing flexibility of development.
+Moreover, to implement complex algorithms or big pieces of software, high level languages are the most evident solution to ease the task.
+Being Contiki only C compatible, the development of such complexity takes a considerable amount of extra time, compared to C++ for instance.
 
 \subsection{RIOT}
 RIOT is an IoT operating system\cite{baccelli2013riot}, with a microkernel architecture.
@@ -615,7 +655,7 @@ In this table, \textbf{x} represent no support, $\bullet$ partial support and $\
 In table \ref{tab:OSComparison} a comparison between OS is made.
 It shows that RIOT offers several features that other OS cannot, having remarkable advantages such as size and programming options.
 
-Two main drawbacks were found in this OS:
+However, two main drawbacks were found in this OS:
 \begin{enumerate}
 	\item The lack of a flexible and easy to use approach to store data in persistent memory.
 	\item A method to replace or add new features.
@@ -630,10 +670,11 @@ Given that configuration files must be stored in external flash memory, and a dy
 %\subsection{TinyOS}
 %bla
 
-\section{Enabling adaptation and reconfiguration in the IoT}
+%\section{Enabling adaptation and reconfiguration in the IoT}
+\section{Synthesis}
 Having described how an IoT environment is composed, we start to look at the main issues that this new infrastructure arise.
 %As the IoT devices are very heterogeneous, a higher abstraction level is required to manage the provided services.
-Focusing in our Smart Building example, this new devices participating in our IoT infrastructure are no longer simple sensors or actuators, but a more complex object which can provide more than a service, and are reachable through web APIs.
+Focusing in our Smart Building example, this new devices participating in our IoT infrastructure are no longer simple sensors or actuators, but a more complex object which can provide more than a service, being reachable through web APIs.
 The ability of a device to add or upgrade existing features in their firmware is not enough to cope with the coexistence with other devices, since they can be hundreds or thousands.
 Therefore, we cannot update them separately in order to provide a new service for a whole subsystem, in the case of a Smart Building.
 In order to deploy new capabilities, a more abstract vision of the whole subsystem is then necessary.
