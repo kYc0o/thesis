@@ -674,34 +674,41 @@ Given that configuration files must be stored in external flash memory, and a dy
 \section{Synthesis}
 While information systems are essential in our modern everyday life to ease plenty of activities, IoT systems will be critical for the management of vital resources such as energy, aiming to improve its efficient use.
 Human activities dedicated to this efficient energy use (i.e. remember to turn off lights or HVAC equipment), can be in charge of an IoT infrastructure in the background, bringing comfort and time saving that can be used for familiar activities, sports or hobbies, for instance.
-Therefore, an approach to deal with software development and maintenance for this critical and complex systems should be proposed.
+This infrastructure composed of devices, communication interfaces, protocols and finally software services, is very complex, and cannot exists as an entity of separated blocks.
+We need to construct a whole system able to communicate internally but also externally, in which the management of services can be possible in an easy way.
+Moreover, this system will need to implement standard communication protocols, high separation of concerns and introspection mechanisms to deal with the internal structure.
+Therefore, an approach to deal with the whole system deployment and maintenance for this critical and complex software layer should be proposed.
 
 As stated in this chapter, large distributed systems, such as the Smart City example introduced in section \ref{sec:IoTInfra}, need a fine management at the software level.
 This management of the software infrastructure will facilitate the distribution of functionalities between each device, which will result in a value-added service offered to the user.
 More particularly, in the given example of Smart Building, the provided services for inhabitants will need to leverage a collaborative approach including several participants of the Smart City.
 As shown in section \ref{subsec:IoTOS}, there are integrated solutions in the form of OSs which provide a ready-to-use environment able to communicate using IoT web standards.
-Seen as an IoT infrastructure, in which all devices are able to implement IP stacks, this environment will be able to take advantage of this relationships, using the standard IoT web APIs.
+However, each device cannot be managed separately, due to the big quantity of nodes that can be present, thus a single-device approach is not worth considering.
+Seen as a global IoT infrastructure, in which all devices are able to implement IP stacks, this environment should be able to take advantage of the relationships between objects, using the standard IoT web APIs.
 This new devices participating in our IoT infrastructure are no longer simple sensors or actuators, but a more complex object which can provide more than a service.
-Services are now provided in a more direct way, it means that the host of such services are the devices themselves.
-Thus, the collaboration between objects is achieved when a device can talk directly to another using Internet, being such devices part of very different sectors of a building or Smart City.
+Services are now provided in a more direct way, which means that the host of such services are the devices themselves.
+Thus, the collaboration between objects is achieved when a device can talk directly to another using Internet, being those devices part of very different sectors of a building or Smart City.
 While this collaborations are achieved through web services, the evolution and constant changes in the usages must be supported by the software management layer, leveraging the already deployed web interfaces.
 Thus, deployment of new software components in a highly distributed and constrained environment arise as a serious problem.
 Indeed, the underlying devices' constraints already discussed in section \ref{subsec:constrainedObj} will difficult the task of continuous deployment, since each device cannot be updated easily.
 Even if an OS like Contiki offers the possibility of module updates and new components deployment, we cannot update them separately in order to provide a new service for a whole subsystem, due the quantity of devices which could be involved in the case of a Smart Building, for instance.
+Indeed, since every device being part of a subsystem could not offer exactly the same functionality, a solution able to provide the distribution of functionalities in an efficient way is then needed.
 
 In order to deploy new capabilities, a more abstract vision of the whole subsystem is then necessary.
 Subsystems of this kind already exist in the classical Internet, and are known as \textbf{distributed systems}\cite{coulouris2005distributed}.
 This same issue about making changes in the software layer for many nodes at the same time was also detected in distributed systems, leading to new research axes to propose new solutions.
-Comparing the behavior of both IoT and classical Internet nodes, we found that they have very few differences, being one of the most important the computational resources available and the network architecture.
-However, the resemblances such as the quantity of nodes, the application layer and the distributed nature, were enough to explore the already proposed solutions for classical distributed systems.
-Previous works using approaches typical of Model Driven Engineering (MDE), have obtained good results adding self-adaptation and reconfiguration mechanisms to this systems.
-One of this approaches is Models@runtime\cite{morin2009mar}.
-Under this perspective, in this thesis we aim to represent the IoT infrastructure described in this chapter in the form of a model at runtime.
-We leverage its main properties to provide an easy way to manage reconfigurations, new software deployment and updates.
-The main goal of the conducted research was to deal with the main architectural (both at the hardware and system level) differences mentioned above, proposing new methods to work with scarce resources and to reduce the inherent energy consumption of the extra network traffic.
+Comparing the behavior of both IoT and classical Internet nodes, we found that they have very few differences, being one of the most important the available computational resources and the network architecture.
+However, the resemblances such as the quantity of nodes, the application layer and the need of distributed functionalities, were enough to explore the already proposed solutions for classical distributed systems.
+The main goal of the conducted research was to deal with the main architectural (both at the hardware and system level) differences mentioned above, proposing new methods to work with scarce resources and to reduce the inherent energy consumption of the extra network traffic that can appear with the use of these methods.
 Thus, the main research question is: \textit{\textbf{How can we efficiently manage the software layer of IoT systems?}}
 
-
+The next chapter explores the current approaches proposed by the Software Engineering community, in which large distributed systems have been a case of study.
+In the first part a state of the art of the current proposed solutions to deal with big systems is discussed, focusing on their decomposition in small pieces called \textit{software components}.
+Existing frameworks leveraging this decomposition are studied, in order to evaluate their possible application into the IoT environment.
+Solutions typical of Model Driven Engineering (MDE) are then analyzed, since its integration with software components are used to manage the software layer of classical distributed systems.
+One of the approaches which take advantage of both worlds is Models@runtime\cite{morin2009mar}.
+Under this perspective, in this thesis we aim to represent the IoT infrastructure described in this chapter in the form of a model at runtime.
+We leverage its main properties to provide an easy way to manage reconfigurations, new software deployment and updates.
 %And then explain what is the problem that you're gonna address in your PhD.
 %I think you need to mention that IoT infrastructure should not be considered as a collection of independent devices but as a collaborating distributed system (at least from the software perspective).
 %So the goal of your PhD is to provide technologies to make the first step in this direction.
