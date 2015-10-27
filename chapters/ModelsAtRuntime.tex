@@ -97,7 +97,7 @@ We can divide these technologies into three main principles:
 	\item \textbf{Package managers.} Mainly used in Linux and UNIX-like OSs, these tools have as goal the deployment of software previously packaged in a standard format. 
 	RPM package manager and dpkg are examples of standard package managers.
 	In order to manage multiple packages, usually required as dependencies, an application can be modeled as a graph of interdependent packages.
-	High level tools such as Yellowdog Updater Modified (YUM) and Advanced Packaging Tool(APT) are used to automate the deployment process, which consists in retrieving installing, updating and uninstalling applications, calculating the tree of dependencies.
+	High level tools such as Yellowdog Updater Modified (YUM) and Advanced Packaging Tool(APT) are used to automate the deployment process, which consists in retrieving, installing, updating and uninstalling applications, calculating the tree of dependencies.
 	\item \textbf{Application installers.} They are based on an application-centric deployment model, in contrast to package managers which are based on dependencies.
 	Windows Installer and InstallShield are examples of tools using this approach, on the basis of features and components.
 	Features are the functionalities that can be or not installed according to the user, and components are the parts to compose such features.
@@ -165,12 +165,12 @@ Programming of component-based software follows modular design principles, provi
 The objective is to predict the deployment state during development, which is facilitated using component-based programming.
 Moreover, the models present in component execution platforms provide explicit means to describe components and their dependencies.
 Three important execution platforms are presented in this section, in which a modular development is used in order to fit the execution environment that host the components.
-Descriptions of these platforms are based on how the modules or components are described and packaged, how does the deployment descriptor of those is created and in which ways these platforms addressed previously introduced issues.
+Descriptions of these platforms are based on how the components are described and packaged, how does the deployment descriptor of those is created and in which ways these platforms addressed previously introduced issues.
 
 \begin{itemize}
 	\item \textbf{CORBA Component model.}
 	CORBA (Common Object Request Broker Architecture) was defined by the OMG as a standard to provide an execution platform which enables the development of components in several computer languages, while it can be executed on multiple computers to work together.
-	The execution platform for distributed CORBA based software is called Corba Component Model (CCM)\cite{}, in which a component is defined by an interface and one or more implementations of that interface.
+	The execution platform for distributed CORBA based software is called Corba Component Model (CCM)\footnote{\url{http://www.omg.org/spec/CCM/4.0}}, in which a component is defined by an interface and one or more implementations of that interface.
 	A CORBA deploy unit is packaged in a zip format, which contains the description of the component files, the implementation binaries and a file to express the properties.
 	A set of logical interconnection of components forms a CCM components assembly, which is distributed over various machines.
 	The connections between components are done during the deployment phase, in which the assembly will be physically installed on a given configuration of machines.
@@ -179,7 +179,7 @@ Descriptions of these platforms are based on how the modules or components are d
 	The deployment process is specified by the CCM with a number of steps to be carried during the process, which consists in the definition and selection of deployment sites, installation of implementations using the information contained in the descriptor software package, instantiation of components and finally connection of components.
 	
 	\item \textbf{EJB.}
-	For the construction of enterprise Java applications, an API was specified by Sun Microsystems\cite{} which describes a managed, server-side component architecture called Enterprise JavaBeans (EJB).
+	For the construction of enterprise Java applications, an API was specified by Sun Microsystems\footnote{\url{http://download.oracle.com/otndocs/jcp/ejb-3_0-fr-eval-oth-JSpec/}} which describes a managed, server-side component architecture called Enterprise JavaBeans (EJB).
 	In EJB a standard way to implement business code usually found in enterprise applications is provided.
 	The addressed problems in such code are handled by EJB, including persistence, transactional integrity, and security, which are handled in a standard way, avoiding the re-implementation of this often repeated concerns.
 	Thus, the programmers are free to concentrate on the particular problem at hand.
@@ -328,30 +328,44 @@ This is a very challenging problem and is known under a variety of terms, such a
 %In this thesis, we will focus on adapting an IoT architecture and apply those changes at runtime, providing dynamic adaptation through dynamic deployment.
 
 The deployment process usually starts when code is written, or generated, in a programming language, then compiled into binary code to be executed.
-Each module of the application is then produced in a form of object file, which a linker can then use to construct a final executable binary or a library (e.g., .dll, .so, .a) if desired.
-A symbol table is also embedded with information that defines its dependencies (e.g., shared libraries).
+Each module of the application is then produced in a form of object file, which a linker can then use to construct a final executable binary or a library (i.e., .dll, .so, .a) if desired.
+A symbol table is also embedded with information that defines its dependencies (i.e., shared libraries).
 When this code is executed, a process of dynamic linking takes place.
 This step is quite different from the previous one, taking into account the information of shared libraries included in the executable file, in order to bind them dynamically to the running process.
-A dynamic loader should be provided with the OS, being different one from each other, providing such functionality.
+A dynamic loader should be provided with the OS, being different one from each other, to offer such functionality.
 The same step is performed while updating such a process, with the difference that the previous process must be stopped to be replaced by the new one.
 Another approach is proposed for interpreted languages, in which the compilation phase does not take place.
 The code in this case is directly executed through an interpreter, which can also use an hybrid approach mixing compilation and interpretation (i.e. Java and .NET).
 In this case, the source code is compiled to an intermediate bytecode format, which can be interpreted by a Virtual Machine (VM).
 Some optimizations are done in the case of Java, where classes are loaded only when needed.
 
-Thus far, the proposed deployment concept was explained, which can be represented in figure X \todo{make figure of the deployment cycle}, including the creation, distribution and maintenance of a given application.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapters/Deployment.images/DeploymentActivities.pdf}
+	\caption{Software Deployment Activities (from \cite{gunalp2014continuous})}
+	\label{fig:DeployActivities}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\columnwidth]{chapters/Deployment.images/TradeoffsDeployment.pdf}
+	\caption{Tradeoffs between distributed deployment approaches (from \cite{talwar2005approaches})}
+	\label{fig:tradeoffsDeployment}
+\end{figure}
+
+Thus far, the proposed deployment concept was explained, which can be represented in figure \ref{fig:DeployActivities}, including the creation, distribution and maintenance of a given application.
 This process can be valid for any application, for both classical and IoT systems.
 However, there is no a clear nor standard way to develop applications for devices being part of the IoT.
 As of classical distributed systems, three categories of solutions are studied\cite{talwar2005approaches}: script based, language-based and model-based deployment.
-The trade-offs presented in this article for these different approaches are shown in figure \todo{figure 3.10}.
-As depicted, required time to establish a language based and model-based approaches is clearly higher than manual and script-based, but can scale easily and handle deployment of complex systems.
+The trade-offs presented in this article for these different approaches are shown in figure \ref{fig:tradeoffsDeployment}.
+As depicted, required time to establish a language-based and model-based approaches is clearly higher than manual and script-based, but can scale easily and handle deployment of complex systems.
 \begin{itemize}
 	\item \textbf{Scripted Deployment.} With the aid of scripts (i.e. bash scripts), existing tools are coordinated for conducting common deployment activities on distributed environments.
-	Remote request for files using tools such scp over ssh are often used to copy files, described in configuration files.
+	Remote request for files using tools such as scp over ssh are often used to copy files, described in configuration files.
 	Execution of package managers to install software packages is also commonly used.
 	
 	Usually system administrators are familiar with these tools, thus it can be very convenient at first glance, as a fairly straightforward and fully customizable approach.
-	On the other hand, it can be complicated to maintain and very time consuming when more complex use-cases are targeted.
+	On the other hand, it can be complicated to maintain, and very time consuming when more complex use-cases are targeted.
 	Moreover, models of products and site are often limited to ad-hoc models or simply inexistent.
 	In order to achieve automation it can be necessary a high level of expressiveness for resource description, which is also limited in this approach.
 	One of the biggest problems using this method is the lack of traceability while leaving system administrators for deploying via scripts.
@@ -359,13 +373,13 @@ As depicted, required time to establish a language based and model-based approac
 	
 	\item \textbf{Language-based Deployment.} One of the improvements of script-based deployment is the use of language-based approaches.
 	The deployment tasks are performed leveraging a configuration language, parsers and other tools.
-	Deployers such as SmartFrog\cite{goldsack2003smartfrog} and \cite{wang2006language} are examples of the uyility of this approach.
+	Deployers such as SmartFrog\cite{goldsack2003smartfrog} and \cite{wang2006language} are examples of the utility of this approach.
 	Specialized deployment languages offer an easier usage of these tools.
 	Nevertheless, execution of this method and scripted deployment are very similar, apart from the specialized language.
 	
 	A management runtime is often included with this language-based deployment frameworks.
 	The deployment workflow and the system configuration are described by the proposed language.
-	It is also defined an abstraction layer for managing the configurations of deployed software. 
+	An abstraction layer is also defined for managing the configurations of deployed software. 
 	A dedicated agent can then coordinate the deployment tasks according to the provided workflow, which is then executed by the distributed deployment engine achieving the maintenance of a desired application state.
 	A higher level of abstraction is then leveraged form this language-based approaches, providing the actions of the deployment process, compared with script-based approaches.
 	Software reconfiguration, automated updates and on-demand deployment are then associated to provide management strategies.
@@ -466,7 +480,7 @@ MDE approaches to generate code, and especially the MDA unidirectional approach 
 Moreover, generators must provide reverse operations to allow cyclic code, which can be present at design time.
 This can be useful to deal with legacy code as much as at design time, which is one of the main concerns of MDE, as in the tooling, beyond an approach of design to code.
 
-\subsection{M@R in Dynamic Adaptive Systems}
+\subsection{M@R in Dynamic Adaptive Systems (DAS)}
 A new paradigm named \textit{Model@Runtime} (M@R) aim to combine MDE techniques with tangible systems, in order to respond to the problem of cyclic design stated previously.
 As MDE, M@R were useful at first as a thoughtful visualization of a system, for simulation purposes\cite{oreizy1999architecture}, \cite{blair2009models}, \cite{zhang2006model}.
 A \textit{permanent updated} model is then used to represent abstractly a DAS at runtime.
@@ -501,7 +515,7 @@ Moreover, this paradigms are also needed to explore the exploitation viability a
 
 \subsection{Kevoree}
 The Kevoree\footnote{\url{http://www.kevoree.org}} project, was created as a part of Fran{\c{c}}ois Fouquet's PhD thesis.
-A part of the contributions of this thesis were based on this project, being the most important the implementation of the Kevoree meta-model in C language and the adaptation of an essential part of the framework as a Contiki application for the IoT.
+A part of the contributions of this thesis were based on this project, being the most important the implementation of the Kevoree meta-model in C language and the adaptation of an essential part of the framework as a Contiki OS\cite{dunkels2004contiki} application for the IoT.
 This section presents the most important concepts that were essential to the achievement of this thesis.
 This concepts are thus very important to the general understanding of the next chapters.
 
@@ -539,7 +553,7 @@ The DAS representation of the IoT will result, as in the mentioned thesis, in a 
 The challenges raised by such an approach in an IoT environment are, first of all, linked to the constrained environment already described in section \ref{subsec:constrainedObj}.
 As the current implementations of the M@R paradigm are done in high level languages, one main challenge is to adapt such implementations to development environments for embedded systems in which we cannot make use of such languages, resulting in a difficult development task.
 Moreover, the decoupling of components in modern operating systems is facilitated by Inter Process Communication (IPC) APIs already provided.
-In the OS described in section \ref{subsec:IoTOS}, and more particularly in Contiki, which is used in this thesis, IPC are less evident nor standard.
+In the OS described in section \ref{subsec:IoTOS}, and more particularly in Contiki, which is the OS used in this thesis, IPC are less evident nor standard.
 Thus, a new way to implement components must be proposed following the directions discussed in section \ref{sec:CBSE}.
 A second challenge resides in the network topology typical of IoT.
 Being a multi-hop communication the mainly used approach to reach nodes in the IoT, different abstractions are needed to take it into account.
@@ -550,8 +564,8 @@ The process of software deployment can differ significantly from classical distr
 This is due to the underlying hardware differences discussed throughout this state of the art.
 While non-constrained nodes present in classical distributed systems are able to run VMs to execute precompiled bytecode, written in high level languages such as Java, IoT devices are not able to run a complete JVM, but rather very limited ones\cite{levis2002mate}\cite{brouwers2009darjeeling}.
 Moreover, related research\cite{oliver2014reprogramming} found JVMs very resource consuming in small devices typical of IoT, since they add a considerable CPU overhead while running, which avoids a long-term use for battery powered nodes.
-Thus, we will focus in the software deployment for applications compiled as binary code, which can be executed directly by the native platform.
-Indeed, in the embedded systems domain, which embodies most of the devices used in IoT, bare metal applications are the most common procedure to provide services or functionalities, being physical flashing of the binary image the usual deployment method, since it can be done at the moment of the embedded system assembly, without considering any further firmware changes.
+Thus, we will focus on software deployment for applications compiled as binary code, which can be executed directly by the native platform.
+Indeed, in the embedded systems domain, which embodies most of the devices used in IoT, bare metal applications are the most common procedure to provide services or functionalities, being physical flashing of the binary image the usual deployment method, since it can be done at the moment of the physical embedded system assembly, without considering any further firmware changes.
 With this limitation, it is even more complicated to distribute applications among several nodes which are physically separated, since the physical flashing of every node in a typical IoT system cannot be worth considering.
 Thus, a choice of the current alternatives to deal with this problem should be made.
 
@@ -573,7 +587,7 @@ We will discuss three methods already introduced above:
 	It consists in change the entire kernel image for a new one, which must be either flashed physically or transmitted through the network, followed by a complete reboot of the system.
 	Indeed, sharing a large kernel image can be very energy consuming for wireless battery powered devices.
 	Advantages of this technique are the possibility of deep changes into the kernel or applications, as well as deployment of a complete different OS.
-	\item \textbf{Position Independent Code (PIC).} As mentioned before, the executable code usually follows the process of dynamic relocation to find the needed symbol's addresses, then execute the code. 
+	\item \textbf{Position Independent Code (PIC).} As mentioned previously in this chapter, the executable code usually follows the process of dynamic relocation to find the needed symbol's addresses, then execute the code. 
 	PIC follow a different approach to run applications. 
 	It consists in the use of relative jumps rather than absolute addresses to find symbols, mitigating the need of run-time relocation.
 	Several overheads can be introduced by the use of this technique, such as pre-loading of addresses before making jumps, more needed jumps while calling kernel or another module, functions registration and de-registration and the necessity of a jump table.
@@ -603,5 +617,5 @@ Thus, for this thesis, the use of Contiki as the underlying platform to validate
 This leads to a deeper understanding of the internals and a big effort to implement the high level abstractions required by the use of model-based deployment approaches.
 
 In conclusion, even if deployment mechanisms for IoT devices exist and can be improved to reach a good reliability level and ease to use, manual installation or updates of features should not be worth considering.
-Figure \todo{figure 3.10} already shows that in classical distributed systems manual deployment is not suitable for large-scale systems.
+Figure \ref{fig:tradeoffsDeployment} already shows that in classical distributed systems manual deployment is not suitable for large-scale systems.
 The next chapters are intended to explain the main contributions of this thesis, leveraging the already discussed topics of this chapter to propose an automated deployment engine for IoT applications, based on the three tools already discussed in section \ref{sec:softDeployment}.
