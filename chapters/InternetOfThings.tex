@@ -564,7 +564,7 @@ This is achieved by Contiki through the dynamic loader, which is described below
 
 \subsubsection{The dynamic loader}
 One of the most appreciable features in an OS is its possibility to update existing capabilities, or adding new ones.
-Contiki provides a dynamic linker at runtime, which is able to load binary code using the standard ELF format\cite{tis1995tool}.
+Contiki provides a dynamic linker and loader at runtime, which is able to load binary code using the standard ELF format\cite{tis1995tool}.
 Leveraging the abstractions already done by the Coffee File System (CFS), this dynamic loader does not need to know whether the code is located in RAM or ROM, since the CFS manages this low-level details.
 Since Contiki was designed to be modular, only the core contains important program code.
 This means that any other module can be replaceable by a new one (i.e. network stack, sensing applications, etc.), thus allowing bug fixing.
@@ -619,17 +619,16 @@ Given the IoT infrastructure proposed in section \ref{sec:IoTInfra}, RIOT fulfil
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=1\columnwidth]{chapters/background.images/RIOTIPStack.png}
-	\caption{RIOT IP stack}
+	\caption{RIOT IP stack (from \cite{riotOS})}
 	\label{fig:RIOTIPStack}
 \end{figure}
-\todo{add source}
 
 Figure \ref{fig:RIOTIPStack} show the comparison between protocols and the support offered by this OS. 
 
 \begin{table}[htb]
 	\scriptsize
 	\centering
-	\caption{OS comparison}
+	\caption{OS comparison (adapted from \cite{baccelli2013riot})}
 	\label{tab:OSComparison}
 	\begin{tabular}{|c|cccccccc}
 		\hline
@@ -648,7 +647,6 @@ Figure \ref{fig:RIOTIPStack} show the comparison between protocols and the suppo
 		\textit{RIOT} & $\mathtt{\sim}$1.5KB & $\mathtt{\sim}$1.5KB & \checkmark    & \checkmark       & \checkmark & \checkmark & \checkmark & \checkmark  \\ \cline{1-1}
 	\end{tabular}
 \end{table}
-\todo{add source}
 
 In this table, \textbf{x} represent no support, $\bullet$ partial support and $\checkmark$ fully support.
 

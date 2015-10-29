@@ -553,34 +553,35 @@ The DAS representation of the IoT will result, as in the mentioned thesis, in a 
 The challenges raised by such an approach in an IoT environment are, first of all, linked to the constrained environment already described in section \ref{subsec:constrainedObj}.
 As the current implementations of the M@R paradigm are done in high level languages, one main challenge is to adapt such implementations to development environments for embedded systems in which we cannot make use of such languages, resulting in a difficult development task.
 Moreover, the decoupling of components in modern operating systems is facilitated by Inter Process Communication (IPC) APIs already provided.
-In the OS described in section \ref{subsec:IoTOS}, and more particularly in Contiki, which is the OS used in this thesis, IPC are less evident nor standard.
+In the OS described in section \ref{subsec:IoTOS}, and more particularly in Contiki, IPC are less evident nor standard.
 Thus, a new way to implement components must be proposed following the directions discussed in section \ref{sec:CBSE}.
 A second challenge resides in the network topology typical of IoT.
 Being a multi-hop communication the mainly used approach to reach nodes in the IoT, different abstractions are needed to take it into account.
 Furthermore, the network traffic must be reduced to a minimum, since wireless devices use batteries to work, and being communication the most energy consuming task of an IoT node.
 
 \section{Dynamic deployment in the IoT}
+\label{sec:IoTDeployment}
 The process of software deployment can differ significantly from classical distributed systems to IoT systems.
 This is due to the underlying hardware differences discussed throughout this state of the art.
 While non-constrained nodes present in classical distributed systems are able to run VMs to execute precompiled bytecode, written in high level languages such as Java, IoT devices are not able to run a complete JVM, but rather very limited ones\cite{levis2002mate}\cite{brouwers2009darjeeling}.
 Moreover, related research\cite{oliver2014reprogramming} found JVMs very resource consuming in small devices typical of IoT, since they add a considerable CPU overhead while running, which avoids a long-term use for battery powered nodes.
 Thus, we will focus on software deployment for applications compiled as binary code, which can be executed directly by the native platform.
-Indeed, in the embedded systems domain, which embodies most of the devices used in IoT, bare metal applications are the most common procedure to provide services or functionalities, being physical flashing of the binary image the usual deployment method, since it can be done at the moment of the physical embedded system assembly, without considering any further firmware changes.
-With this limitation, it is even more complicated to distribute applications among several nodes which are physically separated, since the physical flashing of every node in a typical IoT system cannot be worth considering.
+Indeed, in the embedded systems domain, which embodies most of the devices used in IoT, bare metal applications are the most common procedure to provide services or functionalities, being physical flashing of the binary image the usual deployment method, since it can be done at the manufacturing step of embedded systems, without considering any further firmware changes.
+With this limitation, it is even more complicated to distribute applications among several nodes which are physically separated, since the manual flashing of every node in a typical IoT system cannot be worth considering due to the huge amount of nodes.
 Thus, a choice of the current alternatives to deal with this problem should be made.
 
-Operating systems used in embedded systems provide several methods to deploy new applications at runtime, being the most common:
+Operating systems used in embedded systems and Wireless Sensor Networks (WSN) provide several methods to deploy new applications at runtime, being the most common:
 \begin{enumerate}
 	\item Scripting languages \cite{dunkels2006low}\cite{kovatsch2012actinium}.
-	\item Virtual Machines \cite{levis2002mate}\cite{brouwers2009darjeeling}.
-	\item Kernel replacement \cite{hui2004dynamic}.
-	\item Position Independent Code \cite{han2005dynamic} \cite{chen2010enix}.
-	\item Relocatable code \cite{david2005wildcat}\cite{dong2009dynamic}\cite{dunkels2004contiki}.
+	\item Virtual Machines.
+	\item Kernel replacement.
+	\item Position Independent Code.
+	\item Relocatable code.
 \end{enumerate}
-As we discussed in this section, research shows that only non-interpreted code is worth considering for long term applications, thus scripting languages and VM approaches will be discarded.
+As we discussed in this section, research shows that only non-interpreted code is worth considering for long term applications, thus scripting languages and VM approaches will be discarded as a method to deploy new features.
 
 As presented in this section, applications deployment for IoT systems differs in several ways from classical distributed systems.
-In order to cope with this differences, which are mostly hardware and network related, approaches coming from the embedded systems and Wireless Sensor Networks (WSN) domains have been proposed.
+In order to cope with this differences, which are mostly hardware and network related, approaches coming from the embedded systems and WSN domains have been proposed.
 We will discuss three methods already introduced above: 
 \begin{itemize}
 	\item \textbf{Kernel replacement.} This is a straightforward solution to deploy new features or bug fixes in embedded systems, an essential part of the IoT infrastructure presented in this thesis.
@@ -606,16 +607,42 @@ We will discuss three methods already introduced above:
 	Overheads of this method include the transmission over the network of a large ELF file depending on the 32 or 64 bits architecture, a symbol table in which names are used to represent each unresolved symbol, also increasing the size of the ELF file, and finally a CPU overhead is incurred while resolving symbols.
 	As in the PIC method, no reboot is required to run the new application or to apply an update.
 \end{itemize}
-\todo{make a table showing the main advantages and drawbacks of these methods}
+
+\begin{table}[htb]
+	\scriptsize
+	\centering
+	\caption{Feature Comparison (adapted from \cite{oliver2014reprogramming})}
+	\label{tab:deployMethods}
+	\begin{tabular}{lccccccc}
+		& \multicolumn{3}{c}{\textbf{Mechanism}}       & \multicolumn{4}{c}{}                                                                                          \\
+		& \textbf{VM} & \textbf{PIC} & \textbf{Reloc.} & \textbf{OS Protection} & \textbf{Kernel Modif.} & \textbf{Kernel Replacement} & \textbf{Loose Coupling} \\ \hline
+		Mat\'e\cite{levis2002mate}      & $\bullet$           &              &                 & $\bullet$                      &                              &                             & $\bullet$                      \\ \hline
+		TOSBoot\cite{hui2004dynamic}    &             &              &                 &                        &                              & $\bullet$                           &                         \\ \hline
+		SOS\cite{han2005dynamic}        &             & $\bullet$            &                 &                        & $\bullet$                            &                             & $\bullet$                       \\ \hline
+		Contiki\cite{dunkels2004contiki}    &             &              & $\bullet$               &                        &                              & $\bullet$                           & $\bullet$                       \\ \hline
+		RETOS\cite{cha2007retos}      &             &              & $\bullet$               & $\bullet$                      & $\bullet$                            &                             & $\bullet$                       \\ \hline
+		Darjeeling\cite{brouwers2009darjeeling} & $\bullet$           &              &                 & $\bullet$                      &                              &                             & $\bullet$                       \\ \hline
+		SenSpire\cite{dong2009dynamic}   &             &              & $\bullet$               &                        & $\bullet$                            &                             & $\bullet$                       \\ \hline
+		Enix\cite{chen2010enix}       &             & $\bullet$            &                 &                        &                              &                             &                         \\ \hline
+	\end{tabular}
+\end{table}
+
+Other features of the proposed approaches can be considered, such as OS protection, low level kernel modification and even a whole kernel replacement.
+The loose coupling between new added modules and the underlying kernel is also important, since added flexibility of development allows scalability and fast upgrade of components.
+Several operating systems using the discussed approaches are shown in table \ref{tab:deployMethods}.
+VMs are included in this table since they offer high loose coupling and OS protection, and can be suitable for very short life-cycle applications running on IoT devices.
+
+
 
 \section{Conclusion}
-Given this three methods of deployment for new applications or feature updates, it is then necessary to evaluate which is the most advisable method for its use and adaptation in a deployment manager.
+In conclusion, even if deployment mechanisms for IoT devices exist and can be improved to reach a good reliability level and ease to use, manual installation or updates of features should not be worth considering, as it was explained in the previous section.
+Moreover, figure \ref{fig:tradeoffsDeployment} already shows that in classical distributed systems manual deployment is not suitable for large-scale systems.
+
+Given the available methods of deployment for new applications or feature updates, it is then necessary to evaluate which is the most advisable approach for its use and adaptation in an automated deployment manager.
 Taking into account the already described model-based techniques, the criterion to evaluate the previously presented approaches will be based on the capability of such approach to be easily decoupled into components, that can be disseminated over the network using a minimum of transfers.
 It is very important to have a good implementation of the local deployment procedures, as well as the necessary tools to share deploy units to the rest of the nodes.
 As presented in the previous chapter, the Contiki OS seems to provide the necessary tools required above.
 Thus, for this thesis, the use of Contiki as the underlying platform to validate our approaches has been chosen.
-This leads to a deeper understanding of the internals and a big effort to implement the high level abstractions required by the use of model-based deployment approaches.
+This leads to a deeper understanding of the OS internals and a big effort to implement the high level abstractions required by the use of model-based deployment approaches.
 
-In conclusion, even if deployment mechanisms for IoT devices exist and can be improved to reach a good reliability level and ease to use, manual installation or updates of features should not be worth considering.
-Figure \ref{fig:tradeoffsDeployment} already shows that in classical distributed systems manual deployment is not suitable for large-scale systems.
-The next chapters are intended to explain the main contributions of this thesis, leveraging the already discussed topics of this chapter to propose an automated deployment engine for IoT applications, based on the three tools already discussed in section \ref{sec:softDeployment}.
+The next chapters are intended to explain the main contributions of this thesis, leveraging the already discussed topics on this chapter to propose an automated deployment engine for IoT applications, based on the three tools already discussed in section \ref{sec:softDeployment}.
