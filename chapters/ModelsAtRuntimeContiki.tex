@@ -1,10 +1,115 @@
-\chapter{Models@Runtime for the IoT}
-\label{sec:MARContiki}
+\chapter{A first approach of Models@Runtime for the IoT}
+\label{ch:MARContiki}
+As presented in chapter \ref{ch:IoT}, Internet of Things systems are typically formed by a myriad of many small interconnected devices.
+This underlying hardware infrastructure raises new challenges in the way we administrate the software layer of these systems.
+Indeed, the limited computing power and battery life of each node combined with the very distributed nature of these systems, greatly adds complexity to distributed software layer management.
+
+In this chapter, I describe a first approach to implement a new middleware dedicated to IoT devices, in order to enable the management of software deployment and the dynamic reconfiguration of IoT systems.
+Our middleware is inspired from the Component Based Systems and the model@runtime paradigm which have been already described in the previous chapter.
+Moreover, the implementation of this middleware follows the directions of the existing Kevoree meta-model\todo{\cite{}}, which has been adapted to fit IoT devices constraints. 
+The evaluation of these constraints were conducted on several hardware platforms typical of the IoT, in order to establish a reference for the minimum requirements to run such a middleware.
+Once an initial research on these IoT platforms was conducted, the proposition of a new one was necessary, since the minimal requirements were not met by the commercially available platforms at that time.
+Such platform was an essential part to evaluate our first implementation, and was used to establish the minimum requirements of an execution environment.
+Finally, we have conducted an initial evaluation on an Internet of Things testbed\cite{Fleury15iotlab} recently available for experimentation.
+Our results demonstrates the feasibility of providing a model@runtime middleware for these systems, which can be executed in platforms meeting the requirements already established.
+This chapter is concluded by the obtained results in the FIT IoT-Lab testbed, which show the limits of our first approach.
 
 \section{Overview}
+%context
+Nowadays, we are surrounded by a plethora of interconnected devices (mobile phones, household appliances, wearable sensors, and so on) that continuously collect data on our living environment.
+This distributed computing infrastructure is becoming pervasive and users tend to naturally interact with it. This new computing environment offers a lot of opportunities for developing new applications in many different domains.
+Technology can now operate behind the scene by dynamically responding to people wishes.
+Based on this principle, IoT dedicated devices have emerged, forming the IoT infrastructure already described in section \ref{sec:IoTInfra}.
+All this new IoT devices form a constellation of many small interconnected objects integrated into houses, building, cities, factory chain, etc.
+%Based on this principle, Cyber Physical Systems (CPS) have emerged.CPS are pervasive and long living systems formed by a constellation of many small interconnected devices integrated into houses, building, cities, factory chain, etc. 
 
-\section{MDE in constrained devices: Challenges}
+%motivation
+In our building automation scenario presented in section \ref{sec:BAScenario}, the described IoT subsystem typically rely on sensor nodes that detect and record data such as presence, temperature, ambient lighting and energy consumption. 
+Thus, the IoT uses sensors to continuously analyse the situation in order to adapt our living environment to match user needs and preferences.
+User wishes may involve different objectives such as comfort, air quality, and energy savings. 
+To go beyond energy management and comfort, building automation systems have to deal with new types of services, depending on the use of the building: fire safety and security management for hotel, indoor air quality control in schools and office buildings, etc. 
+The opportunities of services offered by the IoT and the user preferences are countless and will change over the lifetime of these systems.
+The set of small interconnected devices integrated into building can be seen as a computing infrastructure that can host these new services. 
+Consequently the software deployed on these nodes needs to be dynamically reconfigured and re-deployed to meet the evolution of services and user preferences. 
 
-\section{Beyond the language, the Contiki M@R implementation}
+% old sentences
+%Consequently comfort and quality are factors of productivity and do not prevent energy savings being achieved.
+%To go beyond energy management, building automation systems have to deal with new types of services, depending on the use of the building: fire safety and security management for hotel, indoor air quality control in schools and office buildings etc. 
 
-\section{Validation}
+
+%problem
+For this reason, the capacity of dynamically deploying and reconfiguring the software layer of the IoT is a crucial feature.
+We address the problem of enabling the deployment of a distributed software layer and its dynamic reconfiguration over a network of nodes featuring very limited resources: memory, processing power, bandwidth communication and energy autonomy. 
+
+% limitation of SOTA
+To solve this problem, various techniques have been proposed, such as system image replacement \cite{hui2004dynamic} and virtual machines \cite{koshy2005vmstar}. 
+These approaches have two main drawbacks. 
+First they are not efficient in terms of energy. 
+Second, while they are suited to deploy static applications, these are not convenient solutions for IoT, since IoT devices operates in dynamic environments in which tasks performed by each node must be easily and frequently adapted.
+
+%our approach
+In this chapter we present our initial results towards the design of a middleware featuring deployment and reconfiguration facilities over an IoT system. 
+Our middleware aims at implementing the paradigm of model@runtime taking into account the stringent requirements of IoT devices.
+
+%plan
+%This paper is structured as follows. Section 2 presents the Kevoree component model. Section 3 details the challenges of mapping the model@runtime paradigm to microcontrollers, and explains how we implemented Kevoree on these very limited nodes. Our proposal is evaluated in section 4. Section 5 presents related work and Section 6 gives our conclusion and highlights some perspectives to be addressed in future work.
+
+\section{MDE on constrained devices: Challenges}
+The model@runtime paradigm has been mainly investigated in the context of distributed systems. 
+These research efforts have been focused on the provision of a comprehensive set of tools to easily deploy, dynamically reconfigure, and disseminate software on a set of distributed computing units.
+The current model@runtime tools have been implemented regardless of the specific characteristics and constraints of IoT devices.
+In particular, the network topology and the resource constraints of the nodes forming the distributed system have not been taken into consideration.
+As a result, state of the art model@runtime tools are not suitable to be used in the context of IoT Systems.
+First, most approaches are relying on the Java language, which does not meet the resource constraints of the computing nodes. 
+Secondly, the size of the model and its distribution among the system are not taking into consideration the limited memory capacity of each node, and their energy constraints.
+
+In \cite{fouquet2012dynamic}, an effort has been made to port the model@runtime paradigm on the constraints of a Cyber Physical System (CPS), in which the underlying device is comparable to an IoT device.
+Despite the particular attention given to the specific constraints of a Cyber Physical System, this work heavily relies on over the air firmware flashing to support the deployment and reconfiguration of software. 
+We consider that relying on firmware flashing to support software deployment constitutes a flaw in the approach because of its energy cost (the complete firmware has to be sent, and if any error occurs, the whole process is restarted).
+A second limitation of this approach lies in the fact that each resource constrained node relies on a more powerful node to perform most of his task related to the dynamic reconfiguration (firmware synthesis, reconfiguration decision and so on).
+This second limitation is not suitable in the context of a system mainly composed of resource constrained nodes since all the resource constrained nodes have to be managed by bigger nodes.
+Pushing this idea further, the management of a CPS composed of a wide number of resource constrained devices and a bigger node, the latter will have to manage all the smaller devices in a centralized management scheme.
+
+It is then necessary to characterize the minimum system requirements to implement a full model@runtime middleware, as in hardware capabilities as in execution environment.
+This will avoid the use of third party nodes to perform the high level tasks described above.
+However, even if a proposed device meet the characteristics to perform such tasks, the trade-offs between energy consumption and the middleware execution should be taken into account.
+A general description of needed features to execute the proposed middleware is given in the next subsection.
+
+\subsection{Needed features of the underlying system}
+
+
+\subsection{Dealing with hardware constraints}
+Designing the presented middleware in the context of the IoT raises scientific challenges.
+All the following challenges are related to the limited resources of these nodes and the particular topology of the network that interconnect them.
+
+Currently the concept of model@runtime has been applied on top of object oriented languages which offers the required features at the language level to implement the model@runtime layer. 
+The implementation of this model@runtime layer requires several features (such as dynamic code loading, network stack, etc.) from the operating system that operates on each node.
+
+The first challenge lies in the fact that typical Operating Systems used in IoT and which offer these features do not support these object oriented languages and thus the design must fit a procedural language such as C.
+
+The second challenge lies in the very limited resources of these nodes thus forcing the middleware to meet the memory, and CPU constraints. 
+This imposes constraints on the way the model is represented, stored and processed on each node.
+This challenge is particularly important and hard to meet, since many software components are needed to enable the communication in these environments (radio/MAC/IP stack and so on).
+
+Another challenge comes with the energy constraint of each node, together with the mesh topology of the network.
+This implies the necessity to optimize the way the model and the software are disseminated in the network.
+
+
+\subsection{System requirements for a minimal M@R implementation}
+table showing the 3 available platforms z1 wismote econotag cortex-m4f
+
+\subsubsection{First experiences with a new hardware platform}
+
+\subsection{The Contiki M@R implementation}
+
+\section{A large-scale platform for validation}
+
+\subsection{FIT IoT-Lab}
+
+\subsection{Missing features in the testbed}
+
+\subsubsection{File system driver implementation}
+
+\subsubsection{Runtime address relocation for ARM Cortex-M3 platforms}
+
+\subsection{M@R experiment results in the IoT-Lab testbed}
