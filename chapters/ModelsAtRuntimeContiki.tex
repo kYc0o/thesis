@@ -1,4 +1,4 @@
-\chapter{A first approach of Models@Runtime for the IoT}
+\chapter{Models@Runtime for the IoT}
 \label{ch:MARContiki}
 As presented in chapter \ref{ch:IoT}, Internet of Things systems are typically formed by a myriad of many small interconnected devices.
 This underlying hardware infrastructure raises new challenges in the way we administrate the software layer of these systems.
@@ -54,7 +54,7 @@ Our middleware aims at implementing the paradigm of model@runtime taking into ac
 %plan
 %This paper is structured as follows. Section 2 presents the Kevoree component model. Section 3 details the challenges of mapping the model@runtime paradigm to microcontrollers, and explains how we implemented Kevoree on these very limited nodes. Our proposal is evaluated in section 4. Section 5 presents related work and Section 6 gives our conclusion and highlights some perspectives to be addressed in future work.
 
-\section{MDE on constrained devices: Challenges}
+\section{A M@R approach for constrained IoT devices}
 The model@runtime paradigm has been mainly investigated in the context of distributed systems. 
 These research efforts have been focused on the provision of a comprehensive set of tools to easily deploy, dynamically reconfigure, and disseminate software on a set of distributed computing units.
 The current model@runtime tools have been implemented regardless of the specific characteristics and constraints of IoT devices.
@@ -70,43 +70,92 @@ A second limitation of this approach lies in the fact that each resource constra
 This second limitation is not suitable in the context of a system mainly composed of resource constrained nodes since all the resource constrained nodes have to be managed by bigger nodes.
 Pushing this idea further, the management of a CPS composed of a wide number of resource constrained devices and a bigger node, the latter will have to manage all the smaller devices in a centralized management scheme.
 
+Therefore, a new approach implementing a more complete M@R engine has been proposed.
+The next section will describe an implementation based on the Kevoree meta-model, together with some tools which allow model manipulation.
+
+\subsection{Our M@R implementation}
+Since our work aims to provide a M@R engine for IoT devices, a first implementation should be developed having in mind the programming constraints.
+Taking into account this limitations means that, first of all, we must fit the programming constraints.
+In contrast with most of the current implementations of the M@R paradigm, which are intended for high resources machines thus they make use of high-level programming languages, our first implementation should follow a procedural language such as C.
+We can justify this by the fact that most of the open source compilers for IoT devices support only this programming language, in addition to C++.
+However, C++ applications are difficult to integrate in OSs like Contiki, which is one of the most convenient OS able to run our middleware.
+Thus, a first approach has been developed in plain C\footnote{\url{https://github.com/kYc0o/kevoree-c}}.
+This raised big challenges since the object-oriented meta-model representation is very difficult to transform into C structures, knowing that there is no modeling framework supporting such a language.
+
+\begin{table}[htb]
+	\centering
+	\caption{Size of a plain C minimalistic Kevoree meta-model implmentation}
+	\label{tab:kevoreeC}
+	\begin{tabular}{cccccc}
+		\texttt{text}   & \texttt{data} & \texttt{bss} & \texttt{dec}    & \texttt{hex}   & \texttt{filename} \\
+		\texttt{181997} & \texttt{1448} & \texttt{168} & \texttt{183613} & \texttt{2cd3d} & \texttt{main}        
+	\end{tabular}
+\end{table}
+
+It leads our efforts to a first manual implementation of the Kevoree meta-model.
+The size of the application which contains a group and a node without components is shown in table \ref{tab:kevoreeC}
+
+
+
+
+
+
 It is then necessary to characterize the minimum system requirements to implement a full model@runtime middleware, as in hardware capabilities as in execution environment.
 This will avoid the use of third party nodes to perform the high level tasks described above.
 However, even if a proposed device meet the characteristics to perform such tasks, the trade-offs between energy consumption and the middleware execution should be taken into account.
 A general description of needed features to execute the proposed middleware is given in the next subsection.
 
-\subsection{Needed features of the underlying system}
+%\subsection{Needed features of the underlying system}
+\subsection{Kevoree-IoT operating system requirements}
+Our middleware approach, which is called Kevoree-IoT (in reference to the kevoree-like M@R implementation of our middleware), will need several features proposed by the underlying system.
+As we discussed previously, the most common approach used to run applications in IoT devices is bare-metal development followed by firmware flashing into the ROM memory.
+Even if this method allows a fine control of the underlying hardware, the development time can be very long and difficult to debug, since abstractions are mostly done only at the hardware level, and does not come to the system level.
+As the complexity grows, applications for IoT should be developed without special attention to hardware and system concerns.
+Thus, an IoT operating system should be used, in order to leverage its system-level abstractions.
+As presented in the state of the art, several IoT operating systems exist, but according to the needed features we should make a choice.
+This features are the following:
+\begin{enumerate}
+	\item \textbf{Network stack implementing basic IP functions (TCP, UDP, HTTP, COAP).} In order to share a m@r and download software artifacts, IP communication is mandatory, since the goal is to use the Internet to reach devices from different domains.
+	\item \textbf{Persistent data handling, preferably a file system.} The method used to represent a m@r is using serialized objects, usually in the JSON format. Thus, a way to store this JSON file should be provided.
+	\item \textbf{Dynamic linker and loader, following the third approach presented in section \ref{sec:IoTDeployment}.} A dynamic linker and loader is essential to our approach, since changes in the model containing new software components will trigger the download and instantiation of an artifact, which should be linked and loaded at runtime by the underlying system.
+	\item \textbf{Abstractions for attached devices (LEDs, sensors, actuators, etc.).} Although not mandatory, an OS usually carry basic hardware abstractions, providing an easy way to develop applications which need a physical connection with the external world.
+	\item \textbf{Basic OS functionalities such as timers, task scheduler and Inter Process Communication (IPC).} Basic functionalities that are implemented very often by almost any OS.
+\end{enumerate}
+Given the features presented above, the system which fits all the requirements is the Contiki OS.
+Despite the programming model already described as a drawback, Contiki offers all the needed functionalities, as well as a wide community which collaborate very actively in the development and debug of it.
+
+However, even if the OS fulfill all the requirements, the computational resources needed by our middleware should be measured, in order to find a platform on which we can evaluate our approach.
+
+\subsection{Kevoree-IoT Contiki implementation}
 
 
-\subsection{Dealing with hardware constraints}
+\subsection{Handling hardware constraints}
 Designing the presented middleware in the context of the IoT raises scientific challenges.
 All the following challenges are related to the limited resources of these nodes and the particular topology of the network that interconnect them.
 
 Currently the concept of model@runtime has been applied on top of object oriented languages which offers the required features at the language level to implement the model@runtime layer. 
-The implementation of this model@runtime layer requires several features (such as dynamic code loading, network stack, etc.) from the operating system that operates on each node.
+The first challenge lies in the fact that Contiki does not support these object oriented languages and thus the design must fit a procedural language such as C.
 
-The first challenge lies in the fact that typical Operating Systems used in IoT and which offer these features do not support these object oriented languages and thus the design must fit a procedural language such as C.
-
-The second challenge lies in the very limited resources of these nodes thus forcing the middleware to meet the memory, and CPU constraints. 
+The second challenge lies in the very limited resources of the IoT nodes, thus forcing the middleware to meet the memory and CPU constraints. 
 This imposes constraints on the way the model is represented, stored and processed on each node.
-This challenge is particularly important and hard to meet, since many software components are needed to enable the communication in these environments (radio/MAC/IP stack and so on).
-
-Another challenge comes with the energy constraint of each node, together with the mesh topology of the network.
+%This challenge is particularly important and hard to meet, since many software components are needed to enable the communication in these environments (radio/MAC/IP stack and so on).
+Moreover the energy constraint of each IoT node, together with the mesh topology of the network makes communication in this environments fairly reliable.
 This implies the necessity to optimize the way the model and the software are disseminated in the network.
 
+At first glance, our implementation was tested on three different platforms: the \textit{\textbf{zolertia Z1\footnote{\url{http://zolertia.sourceforge.net/wiki/images/e/e8/Z1_RevC_Datasheet.pdf}}, redbee econotag\footnote{\url{http://redwire.myshopify.com/products/econotag-ii}} and wismote\footnote{\url{http://wismote.org/doku.php}}.}}
+Unfortunately, none of these platforms was able to meet the space requirements in ROM and RAM to run a minimal model at runtime.
 
-\subsection{System requirements for a minimal M@R implementation}
+\subsection{System requirements for M@R for the IoT}
 table showing the 3 available platforms z1 wismote econotag cortex-m4f
 
 \subsubsection{First experiences with a new hardware platform}
 
-\subsection{The Contiki M@R implementation}
 
 \section{A large-scale platform for validation}
 
 \subsection{FIT IoT-Lab}
 
-\subsection{Missing features in the testbed}
+\subsection{Extending the testbed}
 
 \subsubsection{File system driver implementation}
 
