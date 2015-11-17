@@ -29,7 +29,7 @@ Thus, the IoT uses sensors to continuously analyse the situation in order to ada
 User wishes may involve different objectives such as comfort, air quality, and energy savings. 
 To go beyond energy management and comfort, building automation systems have to deal with new types of services, depending on the use of the building: fire safety and security management for hotel, indoor air quality control in schools and office buildings, etc. 
 The opportunities of services offered by the IoT and the user preferences are countless and will change over the lifetime of these systems.
-The set of small interconnected devices integrated into building can be seen as a computing infrastructure that can host these new services. 
+The set of small interconnected devices integrated into buildings can be seen as a computing infrastructure that can host these new services. 
 Consequently the software deployed on these nodes needs to be dynamically reconfigured and re-deployed to meet the evolution of services and user preferences. 
 
 % old sentences
@@ -127,7 +127,7 @@ This features are the following:
 	\item \textbf{Network stack implementing basic IP functions (TCP, UDP, HTTP, CoAP).} In order to share a m@r and download software artifacts, IP communication is mandatory, since the goal is to use the Internet to reach devices from different domains.
 	\item \textbf{Persistent data handling, preferably a file system.} The method used to represent a m@r is using serialized objects, usually in the JSON format. Thus, a way to store this JSON file should be provided.
 	\item \textbf{Dynamic linker and loader, following the third approach presented in section \ref{sec:IoTDeployment}.} A dynamic linker and loader is essential to our approach, since changes in the model containing new software components will trigger the download and instantiation of an artifact, which should be linked and loaded at runtime by the underlying system.
-	\item \textbf{Abstractions for attached devices (LEDs, sensors, actuators, etc.).} Although not mandatory, an OS usually carry basic hardware abstractions, providing an easy way to develop applications which need a physical connection with the external world.
+	\item \textbf{Abstractions for attached devices (LEDs, sensors, actuators, etc.).} Although not mandatory, an OS usually carry basic hardware abstractions, providing an easy way to develop applications which need a physical interaction with the external world.
 	\item \textbf{Basic OS functionalities such as timers, task scheduler and Inter Process Communication (IPC).} Basic functionalities that are implemented very often by almost any OS.
 \end{enumerate}
 Given the features presented above, the system which fits all the requirements is the Contiki OS.
@@ -137,10 +137,6 @@ Contiki includes an implementation of the IPv6 compressed stack, 6loWPAN\cite{rf
 This enables a ready to use IoT environment.
 We use erbium's\cite{rfc7252} CoAP implementation in order to have a REST engine which enables services discovery through the network.
 It is also used as a main communication channel between nodes. The dynamic code loading mechanisms are based on a dynamic linker and loader that use the standard ELF object file format\cite{dunkels06runtime}.
-
-The first implementation\footnote{\url{https://github.com/kYc0o/kevoree-contiki}} is done using the version 4 of the Kevoree meta-model.
-This meta-model has been mapped into C code as a Contiki application.
-We are able to add nodes, components, groups and channels, and bind them through the Kevoree editor loading a generated JSON file.
 
 However, even if the OS fulfill all the requirements, the computational resources needed by our middleware should be taken into account, in order to find a platform on which we can evaluate our approach.
 
@@ -162,7 +158,7 @@ At first glance, our implementation was tested on three different platforms: the
 Unfortunately, none of these platforms was able to meet the space requirements in ROM and RAM to run a minimal model at runtime as shown in figure \ref{fig:1stModelC}.
 However, the existence of more powerful microcontrollers, an essential part of an IoT device, shows that typical IoT applications have not exceeded the resources of existing experimentation platforms.
 Indeed, only some development kits such as TI's CC2538DK\footnote{\url{http://www.ti.com/tool/cc2538dk}} were available at that time, but its high cost, low availability and poor support gave low acceptance for research purposes.
-Thus, the design and construction of a new experimentation platform seemed to be the fastest way to obtain the first results of the implementation, using the latest microcontrollers and peripherals available on the market.
+Thus, the design and construction of a new experimentation platform seemed to be the fastest way to obtain the first results of the implementation, by integrating the latest microcontrollers and peripherals available on the market.
 It is worth to consider that this platform was conceived for research and experimentation purposes, and not as an end-user device.
 
 An exhaustive search was conducted to find the latest technologies to build an experimentation IoT device, which fits the requirements already estimated in section \ref{subsec:MARImpl}.
@@ -195,7 +191,7 @@ Several low-power microcontroller architectures were available at the time of ou
 Since our middleware minimum memory requirements were tested on 16-bit MSP430 microcontrollers (Zolertia's Z1 and Arago's WiseMote) finding a huge scarcity of memory, 32-bit architectures were the target of our scope.
 Indeed, ARM Cortex-M microcontrollers offer only 32-bit RISC architectures, which are widely used both in research and industry.
 Thus, the first step was to select an ARM Cortex-M microcontroller fitting our memory and energy consumption requirements.
-The STM32 family of microcontrollers offers a wide range of devices with different processor speeds and memory sizes.
+The ST Microelectronics STM32 family of microcontrollers offers a wide range of devices with different processor speeds and memory sizes.
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.70\columnwidth]{chapters/modelsAtRuntimeContiki.images/STM32.jpg}
@@ -204,7 +200,7 @@ The STM32 family of microcontrollers offers a wide range of devices with differe
 \end{figure}
 Figure \ref{fig:STM32} shows the STM32 family applications and available solutions for each one.
 
-At the time of this search, ultra-low-power solutions (STM32L) were not available, thus our possibilities were in the STM32F range, excluding the F7 which was also recently released.
+At the time of this search, ultra-low-power solutions (STM32L) were not available, thus our possibilities were in the STM32F range, excluding the F7 which was also released recently.
 
 \begin{table}[]
 	\centering
@@ -220,7 +216,7 @@ At the time of this search, ultra-low-power solutions (STM32L) were not availabl
 	\end{tabular}
 \end{table}
 
-Since our goal is to build a device on which our experimentations could be executed in a more flexible way (without caring about memory requirements), it is preferable to use a microcontroller featuring the highest memory, both in ROM and RAM, over energy consumption.
+Since our goal is to build a device on which our experimentations could be executed on a more flexible way (without caring about memory requirements), it is preferable to use a microcontroller featuring the highest memory capabilities, both in ROM and RAM, over energy consumption.
 Moreover, these kind of devices are able to change the processor speed as needed, thus reducing the energy consumption.
 Therefore, the STM32F4 microcontroller was used as the core of our IoT device.
 Table \ref{tab:STM32F} shows a comparison between the available microcontrollers, featuring the maximum processor speed, RAM and ROM, followed by the current consumption in such configuration.
@@ -230,9 +226,9 @@ Indeed, a first approach to power the device is the use of an USB port, which de
 Thus, a 5V to 3.3V (the recommended tension) is required.
 In contrast, when the device is needed to run on batteries, the supplied voltage will change.
 The most common batteries available on the market provide between 1.5V (AA, AAA) and 3V (CR3032), which is in the acceptable range.
-A couple of 2 AA batteries connected in series is the most standard array to power IoT devices, delivering 3V, enough for our device.
+A couple of AA batteries connected in series is the most standard array to power IoT devices, delivering 3V, enough for our device.
 However, a wide set of peripherals such as sensors and actuators work very often at 5V.
-Therefore, it was necessary to add a DC to DC converter, coupled with an automatic switch to detect when the device is powered either by USB or batteries.
+Therefore, it was necessary to add a DC to DC converter, coupled with an automatic power selector which detects when the device is powered either by USB or batteries.
 This allows to use any power scheme without decreasing performance or peripherals compatibility.
 
 \begin{table}[]
@@ -253,21 +249,326 @@ Thus far, the main required features for our device are met.
 A comparison between the previously tested platforms and ours is given in table \ref{tab:IoTPlatfComp}, showing the most common useful features.
 Details about the other components such as the radio transceiver and the external flash memory can be found in annex X.
 
+An already ported Contiki version\footnote{\url{https://github.com/vedderb/contiki}} for a very similar device was the base of our Contiki port, which provided a basic hardware abstraction layer for the radio interface and some I/O drivers.
+The rest of the drivers were developed according to the platform hardware design.
+Once the porting completed the next step was to test our middleware on such platform.
+To do that, a Kevoree-IoT application should be developed, using this new Contiki port.
 
 
 \subsection{Kevoree-IoT Contiki implementation}
+\label{subsec:kevoreeContikiImpl}
+In this subsection we present our initial result towards the design of a middleware which will offer the functionalities of model@runtime over the previously conceived IoT device. 
+Porting the concept of model@runtime on IoT devices will enable a continuous management of the deployed software.
+This middleware will give a development framework for the  applications development on top of these systems, and will provide the runtime infrastructure to support the deployment and dynamic reconfiguration of these applications.
 
-%\subsubsection{First experiences with a new hardware platform}
+As illustrated in figure \ref{fig:ContributionOverview}, our goal is to provide a middleware that will be present on each node of the system, and will take care of the various tasks imposed by the model@runtime paradigm.
+More specifically, our middleware will be in charge of:
+\begin{enumerate}
+	\item Receiving new models that define the new targeted state of the system,
+	\item Defining the set of local adaptations that are needed to reach this new state,
+	\item Enacting the various local adaptations produced by the previous step.
+\end{enumerate} 
 
+The set of local adaptations enables the dynamic reconfiguration and may download new software artifacts, instantiate or remove components and channels used to bind them, or reconfigure the value of any attribute.
 
-\section{A large-scale platform for validation}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.7\columnwidth]{chapters/modelsAtRuntimeContiki.images/Contribution_Overview.png}
+	\caption{An overview of model@runtime for IoT devices} \label{fig:ContributionOverview}
+\end{figure}
 
-\subsection{FIT IoT-Lab}
+Based on the Kevoree-C implementation already described in subsection \ref{subsec:MARImpl}, the needed Contiki application was developed and tested in our platform.
+The first implementation\footnote{\url{https://github.com/kYc0o/kevoree-contiki}} is done using the version 4 of the Kevoree meta-model, which is depicted in annex \todo{X}.
+This meta-model has been mapped into C code as a Contiki application.
+We were able to add nodes, components, groups and channels, and bind them through the Kevoree editor by loading a generated JSON file.
 
-\subsection{Extending the testbed}
+\begin{table}[htb]
+	\centering
+	\caption{Size of a minimalistic Contiki application usign Kevoree-IoT}
+	\label{tab:kevoreeContiki}
+	\begin{tabular}{cccccc}
+		\texttt{text}   & \texttt{data} & \texttt{bss} & \texttt{dec}    & \texttt{hex}   & \texttt{filename} \\
+		\texttt{215228} & \texttt{3508} & \texttt{14896} & \texttt{233632} & \texttt{390a0} & \texttt{er-example-server.stm32-diverSE}        
+	\end{tabular}
+\end{table}
+
+Our firsts results showed that our implementation was able to run on our experimentation device.
+This first firmware contains the Contiki OS kernel, device drivers, a CoAP web server and the Kevoree-IoT middleware.
+The memory size of this firmware is shown in table \ref{tab:kevoreeContiki}.
+
+Once our middleware was tested in our experimental platform, we needed to test it at large scale.
+This needs a large infrastructure with several devices where a basic experiment using our middleware can be executed.
+Indeed, the manufacturing of several of our devices was our first option.
+However, since the manufacturing of the firsts devices was made by hand, build some other needs a huge amount of time, and can be very costly.
+Therefore, a search for large-scale testbeds for the IoT was done.
+The next section will describe the found platform and its characteristics, which were analyzed in order to find if they met our requirements.
+
+\section{FIT IoT-Lab: A large-scale testbed for the IoT}
+At the time our experimentation a testbed existed at the INRIA Rennes center, where the working team is based.
+A Wireless Sensor Network called Senslab\cite{des2011senslab}, formed by 256 devices was deployed in a center's cellar.
+This WSN offered wireless sensors of similar characteristics as the Z1 platform, which was already described.
+Thus, the minimum requirements to run our middleware were not met by these WSN's devices.
+However, an extension of such testbed was done recently, adding new experimentation platforms.
+This new platform, called FIT IoT-Lab\cite{Fleury15iotlab}, featured new devices of a similar architecture as ours.
+Indeed, two more powerful nodes were added to the testbed: the M3 node and the A8 node, enabling IoT capabilities.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.7\columnwidth]{chapters/modelsAtRuntimeContiki.images/m3opennode.png}
+	\caption{The FIT-IoT Lab M3 Open Node} \label{fig:M3OpenNode}
+\end{figure}
+
+Figure \ref{fig:M3OpenNode} presents the M3 Open Node, an IoT device with very similar characteristics of the one from our design.
+This device features a STM32F1 microcontroller, with 512KB of ROM and 64KB of RAM.
+External sensors are available, as well as 3 LEDs.
+The communication is handled by an AT86RF231 radio, implementing the standard IEEE 802.15.4, typical of IoT devices.
+This combination seems suitable for our experiments, since our firsts results in table \ref{tab:kevoreeContiki} showed that around 200KB of ROM and 16KB of RAM were enough to run a minimal implementation of our middleware.
+In addition, a Contiki port for this device was already available, facilitating the integration of our existing implementation for Contiki.
+However, two important features lacked in this port: the low-level interface for the Contiki File System (CFS) and the relocation operations needed for the Contiki ELF loader.
+
+Given the importance of these features for the correct implementation of our middleware, it was necessary to extend the testbed capabilities to add support for the CFS and the ELF loader.
+The next subsection will give details about the code contribution provided for the IoT-Lab testbed, in order to have a complete IoT platform able to run our middleware and ready for our large-scale tests.
+
+\subsection{Extending the FIT IoT-Lab testbed}
+As stated previously, two missing features were detected in the Contiki port made for this testbed.
+The first one was the implementation of a low-level interface necessary for the Contiki File System.
+This driver make use of low-level functions to read, write and erase the flash memory embedded on the M3 node.
+Therefore, this functionality is necessary to leverage the high-level abstractions provided by the CFS, which are a very useful approach to manipulate files into the flash memory, also needed by the ELF loader.
 
 \subsubsection{File system driver implementation}
+The definitions and porting instructions for CFS can be found on the wiki page of the Contiki main repository\footnote{\url{https://github.com/contiki-os/contiki.git}}.
+A brief description of the file system is given as follows:
+
+\begin{citeverbatim}
+	Contiki provides a set of file systems for using various kinds of storage devices in resource-constrained systems. 
+	All of these file systems implement a subset of the Contiki File System (CFS) interface, and two of them provide the full functionality: CFS-POSIX and Coffee.
+	CFS-POSIX is used in Contiki platforms that run in native mode. 
+	It uses direct calls to the POSIX file API that is provided by the host operating system. 
+	Coffee, on the other hand, is primarily aimed at sensor devices that are equipped with flash memories or EEPROM.
+\end{citeverbatim}
+
+As we can deduce, we aim to port the Coffee file system, since our platform is a resource constrained device embedding a flash memory.
+Thus, the porting instructions state that the first step was to provide information about the external memory.
+This is done through the \texttt{cfs-coffee-arch.h} file, which in our case was created as shown in listing \ref{lst:flashIface}
+\lstset{language=C,
+	basicstyle=\ttfamily\scriptsize,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{gray}\ttfamily,
+	breaklines=true,
+	captionpos=b
+}
+\begin{lstlisting}[language=C, caption=Contiki header for external memory features, label=lst:flashIface]
+/*** N25Q128 Memory Organization
+The memory is organized as:
+16,777,216 bytes (8 bits each)
+256 sectors (64 Kbytes each)
+In Bottom and Top versions: 8 bottom (top) 64 Kbytes boot sectors with 16 subsectors
+(4 Kbytes) and 248 standard 64 KB sectors
+65,536 pages (256 bytes each)
+64 OTP bytes located outside the main memory array
+Each page can be individually programmed (bits are programmed from 1 to 0).
+The device is Sector or Bulk Erasable (bits are erased from 0 to 1) but not Page Erasable.
+Subsector Erase is allowed on the 8 boot sectors (for devices with bottom or top architecture).
+
+*/
+//Total size of the External Flash Memory in the M3 node
+#define COFFEE_XMEM_TOTAL_SIZE_KB       16384UL
+
+/* Coffee configuration parameters. */
+#define COFFEE_SECTOR_SIZE   	65536UL
+#define COFFEE_PAGE_SIZE       	256UL
+#define COFFEE_START            0
+#define COFFEE_SIZE             (COFFEE_XMEM_TOTAL_SIZE_KB * 1024UL - COFFEE_START)
+#define COFFEE_NAME_LENGTH      32
+#define COFFEE_MAX_OPEN_FILES   6
+#define COFFEE_FD_SET_SIZE      8
+#define COFFEE_LOG_TABLE_LIMIT 	256
+#define COFFEE_DYN_SIZE         16*1024
+#define COFFEE_LOG_SIZE         8*1024
+
+#define COFFEE_MICRO_LOGS       1
+
+/* Flash operations. */
+#define COFFEE_WRITE(buf, size, offset)                \
+xmem_pwrite((char *)(buf), (size), COFFEE_START + (offset))
+
+#define COFFEE_READ(buf, size, offset)                \
+xmem_pread((char *)(buf), (size), COFFEE_START + (offset))
+
+#define COFFEE_ERASE(sector)                    \
+xmem_erase(COFFEE_SECTOR_SIZE, COFFEE_START + (sector) * COFFEE_SECTOR_SIZE)
+\end{lstlisting}
+A wrapper to access the external flash is provided by the functions \texttt{xmem\_*}, in order to isolate the platform functions from the Contiki functions.
+
+The second step to achieve the implementation of the low-level interface was to look at the Hardware Abstraction Layer (HAL) already provided with the platform's code.
+This HAL is included in a separated repository called \textit{openlab}\footnote{\url{https://github.com/iot-lab/openlab.git}}.
+Within this repository, all the low-level drivers providing functions to manipulate every piece of the embedded system are included.
+Our concern is to identify those related to the SPI Flash memory.
+Indeed, several functions to make use of the flash memory were available, including:
+\begin{enumerate}
+	\item \texttt{\textbf{void n25xxx\_read\_id(uint8\_t *id, uint16\_t len):}} Reads the flash chip ID which contains the manufacturer ID, the device ID and an unique ID.
+	\item \texttt{\textbf{void n25xxx\_read(uint32\_t address, uint8\_t *buf, uint16\_t len):}} Reads a given amount of data from the flash starting anywhere in the flash.
+	\item \texttt{\textbf{n25xxx\_write\_enable()}} and \texttt{\textbf{n25xxx\_write\_disable():}} Enable/Disable writing on the flash.
+	This function must be called before/after each write operation.
+	\item \texttt{\textbf{void n25xxx\_write\_page(uint32\_t address, uint8\_t *buf):}} This function writes the content of a buffer to a given flash page.
+	The write must be enabled before calling this function.
+	\item \texttt{\textbf{void n25xxx\_erase\_subsector(uint32\_t address):}} Erases a given sub-sector of the flash, a sub-sector is composed of 16 pages (i.e. 4096 bytes).
+	The write must be enabled before calling this function.
+	\item \texttt{\textbf{void n25xxx\_erase\_sector(uint32\_t address):}} Erases a given sector of the flash, a sector is composed of 16 sub-sectors (i.e 256 page or 65536 bytes).
+	The write must be enabled before calling this function.
+	\item \texttt{\textbf{void n25xxx\_bulk\_erase():}} This function erases the entire flash.
+	The write must be enabled before calling this function.
+	\item \texttt{\textbf{uint8\_t n25xxx\_read\_status(void):}} Read the flash status register.
+	
+	Additionally, three more functions were added to this HAL in order to have full control over the flash memory, needed by the Contiki low-level interface.
+	
+	\item \texttt{\textbf{void \_n25xxx\_cs\_clear(void)}} and \texttt{\textbf{void \_n25xxx\_cs\_set(void):}} Chip select clear/set allowing to turn on/off an SPI device.
+	\item \texttt{\textbf{uint8\_t \_n25xxx\_rw\_byte(uint8\_t byte):}} Allows to read only one byte at once.
+	The CS must be set/cleared after each use of this function.
+\end{enumerate}
+With the use of this functions, the next step was to map them to the Contiki's needed interface.
+The full code of the Contiki's wrap functions mapped to the openlab's platform functions is available at the main repository\footnote{\url{https://github.com/iot-lab/contiki/blob/master/platform/openlab/dev/xmem.c}} of the Contiki port for IoT-Lab. \todo{should I use an annex instead?}
+
+The second missing feature is the relocation functions for the embedded ARM Cortex-M3 CPU, used by the Contiki ELF loader in order to find the correct addresses of the symbols provided by the OS.
+Indeed, the ELF loader is the main feature used to add new modules to the kernel or update its existing features.
 
 \subsubsection{Runtime address relocation for ARM Cortex-M3 platforms}
+As presented in section \ref{sec:IoTDeployment}, we have studied the different methods to add new modules into a running embedded system.
+The method used by Contiki is the relocatable code.
+This approach needs to relocate the addresses temporary given to the unresolved symbols of a new module, in order to provide the requested functions from the OS.
 
-\section{M@R experiment results in the IoT-Lab testbed}
+The Contiki dynamic linker and loader\cite{dunkels06runtime} depends strongly on the relocation methods provided by the CPU architectures on which it is implemented.
+Since our implementation is based on an ARM architecture, we need to provide the relocation functions for this platform.
+ARM offers the processor-specific definitions for ELF for the Application Binary Interface (ABI) for the ARM architecture\footnote{\url{http://infocenter.arm.com/help/topic/com.arm.doc.ihi0044e/IHI0044E_aaelf.pdf}}.
+This document specifies the way of an ELF binary should be produced by a compiler, including the relocation types.
+
+The requirements of an ELF module handled by the Contiki ELF loader are stated on the Contiki's wiki, as following:
+
+\begin{citeverbatim}
+	An ELF file consists of a header followed by a set of sections which typically include at least a section for binary code (\texttt{.text}), a section for statically allocated data with pre-assigned values (\texttt{.data}), and a section for zero-initialized data (\texttt{.bss}).
+	Additionally, each symbol is represented in a symbol table (\texttt{.symtab}), and strings are stored in a string table (\texttt{.strtab}). 
+	For a file to be accepted by Contiki's ELF loader, it must contain at least the sections listed above. 
+\end{citeverbatim}
+
+In order to produce an ELF file compatible with this characteristics, a special method of compilation is provided by Contiki.
+This method make use of standard compiler flags that should produce a compatible ELF file.
+However, such flags are intended mostly for MSP430 architectures.
+Thus, specific flags for ARM architectures are required.
+
+\todo{Makefile modifications}
+\todo{linker scripts (merge-rodata)}
+\todo{supported relocation types}
+\todo{and finally the relocation operations}
+
+\section{M@R evaluation results on the IoT-Lab testbed}
+This section describes the experiments conducted to evaluate our framework described in subsection \ref{subsec:kevoreeContikiImpl}.
+The goal of this evaluation is to assess the feasibility of using a model@runtime implementation on IoT devices.
+In these experiments, we focus on measuring the overhead induced by our implementation, in order to evaluate the compatibility of this overhead with the resource constraints.
+
+%The platform used to run our experiments is located in a testbed called IoT-Lab \cite{iotlab}.
+%IoT-Lab provides a very large scale infrastructure suitable for testing small wireless sensor devices and heterogeneous communicating objects.
+%The M3 open node is a platform that provides similar resources which can be found in most of CPS.
+%This node is based on a STM32 (ARM Cortex M3) microcontroller, which embed 512KB of flash memory and 64KB of RAM.
+%The used toolchain to compile the source code is GCC for ARM.
+
+This evaluation focuses on answering the two following research questions:
+
+\textbf{RQ1:} Does the overhead induced by our models@runtime implementation fit the resources constraints?
+
+\textbf{RQ2:} Is this resulting overhead small enough to allow scalability?
+
+
+To answer these questions four experiments are performed using the following metrics:
+\begin{itemize}
+	\item \textbf{Start-up delay:} time needed to load the current model. To measure this time, we evaluate the time in milliseconds until the application is ready to work.
+	\item \textbf{Consumption overhead:} amount of energy in joules drawn by the node while running our firmware.
+	This energy is measured using IoT-Lab tools. 
+	\item \textbf{Memory:} amount of memory used by our model representation and our midlleware.
+	That memory is measured by comparing both flash and RAM between various firmwares implementing our middleware, and another one without this implementation.
+\end{itemize}
+
+\subsection{Overheads}
+\textbf{Experimental setup.} We compare the performances of two firmwares.
+\begin{itemize}
+	\item The first firmware consists in a simple \emph{Blink/COAP} application, with the network stack and a CoAP server initialized.
+	This application consists in a LED that starts blinking until the end of the experiment.
+	\item The second firmware includes the same functionalities but using our middleware. For this purpose we add a model@runtime platform in order to get a model reflecting the current state of the \emph{Blink/COAP} application.
+	To do so, a basic model is built from the current system, representing the \emph{Blink/COAP} application as a component instance.
+\end{itemize}
+
+%All the generated models are compatible with the version 4 of the Kevoree editor\footnote{The generated models are available at: https://github.com/kYc0o/kevoree-contiki}. %, and are available in \cite{Kevoree-contiki}.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{c|c|c|c|c|}
+		\cline{2-5}
+		& \multicolumn{2}{c|}{Memory used}                                                                                      & \begin{tabular}[c]{@{}c@{}}Energy \\ consumption\end{tabular} & \begin{tabular}[c]{@{}c@{}}Startup \\ delay\end{tabular} \\ \cline{2-5} 
+		\multicolumn{1}{l|}{}                                                                    & \begin{tabular}[c]{@{}c@{}}ROM \\ (in bytes)\end{tabular} & \begin{tabular}[c]{@{}c@{}}RAM \\ (in bytes)\end{tabular} & Joules                                                        & Msec.                                             \\ \hline
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Blink +\\ CoAP\end{tabular}}             & 79344                                                     & 13244                                                     & 9.6                                                           & 0                                                        \\ \hline
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Kevoree +\\ Blink +\\ CoAP\end{tabular}} & 112724                                                    & 15822                                                     & 9.606                                                         & 39.1                                                     \\ \hline
+	\end{tabular}
+	\caption{Memory use for the \emph{Blink/COAP} example}
+	\label{tab:Overheads}
+\end{table}
+
+In this experiment the two firmwares are uploaded on an IoT-Lab node and the applications are executed during one minute.
+To evaluate the overhead of our middleware the two firmwares are compared with respect to:
+
+\begin{itemize}
+	\item memory consumption both in ROM and RAM, 
+	\item the energy consumption,
+	\item and the startup delay.
+\end{itemize}
+
+The result of this experiment are shown in Table \ref{tab:Overheads}. 
+
+As it can be observed from the table, the usage of a model@runtime has a visible overhead on the memory both in ROM and RAM. 
+This overhead is due to the code of our middleware for the ROM part and to the model loaded in memory for the RAM part.
+We consider that this memory overhead is reasonable compared to the benefit of enabling dynamic reconfigurations.
+
+Our approach also impacts the startup time and causes a very small delay before the application is ready.
+%This delay is due to the time used by the processor, in order to load a model@runtime from the current application and has been measured using timestamps.
+%This delay is considered reasonable as it is very small and it only impacts the initial loading of the application and has no impact during the normal operation.
+This delay is measured using timestamps. It is due to the time used by the processor, in order to load a model@runtime from the current application. This delay is considered reasonable as it is very small and it only impacts the initial loading of the application and has no effect during the normal operation.
+
+As shown on table \ref{tab:Overheads}, the overhead of our framework on the energy consumption is very low.
+This consumption has been measured using the data generated by the IoT-Lab platform, which includes voltage and power used by the node in an experiment.
+The energy consumption overhead, shown in Table \ref{tab:Overheads}, is obtained as a product of the power in watts used by the node while loading the model@runtime, and the time needed before the application is ready and the LED is blinking.
+The overhead on energy consumption is only due to the extra computing power needed in the startup phase to load the model in memory.
+
+This overhead evaluation highlights the feasibility of implementing a complete model@runtime middleware on IoT devices.
+The memory overhead is reasonable and fits with the resource constraints of the IoT nodes.
+We consider that the critical overhead for such system is the energy consumption, and our results show that it is marginally impacted by our middleware.
+
+\subsection{Scalability}
+In this experiment we  evaluate the scalability of our approach by focusing on the memory needed to represent a large model.
+To do so, we first measure the memory size without any model loaded in node's memory.
+The command \texttt{size} of the ARM compiler was used to obtain that measure, since this application does not need dynamic memory allocation. 
+
+
+Our goal is to evaluate the biggest size that the model can reach. We progressively increase the model size by augmenting the number of nodes until running out of memory. Three variants of this experiment are run at last:
+
+\begin{itemize}
+	\item with one component per node, 
+	\item with two components per node,
+	\item and with three components per node.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\columnwidth]{chapters/modelsAtRuntimeContiki.images/MemoryOverhead3Nodes.png}
+	\caption{Memory overhead for 1, 2 and 3 \emph{Blink/COAP} components.} \label{fig:MemUsedBlinkComps}
+\end{figure}
+
+
+Figure \ref{fig:MemUsedBlinkComps} shows the memory usage for each model depending on its size.
+These results show that our current implementation enables to scale the model up to 60 nodes with one component per node, and up to 37 nodes with three components per node. These numbers are encouraging, since some tens of nodes could enable IoT systems and IoT devices to run in various environments like house, building, car, factory chain etc.
+
+\subsection{Summary}
+\todo{consider the model size for the next contribution}
+
+
+Our initial results show that the models@runtime implementation is feasible for CPS and there are enough resources to deploy several other functional software components.
+It is possible to observe that our overheads are small enough to affect the overall operation of a node, while adding an abstract representation of the running system, in addition to reconfiguration and adaptation features.
+Since these results are promising, we showed that our middleware is able to manipulate a running application by affecting it through a component model, without an important overhead, neither in memory nor in energy consumption.
