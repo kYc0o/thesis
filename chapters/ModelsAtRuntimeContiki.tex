@@ -6,7 +6,7 @@ Indeed, the limited computing power and battery life of each node combined with 
 
 In this chapter, I describe a first approach to implement a new middleware dedicated to IoT devices, in order to enable the management of software deployment and the dynamic reconfiguration of IoT systems.
 Our middleware is inspired from the Component Based Systems and the model@runtime paradigm which have been already described in the previous chapter.
-Moreover, the implementation of this middleware follows the directions of the existing Kevoree meta-model\todo{\cite{}}, which has been adapted to fit IoT devices constraints. 
+Moreover, the implementation of this middleware follows the directions of the existing Kevoree meta-model depicted in \todo{annex por figure?}, which has been adapted to fit IoT devices constraints. 
 The evaluation of these constraints were conducted on several hardware platforms typical of the IoT, in order to establish a reference for the minimum requirements to run such a middleware.
 Once an initial research on these IoT platforms was conducted, the proposition of a new one was necessary, since the minimal requirements were not met by the commercially available platforms at that time.
 Such platform was an essential part to evaluate our first implementation, and was used to establish the minimum requirements of an execution environment.
@@ -16,13 +16,9 @@ This chapter is concluded by the obtained results in the FIT IoT-Lab testbed, wh
 
 \section{Overview}
 %context
-Nowadays, we are surrounded by a plethora of interconnected devices (mobile phones, household appliances, wearable sensors, and so on) that continuously collect data on our living environment.
-This distributed computing infrastructure is becoming pervasive and users tend to naturally interact with it. This new computing environment offers a lot of opportunities for developing new applications in many different domains.
-Technology can now operate behind the scene by dynamically responding to people wishes.
-Based on this principle, IoT dedicated devices have emerged, forming the IoT infrastructure already described in section \ref{sec:IoTInfra}.
-All this new IoT devices form a constellation of many small interconnected objects integrated into houses, building, cities, factory chain, etc.
+%Based on this principle, IoT dedicated devices have emerged, forming the IoT infrastructure already described in section \ref{sec:IoTInfra}.
+%All this new IoT devices form a constellation of many small interconnected objects integrated into houses, building, cities, factory chain, etc.
 %Based on this principle, Cyber Physical Systems (CPS) have emerged.CPS are pervasive and long living systems formed by a constellation of many small interconnected devices integrated into houses, building, cities, factory chain, etc. 
-
 %motivation
 In our building automation scenario presented in section \ref{sec:BAScenario}, the described IoT subsystem typically rely on sensor nodes that detect and record data such as presence, temperature, ambient lighting and energy consumption. 
 Thus, the IoT uses sensors to continuously analyse the situation in order to adapt our living environment to match user needs and preferences.
@@ -36,16 +32,19 @@ Consequently the software deployed on these nodes needs to be dynamically reconf
 %Consequently comfort and quality are factors of productivity and do not prevent energy savings being achieved.
 %To go beyond energy management, building automation systems have to deal with new types of services, depending on the use of the building: fire safety and security management for hotel, indoor air quality control in schools and office buildings etc. 
 
-
 %problem
 For this reason, the capacity of dynamically deploying and reconfiguring the software layer of the IoT is a crucial feature.
-We address the problem of enabling the deployment of a distributed software layer and its dynamic reconfiguration over a network of nodes featuring very limited resources: memory, processing power, bandwidth communication and energy autonomy. 
+Designing a middleware in the context of the IoT raises scientific challenges.
+All the following challenges are related to the limited resources of these nodes and the particular topology of the network that interconnect them.
+We address the problem of enabling the deployment of a distributed software layer and its dynamic reconfiguration over a network of nodes featuring very limited resources: memory, processing power, bandwidth communication and energy autonomy.
+Therefore, a simple adaptation of an already provided implementation for deployment and reconfiguration in distributed systems would not work.
+Indeed, the very scarce resources avoid the use of complex approaches already described in section \ref{sec:dynamicDeploymentDAS}
 
 % limitation of SOTA
-To solve this problem, various techniques have been proposed, such as system image replacement \cite{hui2004dynamic} and virtual machines \cite{koshy2005vmstar}. 
-These approaches have two main drawbacks. 
-First they are not efficient in terms of energy. 
-Second, while they are suited to deploy static applications, these are not convenient solutions for IoT, since IoT devices operates in dynamic environments in which tasks performed by each node must be easily and frequently adapted.
+To solve this problem, various techniques have been proposed, which were presented in table \ref{tab:deployMethods}. 
+As for the kernel replacement mechanism, which is managed by an automatic tool\cite{hui2004dynamic}, the excessive amount of power needed by this approach seems not to be adapted for a highly dynamic infrastructure such as the IoT.
+The approaches making use of virtual machines were already analyzed and it was found that they are not suitable for long-living applications\cite{oliver2014reprogramming}.
+Thus, the lack of a deployment manager for modules using the relocation mechanism, which seems the best way to provide new features and updates, motivates our research to find an automatic and scalable approach to provide such a manager which leverages this technique.
 
 %our approach
 In this chapter we present our initial results towards the design of a middleware featuring deployment and reconfiguration facilities over an IoT system. 
@@ -100,7 +99,7 @@ This raised big challenges since the object-oriented meta-model representation i
 	\label{fig:1stModelC}
 \end{figure}
 
-Thus, our efforts were  to a first manual implementation of the Kevoree meta-model.
+Thus, our efforts were put into a first manual implementation of the Kevoree meta-model.
 The size of the test application which contains a group and a node without components is shown in table \ref{tab:kevoreeC}
 A graphical representation of the model can be obtained through the Kevoree Web Editor\footnote{\url{http://editor.kevoree.org/v4/}}, in which a serialized JSON file containing the model can be loaded for edition.
 This representation is shown in figure \ref{fig:1stModelC}.
@@ -116,8 +115,8 @@ A general description of needed features to execute the proposed middleware is g
 
 %\subsection{Needed features of the underlying system}
 \subsection{Kevoree-IoT operating system requirements}
-Our middleware approach, which is called Kevoree-IoT (in reference to the kevoree-like M@R implementation of our middleware), will need several features proposed by the underlying system.
-As we discussed previously, the most common approach used to run applications in IoT devices is bare-metal development followed by firmware flashing into the ROM memory.
+Our middleware approach, which is called Kevoree-IoT (in reference to the kevoree-like M@R implementation of our middleware), will need several features from the underlying system.
+As we discussed previously, the most common approach used to run applications on IoT devices is bare-metal development followed by firmware flashing into the ROM memory.
 Even if this method allows a fine control of the underlying hardware, the development time can be very long and difficult to debug, since abstractions are mostly done only at the hardware level, and does not come to the system level.
 As the complexity grows, applications for IoT should be developed without special attention to hardware and system concerns.
 Thus, an IoT operating system should be used, in order to leverage its system-level abstractions.
@@ -135,16 +134,12 @@ Despite the programming model already described as a drawback, Contiki offers al
 Therefore, we use the ContikiOS\cite{dunkels2004contiki} in order to provide an efficient way to distribute components, since it allows dynamic loading of binary modules.
 Contiki includes an implementation of the IPv6 compressed stack, 6loWPAN\cite{rfc4944}, which let us assign directly an IPv6 address. 
 This enables a ready to use IoT environment.
-We use erbium's\cite{rfc7252} CoAP implementation in order to have a REST engine which enables services discovery through the network.
-It is also used as a main communication channel between nodes. The dynamic code loading mechanisms are based on a dynamic linker and loader that use the standard ELF object file format\cite{dunkels06runtime}.
+We use erbium's\cite{rfc7252} CoAP implementation in order to have a REST engine which is used as a main communication channel between nodes. The dynamic code loading mechanisms are based on a dynamic linker and loader that use the standard ELF object file format\cite{dunkels06runtime}.
 
 However, even if the OS fulfill all the requirements, the computational resources needed by our middleware should be taken into account, in order to find a platform on which we can evaluate our approach.
 
 
 \subsection{Handling hardware constraints}
-Designing the presented middleware in the context of the IoT raises scientific challenges.
-All the following challenges are related to the limited resources of these nodes and the particular topology of the network that interconnect them.
-
 Currently the concept of model@runtime has been applied on top of object oriented languages which offers the required features at the language level to implement the model@runtime layer. 
 The first challenge lies in the fact that Contiki does not support these object oriented languages and thus the design must fit a procedural language such as C.
 
@@ -247,8 +242,8 @@ This allows to use any power scheme without decreasing performance or peripheral
 
 Thus far, the main required features for our device are met.
 A comparison between the previously tested platforms and ours is given in table \ref{tab:IoTPlatfComp}, showing the most common useful features.
-Details about the other components such as the radio transceiver and the external flash memory can be found in annex X.
-
+Details about the other components such as the radio transceiver and the external flash memory can be found in \todo{annex X.}
+	
 An already ported Contiki version\footnote{\url{https://github.com/vedderb/contiki}} for a very similar device was the base of our Contiki port, which provided a basic hardware abstraction layer for the radio interface and some I/O drivers.
 The rest of the drivers were developed according to the platform hardware design.
 Once the porting completed the next step was to test our middleware on such platform.
@@ -299,12 +294,12 @@ The memory size of this firmware is shown in table \ref{tab:kevoreeContiki}.
 Once our middleware was tested in our experimental platform, we needed to test it at large scale.
 This needs a large infrastructure with several devices where a basic experiment using our middleware can be executed.
 Indeed, the manufacturing of several of our devices was our first option.
-However, since the manufacturing of the firsts devices was made by hand, build some other needs a huge amount of time, and can be very costly.
+However, since the manufacturing of the firsts devices was made by hand, build some other needed a huge amount of time, and can be very costly.
 Therefore, a search for large-scale testbeds for the IoT was done.
 The next section will describe the found platform and its characteristics, which were analyzed in order to find if they met our requirements.
 
 \section{FIT IoT-Lab: A large-scale testbed for the IoT}
-At the time our experimentation a testbed existed at the INRIA Rennes center, where the working team is based.
+At the time our experimentation a testbed existed at the INRIA Rennes center, where our research team is based.
 A Wireless Sensor Network called Senslab\cite{des2011senslab}, formed by 256 devices was deployed in a center's cellar.
 This WSN offered wireless sensors of similar characteristics as the Z1 platform, which was already described.
 Thus, the minimum requirements to run our middleware were not met by these WSN's devices.
@@ -319,12 +314,12 @@ Indeed, two more powerful nodes were added to the testbed: the M3 node and the A
 \end{figure}
 
 Figure \ref{fig:M3OpenNode} presents the M3 Open Node, an IoT device with very similar characteristics of the one from our design.
-This device features a STM32F1 microcontroller, with 512KB of ROM and 64KB of RAM.
+This device features a STM32F1 Cortex-M3 microcontroller, with 512KB of ROM and 64KB of RAM.
 External sensors are available, as well as 3 LEDs.
 The communication is handled by an AT86RF231 radio, implementing the standard IEEE 802.15.4, typical of IoT devices.
 This combination seems suitable for our experiments, since our firsts results in table \ref{tab:kevoreeContiki} showed that around 200KB of ROM and 16KB of RAM were enough to run a minimal implementation of our middleware.
 In addition, a Contiki port for this device was already available, facilitating the integration of our existing implementation for Contiki.
-However, two important features lacked in this port: the low-level interface for the Contiki File System (CFS) and the relocation operations needed for the Contiki ELF loader.
+However, two important features lacked in this port: the low-level interface for the Contiki File System (CFS) and the relocation operations needed by the Contiki ELF loader.
 
 Given the importance of these features for the correct implementation of our middleware, it was necessary to extend the testbed capabilities to add support for the CFS and the ELF loader.
 The next subsection will give details about the code contribution provided for the IoT-Lab testbed, in order to have a complete IoT platform able to run our middleware and ready for our large-scale tests.
@@ -348,7 +343,7 @@ A brief description of the file system is given as follows:
 \end{citeverbatim}
 
 As we can deduce, we aim to port the Coffee file system, since our platform is a resource constrained device embedding a flash memory.
-Thus, the porting instructions state that the first step was to provide information about the external memory.
+Thus, the porting instructions state that the first step is to provide information about the external memory.
 This is done through the \texttt{cfs-coffee-arch.h} file, which in our case was created as shown in listing \ref{lst:flashIface}
 \lstset{language=C,
 	basicstyle=\ttfamily\scriptsize,
@@ -399,7 +394,7 @@ xmem_pread((char *)(buf), (size), COFFEE_START + (offset))
 #define COFFEE_ERASE(sector)                    \
 xmem_erase(COFFEE_SECTOR_SIZE, COFFEE_START + (sector) * COFFEE_SECTOR_SIZE)
 \end{lstlisting}
-A wrapper to access the external flash is provided by the functions \texttt{xmem\_*}, in order to isolate the platform functions from the Contiki functions.
+We can appreciate that a wrapper to access the external flash is provided by the functions \texttt{xmem\_*}, in order to isolate the platform functions from the Contiki functions.
 
 The second step to achieve the implementation of the low-level interface was to look at the Hardware Abstraction Layer (HAL) already provided with the platform's code.
 This HAL is included in a separated repository called \textit{openlab}\footnote{\url{https://github.com/iot-lab/openlab.git}}.
@@ -434,15 +429,81 @@ The second missing feature is the relocation functions for the embedded ARM Cort
 Indeed, the ELF loader is the main feature used to add new modules to the kernel or update its existing features.
 
 \subsubsection{Runtime address relocation for ARM Cortex-M3 platforms}
-As presented in section \ref{sec:IoTDeployment}, we have studied the different methods to add new modules into a running embedded system.
-The method used by Contiki is the relocatable code.
-This approach needs to relocate the addresses temporary given to the unresolved symbols of a new module, in order to provide the requested functions from the OS.
+As presented in section \ref{sec:IoTDeployment}, we have studied the different methods to add new modules into a running IoT device.
+The method used by the Contiki ELF loader is the relocatable code.
+This approach needs to relocate the temporary addresses given to the unresolved symbols of a new module, in order to get access to the needed functions provided by the OS.
 
-The Contiki dynamic linker and loader\cite{dunkels06runtime} depends strongly on the relocation methods provided by the CPU architectures on which it is implemented.
+Since the use of the Contiki ELF loader involves two aspects, a prepared firmware able to load new modules and the new modules themselves, modifications to the compilation routines should be provided for both artifacts.
+As described in the Contiki wiki\footnote{\url{https://github.com/contiki-os/contiki/wiki/The-dynamic-loader\#Preparing_a_Firmware_for_ELF_Loading}}, a firmware able to load new modules should be prepared as follows:
+\begin{citeverbatim}
+	The firmware must be prepared with a symbol table to able to load ELF modules dynamically.
+	This three-step process ensures that all available symbols in the firmware are also visible in the symbol table, along with a pointer to their address.
+	
+	\texttt{make <firmware-name>} \\
+	\texttt{make CORE=<firmware-name> <firmware-name>} \\
+	\texttt{make CORE=<firmware-name> <firmware-name>} \\
+\end{citeverbatim}
+Thus, compilation instructions for the \texttt{CORE} variable must be provided.
+Since they are CPU specific, they must be added in the Makefile for this specific platform.
+\\
+\lstset{language=make,
+	basicstyle=\ttfamily\scriptsize,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{gray}\ttfamily,
+	breaklines=true,
+	captionpos=b
+}
+\begin{lstlisting}[language=make, caption=Compilation settings to create a proper symbol table, label=lst:make4Symbols]
+ifdef CORE
+.PHONY: symbols.c symbols.h
+symbols.c:
+	$(NM) $(CORE) | awk -f $(CONTIKI)/tools/mknmlist > symbols.c
+else
+symbols.c symbols.h:
+	cp ${CONTIKI}/tools/empty-symbols.c symbols.c
+	cp ${CONTIKI}/tools/empty-symbols.h symbols.h
+endif
+\end{lstlisting}
+
+Listing \ref{lst:make4Symbols} shows the instructions to create a symbol table for the M3 platform, including all the functions used in the base firmware.
+These symbols are created using the \texttt{arm-none-eabi-nm} command to extract all the symbol's names from the main firmware, and with the aid of a Contiki tool called \texttt{mknmlist} a source code file is generated where all used symbols are declared.
+Finally, this source code is compiled and linked to the main firmware.
+On the other hand, if the \texttt{CORE} variable is not set, a predefined source file without the symbols is copied to be compiled with the main firmware.
+
+As for the creation of new ELF modules, the Contiki dynamic linker and loader\cite{dunkels06runtime} depends strongly on the relocation methods supported by the CPU architectures for which the module is being compiled.
 Since our implementation is based on an ARM architecture, we need to provide the relocation functions for this platform.
-ARM offers the processor-specific definitions for ELF for the Application Binary Interface (ABI) for the ARM architecture\footnote{\url{http://infocenter.arm.com/help/topic/com.arm.doc.ihi0044e/IHI0044E_aaelf.pdf}}.
+Indeed, ARM offers the processor-specific definitions in the \textit{ELF for the Application Binary Interface (ABI) for the ARM architecture}\footnote{\url{http://infocenter.arm.com/help/topic/com.arm.doc.ihi0044e/IHI0044E_aaelf.pdf}} document.
 This document specifies the way of an ELF binary should be produced by a compiler, including the relocation types.
+Thus, this information should be used to implement a dynamic linker which will be in charge of the relocation process for unresolved symbols present in the new module.
+For the ARM architecture, more than 100 relocation types exist, but just a few operations still relevant.
+We will focus in only 3 types of relocation, which were present in most of the examples we compiled.
+These relocation types are presented in table \ref{tab:relocTypes}.
 
+\begin{table}[htb]
+	\centering
+	\caption{Relocation types compatible with our loader}
+	\label{tab:relocTypes}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Code} & \textbf{Name}       & \textbf{Type} & \textbf{Class} & \textbf{Operation} \\ \hline
+		2             & R\_ARM\_ABS32       & Static        & Data           & (S + A) | T        \\ \hline
+		10            & R\_ARM\_THM\_CALL   & Static        & Thumb32        & ((S + A) | T) – P  \\ \hline
+		30            & R\_ARM\_THM\_JUMP24 & Static        & Thumb32        & ((S + A) | T) – P  \\ \hline
+	\end{tabular}
+\end{table}
+
+We can appreciate that type 10 and 30 have the same operation.
+The following nomenclature is used for the operation:
+\begin{itemize}
+	\item \textbf{S} (when used on its own) is the address of the symbol.
+	\item \textbf{A} is the addend for the relocation.
+	\item \textbf{P} is the address of the place being relocated (derived from r\_offset).
+	\item \textbf{T} is 1 if the target symbol S has type STT\_FUNC and the symbol addresses a Thumb instruction; it is 0 otherwise.
+\end{itemize}
+
+Therefore, we need to implement only 2 types of relocations.
+These two types of relocation depends on the information provided by a compatible ELF file, which is first parsed by the Contiki ELF loader.
 The requirements of an ELF module handled by the Contiki ELF loader are stated on the Contiki's wiki, as following:
 
 \begin{citeverbatim}
@@ -452,14 +513,134 @@ The requirements of an ELF module handled by the Contiki ELF loader are stated o
 \end{citeverbatim}
 
 In order to produce an ELF file compatible with this characteristics, a special method of compilation is provided by Contiki.
-This method make use of standard compiler flags that should produce a compatible ELF file.
-However, such flags are intended mostly for MSP430 architectures.
-Thus, specific flags for ARM architectures are required.
+Indeed, the Contiki's documentation provide a generic method to produce a Contiki ELF module (CE), as stated below:
 
-\todo{Makefile modifications}
-\todo{linker scripts (merge-rodata)}
-\todo{supported relocation types}
-\todo{and finally the relocation operations}
+\begin{citeverbatim}
+	Contiki's build system includes an easy method to create modules that can be loaded into a running Contiki system.
+	Simply compile the program with the suffix .ce, as shown below. 
+	The suffix instructs the make program to compile an ELF file from a C source file. 
+	The object module is stripped from unneeded symbols. 
+	The .co suffix works similarly, but does keeps unneeded symbols in the ELF file. 
+	
+	\texttt{cd example/hello-world} \\
+	\texttt{make TARGET=sky hello-world.ce}
+\end{citeverbatim}
+
+This method makes use of Contiki's predefined compiler flags that should produce a compatible ELF file.
+However, such flags are intended mostly for MSP430 architectures.
+We have experimented these default flags for the CE compilation and it was found that several other sections were present in the ELF file.
+These "extra" sections contained needed information about the module, and were skipped by the ELF loader.
+Thus, specific compilation mechanisms shown on listing \ref{lst:make4CELF} have been proposed to solve this problem.
+\\
+\lstset{language=make,
+	basicstyle=\ttfamily\scriptsize,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{gray}\ttfamily,
+	breaklines=true,
+	captionpos=b
+}
+\begin{lstlisting}[language=make, caption=Compilation instructions to generate an ARM ELF file., label=lst:make4CELF]
+CUSTOM_RULE_C_TO_CE = "defined"
+%.ce: %.c
+	@# Requires '-DAUTOSTART_ENABLE' to be loaded
+	$(CC) $(CFLAGS) $(OPENLAB_INCLUDE_PATH) -DAUTOSTART_ENABLE -c $< -o $*.o
+	$(GCCPREFIX)-ld -r -T $(OPENLAB)/merge-segments.ld $*.o -o $@
+	$(STRIP) --strip-unneeded -g -x $@
+\end{lstlisting}
+
+As we can appreciate, a special linking phase (triggered by the \texttt{-ld} flag) using a linker script was needed to merge the extra sections generated by the standard compilation phase, followed by the stripping mechanism for unneeded symbols (mostly debug symbols).
+This script consisted in merge all \texttt{.text, .data, .rodata} and \texttt{.bss} related sections into only one.
+For instance, without this script, a hello world example generated the following sections:
+
+\begin{listing}
+	\texttt{.text.process\_thread\_hello\_world\_process} 
+	\texttt{.rel.text.process\_thread\_hello\_world\_process}
+	\texttt{.rel.data.hello\_world\_process}
+	\texttt{.rodata.autostart\_processes}
+	\texttt{.rel.rodata.autostart\_processes}
+	\texttt{.rodata.str1.1}
+\end{listing}
+
+This are the standard sections generated by the \texttt{arm-none-eabi-gcc} compiler without the linking phase where the script is executed.
+Since sections other than the required by the loader are ignored, the loading attempt will result in an unsuccessful module execution.
+Details about the script are shown in listing \ref{lst:script4CELF}.
+
+Once the correctness of the ELF file is validated by the loader, a relocation phase is conducted.
+This makes use of the ELF loader internals, which should be defined by the platform.
+These internals are described by Contiki as follows:
+\begin{citeverbatim}
+	Each CPU architecture in Contiki that supports ELF loading implements a set of architecture-dependent functions. 
+	The table \ref{tab:loaderFunc} shows the API that needs to be implemented in order to support ELF loading. 
+	These include functions allocate RAM for data (\texttt{elfloader\_arch\_allocate\_ram()}), allocate read-only memory (ROM) for code (\texttt{elfloader\_arch\_allocate\_rom()}), write to the allocated ROM (\texttt{elfloader\_arch\_write\_rom()}), and relocate addresses in the ROM (\texttt{elfloader\_arch\_relocate()}). 
+	The relocation information is stored in objects of type \texttt{struct elf32\_rela}, which is defined below in listing \ref{lst:ELFreloc}. 
+	In this structure, \texttt{r\_offset} indicates the location to be relocated, \texttt{r\_info} specifies the relocation type and symbol index, and \texttt{r\_addend} is the value to add when relocating an address in \texttt{elfloader\_arch\_relocate()}.
+\end{citeverbatim}
+
+\begin{table}[htb]
+	\centering
+	\scriptsize
+	\caption{The architecture-dependent functions in the ELF loader}
+	\label{tab:loaderFunc}
+	\begin{tabular}{p{9cm}l}
+		elfloader\_arch\_allocate\_ram(int size)                                                                                        & Allocate RAM              \\
+		elfloader\_arch\_allocate\_rom(int size)                                                                                        & Allocate ROM              \\
+		elfloader\_arch\_write\_rom(int fd, unsigned short textoff, unsigned int size, char *mem)                                       & Program ROM.              \\
+		elfloader\_arch\_allocate\_relocate(int fd, unsigned sectionoffset, char *sectionaddress, struct elf32\_rela *rela, char *addr) & Relocate addresses in ROM
+	\end{tabular}
+\end{table}
+
+\begin{lstlisting}[language=C, caption=The 32-bit ELF relocation structure, label=lst:ELFreloc]
+struct elf32_rela {
+	elf32_addr	r_offset;
+	elf32_word	r_info;
+	elf32_sword	r_addend;
+};
+\end{lstlisting}
+
+These architecture-dependent functions were implemented for the common openlab platform.
+Moreover, for the allocation ROM and RAM functions, a pre-allocated space of both was necessary, which was declared in the configuration header for the IoT-Lab M3 platform.
+The source code is available in \todo{annex X}.
+
+\begin{lstlisting}[caption=Script used to merge all sections into only the ones required by the Contiki ELF loader, label=lst:script4CELF]
+SECTIONS
+{
+	.text :
+	{
+		. = ALIGN(4);
+		*(.text.*)
+		. = ALIGN(4);
+	}
+	
+	.data :
+	{
+		. = ALIGN(4);
+		*(.data.*)
+		. = ALIGN(4);
+	}
+	
+	.rodata :
+	{
+		. = ALIGN(4);
+		*(.rodata.*)
+		. = ALIGN(4);
+	}
+	
+	.bss :
+	{
+		. = ALIGN(4);
+		*(.bss.*)
+		. = ALIGN(4);
+	}
+}
+\end{lstlisting}
+
+\subsection{Summary}
+The added support for the two main functionalities needed by our middlware was crucial for the continuation of our research, since it allowed to conduct the evaluation on real nodes.
+Without them, our experimentations would have stopped at the model level, without enacting the actual changes represented in the model at the system level.
+The relevancy of our implementations was acknowledged by the FIT IoT-Lab maintainers, who accepted our pull-request\footnote{\url{https://github.com/iot-lab/contiki/pull/2}} including this technical contributions in their main fork of the Contiki repository.
+
+The next section will describe the  overall evaluation of our middleware, using as example an application which will receive a new model, make the comparison and then make the actual changes described on the differences between the new and the old model.
 
 \section{M@R evaluation results on the IoT-Lab testbed}
 This section describes the experiments conducted to evaluate our framework described in subsection \ref{subsec:kevoreeContikiImpl}.
@@ -499,6 +680,17 @@ To answer these questions four experiments are performed using the following met
 
 %All the generated models are compatible with the version 4 of the Kevoree editor\footnote{The generated models are available at: https://github.com/kYc0o/kevoree-contiki}. %, and are available in \cite{Kevoree-contiki}.
 
+In this experiment the two firmwares are uploaded on an IoT-Lab node and the applications are executed during one minute.
+To evaluate the overhead of our middleware the two firmwares are compared with respect to:
+
+\begin{itemize}
+	\item memory consumption both in ROM and RAM, 
+	\item the energy consumption,
+	\item and the startup delay.
+\end{itemize}
+
+The result of this experiment are shown in Table \ref{tab:Overheads}. 
+
 \begin{table}[h]
 	\centering
 	\begin{tabular}{c|c|c|c|c|}
@@ -511,17 +703,6 @@ To answer these questions four experiments are performed using the following met
 	\caption{Memory use for the \emph{Blink/COAP} example}
 	\label{tab:Overheads}
 \end{table}
-
-In this experiment the two firmwares are uploaded on an IoT-Lab node and the applications are executed during one minute.
-To evaluate the overhead of our middleware the two firmwares are compared with respect to:
-
-\begin{itemize}
-	\item memory consumption both in ROM and RAM, 
-	\item the energy consumption,
-	\item and the startup delay.
-\end{itemize}
-
-The result of this experiment are shown in Table \ref{tab:Overheads}. 
 
 As it can be observed from the table, the usage of a model@runtime has a visible overhead on the memory both in ROM and RAM. 
 This overhead is due to the code of our middleware for the ROM part and to the model loaded in memory for the RAM part.
@@ -568,7 +749,20 @@ These results show that our current implementation enables to scale the model up
 \subsection{Summary}
 \todo{consider the model size for the next contribution}
 
-
-Our initial results show that the models@runtime implementation is feasible for CPS and there are enough resources to deploy several other functional software components.
+Our initial results show that the models@runtime implementation is feasible for IoT devices and there are enough resources to deploy several other functional software components.
 It is possible to observe that our overheads are small enough to affect the overall operation of a node, while adding an abstract representation of the running system, in addition to reconfiguration and adaptation features.
 Since these results are promising, we showed that our middleware is able to manipulate a running application by affecting it through a component model, without an important overhead, neither in memory nor in energy consumption.
+
+As a final consideration, the executed application contained a very minimalistic model, including only enough characteristics to manipulate such model.
+Indeed, for the next chapter, a more complete implementation of the modeling framework is proposed, resulting in a more robust middleware.
+For this reason, the size of the application can increase, and the ability to instantiate components and nodes at the model level can be decreased.
+
+Several challenges were raised with the results of this first approach.
+The first one, lies in the way that the model should be spread across the network.
+Since the same model should be present in all the nodes forming the network, we must investigate epidemic algorithms of distribution.
+The second one is about the creation of components and its distribution across the nodes.
+Special attention is being put on this last feature.
+Distributing software components on mesh topologies, which are less robust than typical computer networks, raise scientific questions about the best method to provide them.
+Thus, a distributed algorithm to download components taking into account the network topology and energy consumption should be proposed.
+
+The next chapter will describe our contributions that propose answers to that questions. 
