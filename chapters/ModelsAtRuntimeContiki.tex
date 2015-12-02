@@ -1,54 +1,176 @@
 \chapter{Models@Runtime for the IoT}
 \label{ch:MARContiki}
-As presented in chapter \ref{ch:IoT}, Internet of Things systems are typically formed by a myriad of many small interconnected devices.
-This underlying hardware infrastructure raises new challenges in the way we administrate the software layer of these systems.
-Indeed, the limited computing power and battery life of each node combined with the very distributed nature of these systems, greatly adds complexity to distributed software layer management.
+%As presented in chapter \ref{ch:IoT}, Internet of Things systems are typically formed by a myriad of many small interconnected devices.
+%This underlying hardware infrastructure raises new challenges in the way we administrate the software layer of these systems.
+%Indeed, the limited computing power and battery life of each node combined with the very distributed nature of these systems, greatly adds complexity to distributed software layer management.
+
+As we stated in the previous chapter, the capacity of dynamically deploying and reconfiguring the software layer on the IoT is a crucial feature.
+Designing a middleware in the context of the IoT raises scientific challenges.
+All the following challenges are related to the limited resources of these nodes and the particular topology of the network that interconnect them.
+We address the problem of enabling the deployment of a distributed software layer and its dynamic reconfiguration over a network of nodes featuring very limited resources: memory, processing power, bandwidth communication and energy autonomy.
+Therefore, a simple adaptation of an already provided implementation for deployment and reconfiguration in distributed systems would not work.
+Indeed, the very scarce resources limits the use of complex approaches \textit{"as is"}, as it was already described in section \ref{sec:dynamicDeploymentDAS}
+
+% limitation of SOTA
+To solve this problem, various techniques have been proposed, which were presented in table \ref{tab:deployMethods}. 
+As for the full kernel replacement mechanism, which is managed by an automatic tool\cite{hui2004dynamic}, the excessive amount of power needed by this approach seems not to be adapted for a highly dynamic infrastructure such as the IoT.
+The approaches making use of virtual machines were already analyzed and it was found that they are not suitable for long-living applications\cite{oliver2014reprogramming}.
+Thus, the lack of a deployment manager leveraging kernel modularization using relocation mechanisms, which seems the best way to provide new features and updates, motivates our research to find an automatic and scalable approach to provide such a manager.
+
+Indeed, the previously studied models@runtime approach, and more specifically, the Kevoree meta-model, provides a way to manage the application layer for distributed systems.
+As stated in section \ref{sec:distDeployment}, the high resemblance between distributed systems and the IoT, makes the use of such approach a viable solution.
+However, the huge differences in computing capacity and energy autonomy between the nodes involved in both scenarios make the implementation of this approach very challenging.
+Thus, a direct mapping of Kevoree (the meta-model and its model manipulation tools) cannot be foreseen.
 
 In this chapter, I describe a first approach to implement a new middleware dedicated to IoT devices, in order to enable the management of software deployment and the dynamic reconfiguration of IoT systems.
 Our middleware is inspired from the Component Based Systems and the model@runtime paradigm which have been already described in the previous chapter.
-Moreover, the implementation of this middleware follows the directions of the existing Kevoree meta-model depicted in \todo{annex por figure?}, which has been adapted to fit IoT devices constraints. 
-The evaluation of these constraints were conducted on several hardware platforms typical of the IoT, in order to establish a reference for the minimum requirements to run such a middleware.
+Moreover, the implementation of this middleware follows the directions of the existing Kevoree meta-model depicted in \todo{annex or figure?}, which has been adapted to fit IoT devices constraints. 
+Our evaluation of these constraints was conducted on several hardware platforms typical of the IoT, in order to establish a reference for the minimum requirements to run such a middleware.
 Once an initial research on these IoT platforms was conducted, the proposition of a new one was necessary, since the minimal requirements were not met by the commercially available platforms at that time.
 Such platform was an essential part to evaluate our first implementation, and was used to establish the minimum requirements of an execution environment.
 Finally, we have conducted an initial evaluation on an Internet of Things testbed\cite{Fleury15iotlab} recently available for experimentation.
 Our results demonstrates the feasibility of providing a model@runtime middleware for these systems, which can be executed in platforms meeting the requirements already established.
-This chapter is concluded by the obtained results in the FIT IoT-Lab testbed, which show the limits of our first approach.
+This chapter is concluded by the obtained results on the FIT IoT-Lab testbed, which show the limits of our first approach.
 
 \section{Overview}
+\label{sec:MAR_overview}
+The Kevoree framework, which was already introduced in subsection \ref{subec:kevoree}, is composed by a meta-model which describes the main parts of a distributed system, coupled with a minimalistic component model.
+A typical Java implementation of this meta-model can consists in code generated by using common modeling tools, such as the Eclipse Modeling Framework (EMF)\cite{steinberg2008emf}, resulting in a vast quantity of code representing all the classes and its relationships.
+Even if big efforts to reduce the generated code and dependency resolution complexity present in EMF were conducted by Fouquet \textit{et al.} in \cite{fouquet2012eclipse}, the need of a JVM and a big amount of memory still the main inconvenient for its use on the IoT.
+Moreover, the principle of a model@runtime lies in the general knowledge of the entire system (the reflected model of the running system), which is present in every participant.
+Indeed, the reflected model should be available in memory for its rapid manipulation, thus we can imagine the big quantity of memory needed to represent large models featuring a vast quantity of nodes.
+In addition, each node can have instances of one or more components and its parameters, which increase even more the size of the model in memory.
+It is then very complex and challenging to provide such a framework on the context of IoT.
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapters/modelsAtRuntimeContiki.images/MAR_IOT.pdf}
+	\caption{A M@R representation for IoT devices.}
+	\label{fig:MAR_IOT}
+\end{figure}
+
+Our goal is then to provide a middleware that will be present on each node of the IoT system, and will take care of the various tasks imposed by the model@runtime paradigm.
+In figure \ref{fig:MAR_IOT} we can appreciate a representation in which three IoT nodes are part of a small network.
+This example shows a M@R which is present on the three nodes.
+Each node have the knowledge about three available components on the repository, the instances present in the other two nodes and a binding through a channel between two components of different nodes.
+Any change of this configuration should be reflected on the model, followed by the dissemination of these changes to the other nodes, and vice-versa, any change on the model will affect the actual node.
+Figure \ref{fig:MAR_reconfig} describes the actions taken when a reconfiguration or adaptation is triggered.
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapters/modelsAtRuntimeContiki.images/MAR_reconfig.pdf}
+	\caption{Reconfiguration through a M@R.}
+	\label{fig:MAR_reconfig}
+\end{figure}
+
+Therefore, we need to implement this approach on IoT nodes, which should be able to have a similar model representation in memory and to enact the adaptation and reconfiguration process on each node.
+As we stated before, the exact implementation of the Kevoree M@R approach using the current tools is not possible, due to the IoT node's constraints.
+Thus, we will address each constraint and propose an implementation to meet them, while offering a similar behavior and interoperability with the other implementations.
+The next section describes how we addressed such constraints.
+
+\section{Kevoree and the IoT}
+The Kevoree framework is composed by several parts which provide a complete models@runtime implementation.
+The base of this framework is the Kevoree meta-model, which was designed to follow a distributed architecture and a minimalistic component model.
+Thus, a first challenge lies in the implementation of such meta-model meeting the programming language and memory constraints.
+
+\subsection{Meeting the memory constraint}
+As already discussed in section \ref{sec:MAR_overview}, the Kevoree meta-model can be easily transformed into Java code using a modeling framework.
+However, in our case this approach cannot be used.
+This is due to two reasons: first, we cannot use high-level languages such as Java and second, we are limited to the C language which can be compiled for the IoT node's architecture already presented in \ref{subsec:smartObjects}.
+Moreover, meta-models follow very often an object-oriented approach, which is not defined for procedural languages such as C.
+Thus, a direct transformation with this constraints is not worth considering.
+However, a similar approach for code generation and modeling tools can be proposed to meet the requirements of a model@runtime approach.
+Indeed, the Kevoree Modeling Framework\cite{fouquet2012eclipse} can be adapted to support the generation of C code, in order to provide a fully Kevoree-like middleware for IoT devices.
+Even so, the adaptation of such a framework raise different challenges than those addressed by this thesis.
+Therefore, we opted to the manual transformation of the meta-model, and the manual implementation of the modeling tools.
+Indeed, this allows a rapid prototype which can be finely tuned to meet the memory constraints present in IoT devices.
+
+On the typical implementation of Kevoree, a module called \textit{Kevoree Core} is embedded in every node. 
+This module provides to each system element (node, component, communication channel, groups) an access to the current model, allowing to submit new configurations through new models.
+If the Kevoree Core receives a new model, it is in charge of the validation, then the adaptation planning and finally the execution of this adaptation.
+The set of these stages is carried through a transactional manner.
+
+The model validation is delegated to any system element registered as a \textit{ModelListener}.
+Each component, communication channel or node can declare this interface and be registered on the \textit{Kevoree Core} in charge of the model management.
+Once registered, the instance is notified with regard to the different reconfiguration stages.
+For this, the \textit{ModelListener} interface defines the following notifications:
+\begin{itemize}
+	\item \emph{preUpdate} allows to the \emph{ModelListener}s to be notified that an update has been proposed.
+	Each \emph{ModelListener} can then validate the proposed configuration.
+	\item \emph{preAllUpdate} allows to the \emph{ModelListener}s to be notified that the proposed update has been validated by the set of \emph{ModelListener}s.
+	\item \emph{postUpdate} allows to the \emph{ModelListener}s to be notified that the update has been applied.
+	Each \emph{ModelListener} can then validate that the update does not cause a problem.
+	\item \emph{postAllUpdate} allows to the \emph{ModelListener}s to be notified that the update which has been applied was also validated by the set of \emph{ModelListener}s.
+	\item \emph{preRollback} allows to the \emph{ModelListener}s to be notified that the update has failed and a rollback to the previous configuration will be carried out.
+	\item \emph{postRollback} allows to the \emph{ModelListener}s to be notified that the rollback has been successful.
+\end{itemize}
+Figure \ref{fig:MAR_modelListener} represents in a state-transition diagram the integrations of \textit{ModelListeners} with the process of \textit{model@runtime}.
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapters/modelsAtRuntimeContiki.images/ModelListenerStateChart.pdf}
+	\caption{State-transition diagram showing the integration of ModelListeners in the M@R process.}
+	\label{fig:MAR_modelListener}
+\end{figure}
+
+In contrast, our implementation for IoT devices cannot follow the same approach.
+Indeed, the model checking and rollback mechanisms require to save the entire model in memory for checking and, if something goes wrong, to bring back the previous model.
+This is very memory consuming for our application.
+Therefore, only a simple model checking followed by the adaptations execution has been implemented.
+Moreover, the implementation of this mechanism for all the system elements (component, communication channel, group) was not necessary for our first prototype.
+Thus, only a \textit{ModelListener} is present for the node component, avoiding all the notification process, saving processing time thus energy.
+Indeed, in our implementation the node is in charge of the adaptation mechanisms, since for our concerns (an IoT system) nodes are the main component and it can only execute an instance of itself.
+This vision contrast with a typical Kevoree implementation, where various \textit{Kevoree Core} can run in a single machine, resulting in several nodes reflected in the model.
+
+In conclusion, our proposition for a Kevoree implementation on IoT devices is conceivable, since we bring the most important features with a very low memory footprint, having only a few limitations.
+
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{chapters/modelsAtRuntimeContiki.images/modelListenerIoT.pdf}
+	\caption{State-transition diagram showing the integration of ModelListeners in the M@R process for IoT devices.}
+	\label{fig:MAR_modelListenerIoT}
+\end{figure}
+
+Figure \ref{fig:MAR_modelListenerIoT} depict the state-transition diagram according to our M@R process for IoT devices.
+
+\subsection{Energy, processing and communication constraints}
+Another concern while adapting the Kevoree M@R implementation is the amount of energy needed to run it.
+Indeed, an IoT device running on batteries should be able to embed this middleware without a high overhead in terms of energy consumption.
+Since the most processor consuming task is the model checking and adaptations execution, a smaller overhead is induced, compared to the traditional approach, thanks to the simplification of such process.
+However, it was discussed that the most energy consuming task for an IoT device is the radio communication.
+The traditional Kevoree implementation was done having in mind no restrictions for network usage and bandwidth, thus algorithms such as Gossip\cite{fouquet2012dissemination} were used for model dissemination.
+The implementation of such a protocol in an IoT device could be very memory consuming, in addition to a high energy consumption while using the network.
+
+Given the energy and memory constraints, a dissemination protocol adapted for IoT devices is then needed.
+It results interesting that the already described Deluge protocol\cite{hui2004dynamic} seems to be a good option, since it was developed having in mind the constraints of an IoT device.
+As the information to be shared is not as big as an entire firmware, but rather a small serialized file including the model, the needed energy to disseminate a model can be low enough.
+Moreover, a compression method using an association table including the most often used keywords has been proposed, reducing the model size by more than a half.
+By these means, a small file including the model is shared between all the concerned IoT nodes in the network.
+
+
 %context
 %Based on this principle, IoT dedicated devices have emerged, forming the IoT infrastructure already described in section \ref{sec:IoTInfra}.
 %All this new IoT devices form a constellation of many small interconnected objects integrated into houses, building, cities, factory chain, etc.
 %Based on this principle, Cyber Physical Systems (CPS) have emerged.CPS are pervasive and long living systems formed by a constellation of many small interconnected devices integrated into houses, building, cities, factory chain, etc. 
 %motivation
-In our building automation scenario presented in section \ref{sec:BAScenario}, the described IoT subsystem typically rely on sensor nodes that detect and record data such as presence, temperature, ambient lighting and energy consumption. 
-Thus, the IoT uses sensors to continuously analyse the situation in order to adapt our living environment to match user needs and preferences.
-User wishes may involve different objectives such as comfort, air quality, and energy savings. 
-To go beyond energy management and comfort, building automation systems have to deal with new types of services, depending on the use of the building: fire safety and security management for hotel, indoor air quality control in schools and office buildings, etc. 
-The opportunities of services offered by the IoT and the user preferences are countless and will change over the lifetime of these systems.
-The set of small interconnected devices integrated into buildings can be seen as a computing infrastructure that can host these new services. 
-Consequently the software deployed on these nodes needs to be dynamically reconfigured and re-deployed to meet the evolution of services and user preferences. 
+%In our building automation scenario presented in section \ref{sec:BAScenario}, the described IoT subsystem typically rely on sensor nodes that detect and record data such as presence, temperature, ambient lighting and energy consumption. 
+%Thus, the IoT uses sensors to continuously analyse the situation in order to adapt our living environment to match user needs and preferences.
+%User wishes may involve different objectives such as comfort, air quality, and energy savings. 
+%To go beyond energy management and comfort, building automation systems have to deal with new types of services, depending on the use of the building: fire safety and security management for hotel, indoor air quality control in schools and office buildings, etc. 
+%The opportunities of services offered by the IoT and the user preferences are countless and will change over the lifetime of these systems.
+%The set of small interconnected devices integrated into buildings can be seen as a computing infrastructure that can host these new services. 
+%Consequently the software deployed on these nodes needs to be dynamically reconfigured and re-deployed to meet the evolution of services and user preferences. 
+
 
 % old sentences
 %Consequently comfort and quality are factors of productivity and do not prevent energy savings being achieved.
 %To go beyond energy management, building automation systems have to deal with new types of services, depending on the use of the building: fire safety and security management for hotel, indoor air quality control in schools and office buildings etc. 
 
 %problem
-For this reason, the capacity of dynamically deploying and reconfiguring the software layer of the IoT is a crucial feature.
-Designing a middleware in the context of the IoT raises scientific challenges.
-All the following challenges are related to the limited resources of these nodes and the particular topology of the network that interconnect them.
-We address the problem of enabling the deployment of a distributed software layer and its dynamic reconfiguration over a network of nodes featuring very limited resources: memory, processing power, bandwidth communication and energy autonomy.
-Therefore, a simple adaptation of an already provided implementation for deployment and reconfiguration in distributed systems would not work.
-Indeed, the very scarce resources avoid the use of complex approaches already described in section \ref{sec:dynamicDeploymentDAS}
 
-% limitation of SOTA
-To solve this problem, various techniques have been proposed, which were presented in table \ref{tab:deployMethods}. 
-As for the kernel replacement mechanism, which is managed by an automatic tool\cite{hui2004dynamic}, the excessive amount of power needed by this approach seems not to be adapted for a highly dynamic infrastructure such as the IoT.
-The approaches making use of virtual machines were already analyzed and it was found that they are not suitable for long-living applications\cite{oliver2014reprogramming}.
-Thus, the lack of a deployment manager for modules using the relocation mechanism, which seems the best way to provide new features and updates, motivates our research to find an automatic and scalable approach to provide such a manager which leverages this technique.
 
 %our approach
-In this chapter we present our initial results towards the design of a middleware featuring deployment and reconfiguration facilities over an IoT system. 
-Our middleware aims at implementing the paradigm of model@runtime taking into account the stringent requirements of IoT devices.
 
 %plan
 %This paper is structured as follows. Section 2 presents the Kevoree component model. Section 3 details the challenges of mapping the model@runtime paradigm to microcontrollers, and explains how we implemented Kevoree on these very limited nodes. Our proposal is evaluated in section 4. Section 5 presents related work and Section 6 gives our conclusion and highlights some perspectives to be addressed in future work.
@@ -640,7 +762,7 @@ The added support for the two main functionalities needed by our middlware was c
 Without them, our experimentations would have stopped at the model level, without enacting the actual changes represented in the model at the system level.
 The relevancy of our implementations was acknowledged by the FIT IoT-Lab maintainers, who accepted our pull-request\footnote{\url{https://github.com/iot-lab/contiki/pull/2}} including this technical contributions in their main fork of the Contiki repository.
 
-The next section will describe the  overall evaluation of our middleware, using as example an application which will receive a new model, make the comparison and then make the actual changes described on the differences between the new and the old model.
+The next section will describe the  overall evaluation of our middleware, using as example an application which will receive a new model, make the comparison and then make the actual changes described on the differences between an old and a new proposed model.
 
 \section{M@R evaluation results on the IoT-Lab testbed}
 This section describes the experiments conducted to evaluate our framework described in subsection \ref{subsec:kevoreeContikiImpl}.
