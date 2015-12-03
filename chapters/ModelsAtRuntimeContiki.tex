@@ -28,7 +28,7 @@ Moreover, the implementation of this middleware follows the directions of the ex
 Our evaluation of these constraints was conducted on several hardware platforms typical of the IoT, in order to establish a reference for the minimum requirements to run such a middleware.
 Once an initial research on these IoT platforms was conducted, the proposition of a new one was necessary, since the minimal requirements were not met by the commercially available platforms at that time.
 Such platform was an essential part to evaluate our first implementation, and was used to establish the minimum requirements of an execution environment.
-Finally, we have conducted an initial evaluation on an Internet of Things testbed\cite{Fleury15iotlab} recently available for experimentation.
+Finally, we have conducted the evaluation of our approach on an Internet of Things testbed\cite{Fleury15iotlab} recently available for experimentation.
 Our results demonstrates the feasibility of providing a model@runtime middleware for these systems, which can be executed in platforms meeting the requirements already established.
 This chapter is concluded by the obtained results on the FIT IoT-Lab testbed, which show the limits of our first approach.
 
@@ -63,12 +63,13 @@ Figure \ref{fig:MAR_reconfig} describes the actions taken when a reconfiguration
 	\label{fig:MAR_reconfig}
 \end{figure}
 
-Therefore, we need to implement this approach on IoT nodes, which should be able to have a similar model representation in memory and to enact the adaptation and reconfiguration process on each node.
+Following the directions presented above, an implementation of this approach on IoT nodes has been conducted, which should be able to have a similar model representation in memory and to enact the adaptation and reconfiguration process on each node.
 As we stated before, the exact implementation of the Kevoree M@R approach using the current tools is not possible, due to the IoT node's constraints.
 Thus, we will address each constraint and propose an implementation to meet them, while offering a similar behavior and interoperability with the other implementations.
 The next section describes how we addressed such constraints.
 
 \section{Kevoree and the IoT}
+\label{sec:kevAndIoT}
 The Kevoree framework is composed by several parts which provide a complete models@runtime implementation.
 The base of this framework is the Kevoree meta-model, which was designed to follow a distributed architecture and a minimalistic component model.
 Thus, a first challenge lies in the implementation of such meta-model meeting the programming language and memory constraints.
@@ -81,30 +82,30 @@ Moreover, meta-models follow very often an object-oriented approach, which is no
 Thus, a direct transformation with this constraints is not worth considering.
 However, a similar approach for code generation and modeling tools can be proposed to meet the requirements of a model@runtime approach.
 Indeed, the Kevoree Modeling Framework\cite{fouquet2012eclipse} can be adapted to support the generation of C code, in order to provide a fully Kevoree-like middleware for IoT devices.
-Even so, the adaptation of such a framework raise different challenges than those addressed by this thesis.
-Therefore, we opted to the manual transformation of the meta-model, and the manual implementation of the modeling tools.
-Indeed, this allows a rapid prototype which can be finely tuned to meet the memory constraints present in IoT devices.
+Even so, the efforts to adapt such a framework raise more and different challenges that are out of the scope for this thesis.
+Since our goal is to, first of all, investigate the limits of an IoT node in terms of memory, a manual implementation (transformation) of the meta-model and its modeling tools was made, adapting the concepts to the limited resources of the node.
+Indeed, this allows a rapid prototype which can be finely tuned to meet the memory constraints present in IoT devices, in contrast to a code generation approach.
 
-On the typical implementation of Kevoree, a module called \textit{Kevoree Core} is embedded in every node. 
-This module provides to each system element (node, component, communication channel, groups) an access to the current model, allowing to submit new configurations through new models.
-If the Kevoree Core receives a new model, it is in charge of the validation, then the adaptation planning and finally the execution of this adaptation.
+On the typical implementation of Kevoree, a \textit{core} application is embedded in every node. 
+This application provides to each system element (node, component, communication channel, groups) an access to the current model, allowing to submit new configurations through new models.
+If this \textit{Kevoree Core} receives a new model, it is in charge of the validation, then the adaptation planning and finally the execution of this adaptation.
 The set of these stages is carried through a transactional manner.
 
-The model validation is delegated to any system element registered as a \textit{ModelListener}.
-Each component, communication channel or node can declare this interface and be registered on the \textit{Kevoree Core} in charge of the model management.
+The model validation is delegated to any system element registered as a \textit{listener}.
+Each component, communication channel or node can make use of an interface and be registered on the \textit{core} in charge of the model management.
 Once registered, the instance is notified with regard to the different reconfiguration stages.
-For this, the \textit{ModelListener} interface defines the following notifications:
+For this, a \textit{listener} interface can define the following notifications:
 \begin{itemize}
-	\item \emph{preUpdate} allows to the \emph{ModelListener}s to be notified that an update has been proposed.
-	Each \emph{ModelListener} can then validate the proposed configuration.
-	\item \emph{preAllUpdate} allows to the \emph{ModelListener}s to be notified that the proposed update has been validated by the set of \emph{ModelListener}s.
-	\item \emph{postUpdate} allows to the \emph{ModelListener}s to be notified that the update has been applied.
-	Each \emph{ModelListener} can then validate that the update does not cause a problem.
-	\item \emph{postAllUpdate} allows to the \emph{ModelListener}s to be notified that the update which has been applied was also validated by the set of \emph{ModelListener}s.
-	\item \emph{preRollback} allows to the \emph{ModelListener}s to be notified that the update has failed and a rollback to the previous configuration will be carried out.
-	\item \emph{postRollback} allows to the \emph{ModelListener}s to be notified that the rollback has been successful.
+	\item \emph{preUpdate} allows to the \emph{listener}s to be notified that an update has been proposed.
+	Each \emph{listener} can then validate the proposed configuration.
+	\item \emph{preAllUpdate} allows to the \emph{listeners} to be notified that the proposed update has been validated by the set of \emph{listener}.
+	\item \emph{postUpdate} allows to the \emph{listeners} to be notified that the update has been applied.
+	Each \emph{listener} can then validate that the update does not cause a problem.
+	\item \emph{postAllUpdate} allows to the \emph{listeners} to be notified that the update which has been applied was also validated by the set of \emph{listener}s.
+	\item \emph{preRollback} allows to the \emph{listeners} to be notified that the update has failed and a rollback to the previous configuration will be carried out.
+	\item \emph{postRollback} allows to the \emph{listeners} to be notified that the rollback has been successful.
 \end{itemize}
-Figure \ref{fig:MAR_modelListener} represents in a state-transition diagram the integrations of \textit{ModelListeners} with the process of \textit{model@runtime}.
+Figure \ref{fig:MAR_modelListener} represents in a state-transition diagram the integrations of \textit{listeners} with the process of \textit{model@runtime}.
 
 \begin{figure}[]
 	\centering
@@ -175,16 +176,16 @@ By these means, a small file including the model is shared between all the conce
 %plan
 %This paper is structured as follows. Section 2 presents the Kevoree component model. Section 3 details the challenges of mapping the model@runtime paradigm to microcontrollers, and explains how we implemented Kevoree on these very limited nodes. Our proposal is evaluated in section 4. Section 5 presents related work and Section 6 gives our conclusion and highlights some perspectives to be addressed in future work.
 
-\section{A M@R approach for constrained IoT devices}
+\section{An empirical study on constrained IoT devices}
 The model@runtime paradigm has been mainly investigated in the context of distributed systems. 
 These research efforts have been focused on the provision of a comprehensive set of tools to easily deploy, dynamically reconfigure, and disseminate software on a set of distributed computing units.
 The current model@runtime tools have been implemented regardless of the specific characteristics and constraints of IoT devices.
 In particular, the network topology and the resource constraints of the nodes forming the distributed system have not been taken into consideration.
 As a result, state of the art model@runtime tools are not suitable to be used in the context of IoT Systems.
-First, most approaches are relying on the Java language, which does not meet the resource constraints of the computing nodes. 
-Secondly, the size of the model and its distribution among the system are not taking into consideration the limited memory capacity of each node, and their energy constraints.
+%First, most approaches are relying on the Java language, which does not meet the resource constraints of the computing nodes. 
+%Secondly, the size of the model and its distribution among the system are not taking into consideration the limited memory capacity of each node, and their energy constraints.
 
-In \cite{fouquet2012dynamic}, an effort has been made to port the model@runtime paradigm on the constraints of a Cyber Physical System (CPS), in which the underlying device is comparable to an IoT device.
+In \cite{fouquet2012dynamic} $\mu$-Kevoree, the closest effort to port the model@runtime paradigm on the constraints of a Cyber Physical System (CPS) was presented, in which the underlying device is comparable to an IoT device.
 Despite the particular attention given to the specific constraints of a Cyber Physical System, this work heavily relies on over the air firmware flashing to support the deployment and reconfiguration of software. 
 We consider that relying on firmware flashing to support software deployment constitutes a flaw in the approach because of its energy cost (the complete firmware has to be sent, and if any error occurs, the whole process is restarted).
 A second limitation of this approach lies in the fact that each resource constrained node relies on a more powerful node to perform most of his task related to the dynamic reconfiguration (firmware synthesis, reconfiguration decision and so on).
@@ -196,13 +197,13 @@ The next section will describe an implementation based on the Kevoree meta-model
 
 \subsection{Our M@R implementation}
 \label{subsec:MARImpl}
-Since our work aims to provide a M@R engine for IoT devices, a first implementation should be developed having in mind the programming constraints.
-Taking into account this limitations means that, first of all, we must fit the programming constraints.
+%Since our work aims to provide a M@R engine for IoT devices, a first implementation should be developed having in mind the programming constraints.
+%Taking into account this limitations means that, first of all, we must fit the programming constraints.
 In contrast with most of the current implementations of the M@R paradigm, which are intended for high resources machines thus they make use of high-level programming languages, our first implementation should follow a procedural language such as C.
 We can justify this by the fact that most of the open source compilers for IoT devices support only this programming language, in addition to C++.
 However, C++ applications are difficult to integrate in OSs like Contiki, which is one of the most convenient OS able to run our middleware.
-Thus, a first approach has been developed in plain C\footnote{\url{https://github.com/kYc0o/kevoree-c}}.
-This raised big challenges since the object-oriented meta-model representation is very difficult to transform into C structures, knowing that there is no modeling framework supporting such a language.
+Thus, a first approach has been developed in plain C\footnote{\url{https://github.com/kYc0o/kevoree-c}} following the directions presented in Section \ref{sec:kevAndIoT}.
+%This raised big challenges since the object-oriented meta-model representation is very difficult to transform into C structures, knowing that there is no modeling framework supporting such a language.
 
 \begin{table}[]
 	\centering
@@ -221,7 +222,7 @@ This raised big challenges since the object-oriented meta-model representation i
 	\label{fig:1stModelC}
 \end{figure}
 
-Thus, our efforts were put into a first manual implementation of the Kevoree meta-model.
+Indeed, our efforts were put into a first manual implementation of the Kevoree meta-model.
 The size of the test application which contains a group and a node without components is shown in table \ref{tab:kevoreeC}
 A graphical representation of the model can be obtained through the Kevoree Web Editor\footnote{\url{http://editor.kevoree.org/v4/}}, in which a serialized JSON file containing the model can be loaded for edition.
 This representation is shown in figure \ref{fig:1stModelC}.
@@ -262,14 +263,15 @@ However, even if the OS fulfill all the requirements, the computational resource
 
 
 \subsection{Handling hardware constraints}
-Currently the concept of model@runtime has been applied on top of object oriented languages which offers the required features at the language level to implement the model@runtime layer. 
-The first challenge lies in the fact that Contiki does not support these object oriented languages and thus the design must fit a procedural language such as C.
+%Currently the concept of model@runtime has been applied on top of object oriented languages which offers the required features at the language level to implement the model@runtime layer. 
+%The first challenge lies in the fact that Contiki does not support these object oriented languages and thus the design must fit a procedural language such as C.
 
-The second challenge lies in the very limited resources of the IoT nodes, thus forcing the middleware to meet the memory and CPU constraints. 
-This imposes constraints on the way the model is represented, stored and processed on each node.
+%The second challenge lies in the very limited resources of the IoT nodes, thus forcing the middleware to meet the memory and CPU constraints. 
+%This imposes constraints on the way the model is represented, stored and processed on each node.
 %This challenge is particularly important and hard to meet, since many software components are needed to enable the communication in these environments (radio/MAC/IP stack and so on).
+Given the challenges already stated in Section \ref{sec:kevAndIoT}, we must test our implementation on real hardware platforms in order to measure the limitation of our approach, as well as its compatibility with the other implementations (Java, Cloud, Android).
 Moreover, the energy constraint of each IoT node, together with the mesh topology of the network makes communication in this environments fairly reliable.
-This implies the necessity to optimize the way the model and the software are disseminated in the network.
+This implies the necessity to optimize the way the model and the software are disseminated on the network.
 
 At first glance, our implementation was tested on three different platforms: the \textit{\textbf{zolertia Z1\footnote{\url{http://zolertia.sourceforge.net/wiki/images/e/e8/Z1_RevC_Datasheet.pdf}}, redbee econotag\footnote{\url{http://redwire.myshopify.com/products/econotag-ii}} and wismote\footnote{\url{http://wismote.org/doku.php}}}}, which were widely used for research purposes in the IoT domain.
 Unfortunately, none of these platforms was able to meet the space requirements in ROM and RAM to run a minimal model at runtime as shown in figure \ref{fig:1stModelC}.
@@ -375,24 +377,24 @@ To do that, a Kevoree-IoT application should be developed, using this new Contik
 \subsection{Kevoree-IoT Contiki implementation}
 \label{subsec:kevoreeContikiImpl}
 In this subsection we present our initial result towards the design of a middleware which will offer the functionalities of model@runtime over the previously conceived IoT device. 
-Porting the concept of model@runtime on IoT devices will enable a continuous management of the deployed software.
+%Porting the concept of model@runtime on IoT devices will enable a continuous management of the deployed software.
 This middleware will give a development framework for the  applications development on top of these systems, and will provide the runtime infrastructure to support the deployment and dynamic reconfiguration of these applications.
 
-As illustrated in figure \ref{fig:ContributionOverview}, our goal is to provide a middleware that will be present on each node of the system, and will take care of the various tasks imposed by the model@runtime paradigm.
-More specifically, our middleware will be in charge of:
-\begin{enumerate}
-	\item Receiving new models that define the new targeted state of the system,
-	\item Defining the set of local adaptations that are needed to reach this new state,
-	\item Enacting the various local adaptations produced by the previous step.
-\end{enumerate} 
+%As illustrated in figure \ref{fig:ContributionOverview}, our goal is to provide a middleware that will be present on each node of the system, and will take care of the various tasks imposed by the model@runtime paradigm.
+%More specifically, our middleware will be in charge of:
+%\begin{enumerate}
+%	\item Receiving new models that define the new targeted state of the system,
+%	\item Defining the set of local adaptations that are needed to reach this new state,
+%	\item Enacting the various local adaptations produced by the previous step.
+%\end{enumerate} 
 
-The set of local adaptations enables the dynamic reconfiguration and may download new software artifacts, instantiate or remove components and channels used to bind them, or reconfigure the value of any attribute.
+%The set of local adaptations enables the dynamic reconfiguration and may download new software artifacts, instantiate or remove components and channels used to bind them, or reconfigure the value of any attribute.
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.7\columnwidth]{chapters/modelsAtRuntimeContiki.images/Contribution_Overview.png}
-	\caption{An overview of model@runtime for IoT devices} \label{fig:ContributionOverview}
-\end{figure}
+%\begin{figure}[htb]
+%	\centering
+%	\includegraphics[width=0.7\columnwidth]{chapters/modelsAtRuntimeContiki.images/Contribution_Overview.png}
+%	\caption{An overview of model@runtime for IoT devices} \label{fig:ContributionOverview}
+%\end{figure}
 
 Based on the Kevoree-C implementation already described in subsection \ref{subsec:MARImpl}, the needed Contiki application was developed and tested in our platform.
 The first implementation\footnote{\url{https://github.com/kYc0o/kevoree-contiki}} is done using the version 4 of the Kevoree meta-model, which is depicted in annex \todo{X}.
