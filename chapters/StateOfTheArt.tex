@@ -121,7 +121,7 @@ Such concepts will be described in the next sections.
 \subsection{Deployment of monolithic, homogeneous systems}
 \label{subsec:singleDeployment}
 As the cycle of software development, release and delivery speed increase very quickly, automation of these processes are needed.
-One of the most common deployment process is the one which is carried in single machines.
+One of the most common deployment process is the one which is carried in single, homogeneous machines.
 In this case, deployment is performed without any issues of heterogeneity, planning, and coordination, present in typical distributed systems, and inherently in the IoT.
 Thus, automate this process results in a less challenging task.
 However, it is important to study these approaches as a foundational effort for deployment automation in general.
@@ -477,12 +477,12 @@ Moreover, generators must provide reverse operations to allow cyclic code, which
 This can be useful to deal with legacy code as much as at design time, which is one of the main concerns of MDE, as in the tooling, beyond an approach of \textit{design-to-code}.
 
 \subsection{M@R in Dynamic Adaptive Systems (DAS)}
-\begin{figure}[]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.65\columnwidth]{chapters/stateOfTheArt.images/MAR_Overview.png}
-	\caption{Model@runtime principle} 
-	\label{fig:MAROverview}
+	\caption{Model@runtime principle \label{fig:MAROverview}} 
 \end{figure}
+
 A paradigm named \textit{Model@Runtime} (M@R) aim to combine MDE techniques with tangible systems, in order to respond to the problem of cyclic design stated previously.
 As MDE, M@R were useful at first as a thoughtful visualization of a system, for simulation purposes\cite{oreizy1999architecture}, \cite{blair2009models}, \cite{zhang2006model}.
 A \textit{permanent updated} model is then used to represent abstractly a DAS at runtime.
@@ -583,7 +583,7 @@ Thus, we will focus on software deployment for applications compiled as binary c
 Indeed, in the embedded systems domain, which embodies most of the devices used in IoT, bare metal applications are the most common procedure to provide services or functionalities.
 Physical flashing of the binary image is the usual deployment method, since it can be done at the manufacturing step of the embedded system, without considering any further firmware changes.
 With this limitation, it is even more complicated to distribute applications among several nodes which are physically separated, since manual flashing of every node in a typical IoT system cannot be worth considering due to the huge amount of nodes.
-Thus, a choice of the current alternatives to deal with this problem should be made.
+Thus, we need to study the current alternatives to deal with this problem.
 
 Operating systems used in embedded systems and Wireless Sensor Networks (WSN) provide several methods to deploy new applications at runtime, being the most common:
 \begin{enumerate}
@@ -648,6 +648,39 @@ The loose coupling between new added modules and the underlying kernel is also i
 Several operating systems using the discussed approaches are shown in table \ref{tab:deployMethods}.
 VMs are included in this table since they offer high loose coupling and OS protection, and can be suitable for very short life-cycle applications running on IoT devices.
 
+\section{Summary of current IoT application deployment approaches}
+Once a state of the art discussing the current approaches to provide dynamical behavior at the application level for IoT devices has been conducted, a summary of current techniques leveraging this approaches will be presented.
+Indeed, several research works propose component models coupled with code distribution approaches, in order to manage the software layer of an IoT system.
+However, this existing works are rather intended for WSN.
+While this represents smaller networks without IP connectivity, WSNs are composed of devices typical of the IoT, thus the applicability of this approaches into larger, IP enabled networks such as the IoT is worth considering.
+
+\begin{description}
+	\item[Full image distribution and reprogramming.] \textit{Deluge}\cite{hui2004dynamic}, a very popular protocol using this approach, supports distribution and flashing of a binary image for constrained devices, through the TOSBoot bootloader.
+	It was mainly developed for TinyOS\cite{levis2005tinyos} a WSN OS.
+	As stated previously, this technique incurs in a high energy overhead while distributing the entire image through the network.
+	Moreover, reinstallation of a new firmware requires a system reboot, disrupting any running applications which can lead to data loss of those applications.
+	In order to solve the first problem, some approaches \cite{jeong2004incremental}, \cite{reijers2003efficient} leverage a code image comparison in order to provide incremental updates, reducing the size of the update.
+	Indeed, the main drawback of such approach is the significant increase of CPU energy consumption, due to the complexity of the difference calculation mechanism.
+	
+	\item[Component-based module dissemination and deployment.] An effort to provide component models for WSN were already done by the FiGaRo approach\cite{mottola2008figaro}.
+	It aims at providing both a component model for modules development and a distribution mechanism using a new dissemination protocol.
+	A very complex component model relying on the use of C macros handled at compile time is proposed for modules development, which are directly used by the developer.
+	Indeed, this programming model demands a deep knowledge of the set of features supported by the approach, increasing complexity.
+	Moreover, node's updates and reconfigurations are determined by the programmer using a Domain Specific Language (DSL).
+	Dependencies in other components should be explicitly declared also using such DSL, which are not managed by the node itself.
+	Thus, a dependency graph is built by the node to find if a dependency is not met, but the approach does not explain if any action will be performed in case of a non-satisfied dependency.
+	It rather performs a recursive graph parsing until the needed dependency is met, otherwise it drops the new component or update.
+	In order to achieve non-monolithic deployment in an heterogeneous network, the approach provides a mechanism of rules that are declared using the same DSL in order to filter the targeted nodes, instead of a fine selection of the nodes to be updated.
+	Even if the approach relies on the Contiki's ELF loader, the extensive use of this DSL incurs in an overhead since system function calls are not done directly, but rather using the macros provided by the component model.
+	
+	As for the component's distribution mechanisms, a routing protocol is proposed to find the best path to distribute a component.
+	Thus, It relies in a mesh topology which is built by piggybacking the current value of a node's attributes on every outgoing message.
+	Moreover, the proposed protocol makes use of complex message passing between nodes in order to calculate the best path for the component's chunks to be transmitted.
+	Indeed, this can result in lots of redundant paths, although some efforts are made to reduce them.
+	The presented protocol strongly depends on other application's traffic to exploit enough messages in order to determine a representative topology of the mesh.
+	Therefore, if there is no enough traffic, the protocol can ignore the whole network topology, resulting in an inaccurate components distribution.
+\end{description}
+
 %\section{Related work}
 %\todo{Maybe a synthesis of the related work presented in the 2 papers is worth to consider?}
 
@@ -659,9 +692,9 @@ Moreover, figure \ref{fig:tradeoffsDeployment} already shows that in classical d
 Given the available methods of deployment for new applications or feature updates, it is then necessary to evaluate which is the most advisable approach for its use and adaptation in an automated deployment manager.
 Taking into account the already described model-based techniques, the criterion to evaluate the previously presented approaches will be based on the capability of such approach to be easily decoupled into components, that can be disseminated over the network using a minimum of transfers.
 It is very important to have a good implementation of the local deployment procedures, as well as the necessary tools to share deploy units to the rest of the nodes.
-As presented in the previous chapter, the Contiki OS seems to provide the necessary tools required above.
-Thus, for this thesis, the use of Contiki as the underlying platform to validate our approaches has been chosen.
-This leads to a deeper understanding of the OS internals and a big effort to implement the high level abstractions required by the use of model-based deployment approaches.
+%As presented in the previous chapter, the Contiki OS seems to provide the necessary tools required above.
+%Thus, for this thesis, the use of Contiki as the underlying platform to validate our approaches has been chosen.
+%This leads to a deeper understanding of the OS internals and a big effort to implement the high level abstractions required by the use of model-based deployment approaches.
 
 The presented CBSE and Models@Runtime concepts are essential to build our IoT software architecture.
 Indeed, being our goal the design and implement a software layer manager dedicated to IoT systems in order to enable automatic deployment and dynamic adaptations, the introspection and the dynamic reconfiguration facilities offered by Kevoree seems to suit our needs.

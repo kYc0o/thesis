@@ -15,6 +15,7 @@ Indeed, the very scarce resources limits the use of complex approaches \textit{"
 To solve this problem, various techniques have been proposed, which were presented in table \ref{tab:deployMethods}. 
 As for the full kernel replacement mechanism, which is managed by an automatic tool\cite{hui2004dynamic}, the excessive amount of power needed by this approach seems not to be adapted for a highly dynamic infrastructure such as the IoT.
 The approaches making use of virtual machines were already analyzed and it was found that they are not suitable for long-living applications\cite{oliver2014reprogramming}.
+Even if some component models \cite{mottola2008figaro}, \cite{taherkordi2013optimizing} were proposed to provide an abstraction layer for the life-cycle maintenance, it results in a very complex programming model and routing protocols to distribute components, in addition to a finely tuned memory manager for specific platforms and hardware architectures, which reduces scalability.
 Thus, the lack of a deployment manager leveraging kernel modularization using relocation mechanisms, which seems the best way to provide new features and updates, motivates our research to find an automatic and scalable approach to provide such a manager.
 
 Indeed, the previously studied models@runtime approach, and more specifically, the Kevoree meta-model, provides a way to manage the application layer for distributed systems.
@@ -423,6 +424,7 @@ Therefore, a search for large-scale testbeds for the IoT was done.
 The next section will describe the found platform and its characteristics, which were analyzed in order to find if they met our requirements.
 
 \section{FIT IoT-Lab: A large-scale testbed for the IoT}
+\label{sec:iotlab}
 At the time our experimentation a testbed existed at the INRIA Rennes center, where our research team is based.
 A Wireless Sensor Network called Senslab\cite{des2011senslab}, formed by 256 devices was deployed in a center's cellar.
 This WSN offered wireless sensors of similar characteristics as the Z1 platform, which was already described.
