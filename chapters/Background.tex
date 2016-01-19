@@ -475,18 +475,17 @@ This representation could be also useful for smart objects, allowing the user, o
 While an implementation of HTTP is conceivable for smart objects, the huge amount of memory in both RAM and ROM turns it too heavy and inefficient to run on constrained, battery-powered devices\cite{Shelby10EWS}.
 To solve this problem, Shelby et al. standardized the "HTTP for resource constrained devices"\cite{rfc7252}, called CoAP (Constrained Application Protocol).
 This new application protocol is able to manage the methods described above, fulfilling the requirements for a RESTful API.
-%\begin{figure}[htb]
-%	\centering
-%	\includegraphics[width=1\columnwidth]{chapters/background.images/CoAPMessageFormat.pdf}
-%	\caption{CoAP Message format}
-%	\label{fig:CoAPMessageFormat}
-%\end{figure}
 
-\todo{Make a figure showing a typical CoAP example}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapters/background.images/CoAPRequest.pdf}
+	\caption{CoAP Request from a node to another}
+	\label{fig:CoAPRequest}
+\end{figure}
 
-Figure \todo{X} shows a typical CoAP message, in which only 13 bytes are needed to format this message, allowing the rest of the frame for payload.
+Figure \ref{fig:CoAPRequest} shows a typical CoAP request, in which only 13 bytes are needed to format this message, leaving around 90 bytes for payload in a single 802.15.4 frame.
 
-The services provided by the smart objects can be represented in a HTTP like form, \textit{i.e.} \texttt{/sensors/temperature} for a temperature resource. If we use the CoAP command GET for this resource, we should have a response similar to "22.5", as an example of resource representation.
+The services provided by the smart objects can be represented in a HTTP like form, \textit{i.e.} \texttt{/sensors/temperature} for a temperature resource, as shown in figure \ref{fig:CoAPRequest}. If we use the CoAP command GET for this resource, we should have a response similar to "22.5", as an example of resource representation.
 The PUT and POST commands are used to change the state of the actuators that can be present in a smart object.
 For instance, if we want to change the state of a LED, we access the resource \texttt{/leds} with a query \texttt{?color=red} for a red LED, and a payload \texttt{mode=on} in order to turn it on.
 This API facilitates the exchange of information between other smart objects, as known as "Machine to Machine (M2M)" communication.
@@ -544,17 +543,33 @@ Developed at the beginning for Wireless Sensor Networks (WSN) management, the Co
 Built as a monolithic event-driven kernel, as well as modular, Contiki offers a standard way to develop applications, following a structured architecture of \textit{processes}.
 
 Written in C, this OS and their applications can be compiled for several infrastructures, as Contiki provides enough abstractions to be platform independent.
-Moreover, several common MCU architectures are using this OS, such as msp430, AVR, ARM, among others.
+Moreover, several common MCU architectures are compatible with this OS, such as msp430, AVR, ARM, among others.
 Indeed, the amount of memory needed in a 16-bit microprocessor (\textit{i.e.} msp430) is about 2KB of RAM and 40KB of ROM, which lefts a considerable amount of free memory to implement the business code.
 
 \subsubsection{IoT protocol stack}
-\begin{figure}[htb]
+%\begin{figure}[htb]
+%	\centering
+%	\includegraphics[width=1\columnwidth]{chapters/background.images/Contikinetstack.png}
+%	\caption{Contiki general network stack on the left (in blue) \& corresponding  netstack source codes on the right (in orange)}\footnote{Source files according to \url{https://github.com/contiki-os/contiki/tree/release-3-0}}
+%	\label{fig:ContikiNetStack}
+%\end{figure}
+\begin{table}[]
 	\centering
-	\includegraphics[width=1\columnwidth]{chapters/background.images/Contikinetstack.png}
-	\caption{Contiki general network stack on the left (in blue) \& corresponding  netstack source codes on the right (in orange)}\footnote{Source files according to \url{https://github.com/contiki-os/contiki/tree/release-3-0}}
-	\label{fig:ContikiNetStack}
-\end{figure}
-After several years of development, Contiki became an IoT OS by adding an IP Smart Object stack, which is described in figure \ref{fig:ContikiNetStack}.
+	\caption{Contiki general network stack with the corresponding netstack source codes according to \cite{contikiIPstack}}
+	\label{tab:ContikiNetStack}
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Layer}   & \textbf{Contiki Implementation}    \\ \hline
+		Application      & websocket.c, http-socket.c, coap.c \\ \hline
+		Transport        & udp-socket.c, tcp-socket.c         \\ \hline
+		Network, routing & uip6.c, rpl.c                      \\ \hline
+		Adaptation       & sicslowpan.c                       \\ \hline
+		MAC              & csma.c                             \\ \hline
+		Duty Cycling     & nullrdc.c, contikimac.c            \\ \hline
+		Radio            & cc2420.c                           \\ \hline
+	\end{tabular}
+\end{table}
+After several years of development, Contiki became an IoT OS by adding an IP Smart Object stack, which is described in figure \ref{tab:ContikiNetStack}.
 Moreover, Contiki provides the following additional features:
 \begin{itemize}
 	\item Duty Cycling. ContikiMAC\cite{dunkels2011contikimac} is a radio duty cycling protocol that uses periodical wake-ups to listen for packet transmissions from neighbors.
@@ -607,7 +622,7 @@ This means that any other module can be replaceable by a new one (\textit{i.e.} 
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=1\columnwidth]{chapters/background.images/ContikiModules.pdf}
+	\includegraphics[width=1\columnwidth]{chapters/background.images/ContikiPartitioning.pdf}
 	\caption{Partitioning in Contiki: The core and loadable programs in RAM and ROM\cite{dunkels06runtime}}
 	\label{fig:ContikiModules}
 \end{figure}
@@ -617,14 +632,14 @@ Figure \ref{fig:ContikiModules} shows the minimal modules embedded in Contiki, l
 One of the main drawbacks of Contiki is its programming model.
 Even if the language is plain C, the implementation of processes and proto-threads make use of specific macros, diminishing flexibility of development.
 Moreover, to implement complex algorithms or big pieces of software, high level languages are the most evident solution to ease the task.
-Being Contiki only C compatible, the development of such complexity takes a considerable amount of extra time, compared to C++ for instance.
+Since Contiki allows only C code, the development of such complexity takes a considerable amount of extra time, compared to C++ for instance.
 
 \subsection{RIOT}
 RIOT is an IoT operating system\cite{baccelli2013riot}, built as a microkernel architecture.
 It supports a full IP stack for smart objects, offering interoperability with other OS like Contiki.
-It's very low memory footprint make it ideal for IoT, since it can be compiled for several embedded architectures, from 8-bit to modern 32-bit microcontrollers.
+Its very low memory footprint make it ideal for IoT, since it can be compiled for several embedded architectures, from 8-bit to modern 32-bit microcontrollers.
 
-It's main features can be described as follows:
+Its main features can be described as follows:
 
 \begin{itemize}
 	\item Microkernel (for robustness)
@@ -646,19 +661,19 @@ However, they share the same IP stack although the implementations follow differ
 %	\label{fig:RIOTpktBuf}
 %\end{figure}
 
-It uses a generic packet buffer which can send packets either for IPv6 or IPv4.
+Indeed, It implements a generic packet buffer which can send packets either for IPv6 or IPv4.
 %The model of this packets is shown in figure \ref{fig:RIOTpktBuf}.
 Up to beginning 2014, RIOT had a network stack more or less complete, with most of the implementations already working.
 Given the IoT infrastructure proposed in section \ref{sec:IoTInfra}, RIOT fulfill all requirements, including implementations of RPL and CoAP to provide interoperability.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=1\columnwidth]{chapters/background.images/RIOTIPStack.png}
+	\includegraphics[width=1\columnwidth]{chapters/background.images/RIOTModules.pdf}
 	\caption{RIOT IP stack (from \cite{riotOS})}
 	\label{fig:RIOTIPStack}
 \end{figure}
 
-Figure \ref{fig:RIOTIPStack} show the comparison between protocols and the support offered by this OS. 
+Figure \ref{fig:RIOTIPStack} show the modules provided by this OS, as well as the embedded IP stack for networking.
 
 \begin{table}[htb]
 	\scriptsize
@@ -689,7 +704,7 @@ It shows that RIOT offers several features that other OS cannot, having remarkab
 However, two main drawbacks were found in this OS:
 \begin{enumerate}
 	\item The lack of a flexible and easy to use approach to store data in persistent memory.
-	\item A method to replace or add new features.
+	\item A method to replace or add new features at runtime.
 \end{enumerate}
 
 The very attractive programming model (C++ availability) is very useful to implement self-adaptation and reconfiguration approaches coming from more abstract representations.
@@ -732,7 +747,7 @@ In order to deploy new capabilities, a more abstract vision of the whole subsyst
 Subsystems of this kind already exist in the classical Internet, and are known as \textbf{distributed systems}\cite{coulouris2005distributed}.
 This same issue about making changes in the software layer for many nodes at the same time was also detected in distributed systems, leading to new research axes to propose new solutions.
 Comparing the behavior of both IoT and classical Internet nodes, we found that they have very few differences, being one of the most important the available computational resources and the network architecture.
-However, the similarities such as the quantity of nodes, the application layer and the need of distributed functionalities, were enough to explore the already proposed solutions for classical distributed systems.
+However, the similarities such as the quantity of nodes, the application layer and the need of distributed functionalities, were enough to motivate our interest on already proposed solutions for classical distributed systems.
 The main goal of the conducted research in this thesis was to deal with the main architectural (both at the hardware and system level) differences mentioned above, proposing new methods to work with scarce resources and to reduce the inherent energy consumption of the extra network traffic that can appear with the use of such methods.
 Thus, the main research question is: \textit{\textbf{How can we efficiently manage the software layer of IoT systems?}}
 
