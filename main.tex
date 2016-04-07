@@ -31,23 +31,31 @@
 
 \begin{document}
 	\input{cover/french.tex}
+	\addtocounter{page}{-1}
+	\pagenumbering{roman}
 	\input{chapters/dedicatoria.tex}
+	\addtocounter{page}{-1}
+	\input{chapters/acknowledgements.tex}
+	\input{chapters/resume.tex}
 	\tableofcontents
 	\listoffigures
 	\listoftables
-	\input{chapters/abstract.tex}
+	\pagenumbering{arabic}
 	\part{Introduction}
+	\setcounter{page}{1}
 		\input{chapters/introduction.tex}
 	\part{Background, context and state of the art}
 		\input{chapters/Background.tex}
 		\input{chapters/StateOfTheArt.tex}
 	\part{Contributions}
 		\input{chapters/ModelsAtRuntimeContiki.tex}
+		\input{chapters/SystemFacilities.tex}
 		\input{chapters/Calpulli.tex}
 	\part{Conclusions and future work}
 		\input{chapters/Conclusions.tex}
-	\part{Publications}
-		\input{chapters/Publications.tex}
+%	\part{Publications}
+%		\input{chapters/Publications.tex}
 	\bibliographystyle{rc-natbib}
 	\bibliography{bibliography}
+	\input{chapters/abstract.tex}
 \end{document}

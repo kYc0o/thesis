@@ -1,15 +1,13 @@
-\chapter*{Acknowledgements}
-\addcontentsline{toc}{chapter}{Acknowledgements}
-
 \chapter*{Abstract}
+\markboth{Abstract}{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 The Internet of Things (IoT) is covering little by little every aspect on our lives.
 As this systems become more pervasive, the need of managing this complex infrastructure comes with several challenges.
-Indeed, plenty of small interconnected devices are now giving more than a service in several aspects of our everyday life, which need to be adapted to new contexts without the interruption of such services.
+Indeed, plenty of small interconnected devices are now providing more than a service in several aspects of our everyday life, which need to be adapted to new contexts without the interruption of such services.
 However, this new computing system differs from classical Internet systems mainly on the type, physical size and access of the nodes.
 Thus, typical methods to manage the distributed software layer on large distributed systems as usual cannot be employed on this context.
 Indeed, this is due to the very different capacities on computing power and network connectivity, which are very constrained for IoT devices.
-Moreover, the complexity which was before managed by experts on several fields, such as embedded systems and Wireless Sensor Networks (WSN), is now increased by the larger quantity and heterogeneity of the participants.
+Moreover, the complexity which was before managed by experts on several fields, such as embedded systems and Wireless Sensor Networks (WSN), is now increased by the larger quantity and heterogeneity of the node´s software and hardware.
 Therefore, we need efficient methods to manage the software layer of these systems, taking into account the very limited resources.
 %Cyber Physical Systems (CPS) or Internet of Things systems are typically formed by a myriad of many small interconnected devices.
 This underlying hardware infrastructure raises new challenges in the way we administrate the software layer of these systems.
@@ -19,21 +17,18 @@ Software reconfiguration of nodes in the Internet of Things is a major concern f
 In particular, distributing the code of updated or new software features to their final node destination in order to adapt it to new requirements, has a huge impact on energy consumption.
 Most current algorithms for disseminating code over the air (OTA) are meant to disseminate a complete firmware through small chunks  and are often implemented at the network layer, thus ignoring all guiding information from the application layer.
 
-\section{Contributions}
+\section*{Contributions}
 In this thesis we first propose a new middleware dedicated to IoT devices to enable the management of software deployment and the dynamic reconfiguration of these systems.
 Our middleware is inspired from the Component Based Systems and the model@runtime paradigm which has been adapted to the context of the Internet of Things.
 We have conducted an initial evaluation on a typical IoT infrastructure which demonstrates the feasibility of providing a model@runtime middleware for these systems.
 
 Therefore, we advocate for the use of models@runtime to represent both the network and the application layer of the Internet of Things systems.
-At runtime, we leverage these models through a new algorithm to distribute a software component only to those devices that need it while adapting to a new context.
+At runtime, we leverage these models through a new algorithm to distribute a software components only to those devices that need it while adapting to a new context.
 Indeed, this new algorithm aims at minimizing energy consumption during the reconfiguration step.
 We have evaluated our algorithms on representative scenario taken from real deployment scenario.
 The firsts results show that our approach performs better regarding energy efficiency and deployment time in comparison to state of the art algorithms for the application layer maintenance.
-Several experiments were conducted to show the scalability of the approach, performed on a controlled simulation environment.
+Several experiments were conducted to show the scalability of the approach, performed on a large scale experimentation testbed.
 
 This thesis objectives are then focused to provide an abstraction layer inspired from the Models@Runtime paradigm, in order to manage the adaptive behavior inherent of an IoT system.
 This adaptations require the modification of the base firmware on each IoT node.
 Thus distribution, instantiation and (re)configuration of the software layer, now decoupled into small pieces represented by software components, is facilitated through the abstraction layer, which can be manipulated before its actual execution on the real system.
-
-\chapter*{Résumé}
-\addcontentsline{toc}{chapter}{Résumé}
