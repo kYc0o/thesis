@@ -38,7 +38,7 @@ Thus, direct implementations of Software Engineering approaches cannot fit these
 
 This thesis proposes the adoption of Software Engineering approaches, and more specifically, Model Driven Engineering approaches such as Models@Runtime\cite{morin2010leveraging} to deal with the large software layer present in an IoT environment, taking into account the constrained resources and energy autonomy typical of IoT devices.
 
-The first challenges faced by this research work can be summarized on the following research questions:
+The first challenges faced by this research work, recognized by \textit{intra-node} challenges, can be summarized on the following research questions:
 
 \begin{itemize}
 	\item RQ1: Is it possible to adapt a model@runtime approach for the software layer management on IoT environments?
@@ -57,7 +57,7 @@ Thus, a third challenge can be highlighted for its study on this thesis:
 
 Finally, as decomposition of a system require the distribution of such components among the concerned nodes, special attention should be put when using an IoT network.
 Indeed, as the IoT network topology lacks of the robustness and bandwidth found in common Internet networks, due to the low power requirements for network interfaces, a huge amount of traffic for components distribution should be avoided.
-This last challenge can be represented by our last research question:
+This last challenge, the \textit{inter-node} perspective, can be represented by our last research question:
 
 \begin{itemize}
 	\item RQ4: How to \textit{efficiently} distribute, deploy and configure software components for IoT devices?
@@ -84,14 +84,17 @@ Finally, a state of the art of the current IoT solutions and protocols is discus
 Moreover, it puts special attention on the benefits of software decoupling in components, and presents the most common implementations of this decomposition.
 In addition, it introduces the use of models@runtime along with a component model to support Dynamic Adaptive Systems, such as the IoT.
 
-\textbf{Chapter 4} presents our implementation of models@runtime for IoT devices.
+\textbf{Chapter 4} presents our design and requirements towards an implementation of models@runtime for IoT devices.
 The minimal hardware requirements are first established to propose a first implementation, resulting in the construction of a new IoT device.
-It then describes how the constraints on memory and energy are met to support a models@runtime engine on this new device, as well as an evaluation of the approach to show its feasibility and scalability on an IoT testbed.
+It then describes how the constraints on memory and energy are met to support a models@runtime engine on this new device.
+%, as well as an evaluation of the approach to show its feasibility and scalability on an IoT testbed.
 
 \textbf{Chapter 5} highlight the minimal requirements of the underlying system facilities to support the use of a model@runtime.
+A brief presentation of the challenges due to the intra-node constraints is presented, in order to provide a functional implementation.
 Two critical missing features on the IoT testbed available for large scale experiments are presented, as well as the technical contributions to provide them.
+An evaluation of the approach to show its feasibility and scalability on a large-scale IoT testbed.
 
-\textbf{Chapter 6} describes our final contribution, giving details about the software component decoupling of an IoT application, followed by the proposition of a new algorithm to distribute components taking into account the energy constraints and the network topology.
+\textbf{Chapter 6} describes our final contribution, giving details about the software component decoupling of an IoT application, followed by the proposition of a new algorithm to distribute components taking into account the energy constraints and the inter-node network topology.
 An evaluation of this algorithm is performed to show its benefits.
 
 \textbf{Chapter 7} concludes this thesis by summarizing the results of our research and highlights the benefits of using models@runtime on IoT environments to support dynamic behavior.
