@@ -237,6 +237,7 @@ With a deployment of this kind, interoperability between the other actors in a s
 Standardization of protocols for BA and other city services will be needed, in order to take advantage of the software capabilities provided directly by sensors and actuators.
 
 \section{Current IoT solutions}
+\label{sec:IoTOS}
 As described in the previous section, a smart city will include plenty of services coming from very different providers.
 Depicted in figure \ref{fig:SmartCity}, the heterogeneity between actors in a smart city requires software development for different platforms.
 Indeed, development environments can differ drastically from an scenario to another.
@@ -547,12 +548,7 @@ Moreover, several common MCU architectures are compatible with this OS, such as 
 Indeed, the amount of memory needed in a 16-bit microprocessor (\textit{i.e.} msp430) is about 2KB of RAM and 40KB of ROM, which lefts a considerable amount of free memory to implement the business code.
 
 \subsubsection{IoT protocol stack}
-%\begin{figure}[htb]
-%	\centering
-%	\includegraphics[width=1\columnwidth]{chapters/background.images/Contikinetstack.png}
-%	\caption{Contiki general network stack on the left (in blue) \& corresponding  netstack source codes on the right (in orange)}\footnote{Source files according to \url{https://github.com/contiki-os/contiki/tree/release-3-0}}
-%	\label{fig:ContikiNetStack}
-%\end{figure}
+
 \begin{table}[]
 	\centering
 	\caption{Contiki general network stack with the corresponding netstack source codes according to \cite{contikiIPstack}}
@@ -654,15 +650,7 @@ Its main features can be described as follows:
 As we can see, RIOT has a very different architecture compared to Contiki.
 However, they share the same IP stack although the implementations follow different approaches.
 
-%\begin{figure}[htb]
-%	\centering
-%	\includegraphics[width=1\columnwidth]{chapters/background.images/pktbuf-uml-class.png}
-%	\caption{RIOT packet UML classes}
-%	\label{fig:RIOTpktBuf}
-%\end{figure}
-
 Indeed, It implements a generic packet buffer which can send packets either for IPv6 or IPv4.
-%The model of this packets is shown in figure \ref{fig:RIOTpktBuf}.
 Up to beginning 2014, RIOT had a network stack more or less complete, with most of the implementations already working.
 Given the IoT infrastructure proposed in section \ref{sec:IoTInfra}, RIOT fulfill all requirements, including implementations of RPL and CoAP to provide interoperability.
 
