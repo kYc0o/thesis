@@ -5,7 +5,7 @@ These devices play an important role in our daily activities, such as smartphone
 Moreover, other type of devices are taking part of these new digital world, as they are introduced in the form of \textit{"connected objects"}, which are intended to communicate not only to people through human-machine interfaces, but also to directly send and receive information from other similar objects.
 Indeed, the communications means have evolved since the introduction of internet access to devices other than computers, using the same infrastructure and protocols.
 This access to the Internet brought new possibilities to the devices able to implement the standard Internet Protocol (IP).
-However, these new connected objects are often not able to implement this standard way of communication, due to its poor CPU power and memory constraints, relying the communication to more sophisticated devices (\textit{i.e.} smartphones, tablets or personal computers) in order to reach the Internet.
+However, these new connected objects are often not able to implement this standard way of communication, due to its poor CPU power and memory constraints, relying the communication to more sophisticated devices (\textit{i.e.} smartphones, tablets or personal computers) aiming to reach the Internet.
 
 The \textbf{\textit{Internet of Things}} (IoT) aims to bring Internet connectivity to these resource constrained devices, by introducing more efficient protocols while being interoperable with the current IP.
 Indeed, this new communication capacities make this objects reachable from anywhere, thus able to provide services in a web fashion.
@@ -18,7 +18,7 @@ In fact, dynamic adaptation on software systems is a well known research area, a
 However, most of these solutions are intended for high resources machines such as servers and cloud computing platforms.
 
 \section{Motivations}
-This research work aims to propose a way to support dynamic behavior and self-adaptation capacities on IoT devices, taking into account their very constrained resources on memory and energy autonomy.
+This research work aims to propose a way to support dynamic behavior and self-adaptation capacities on low end IoT devices (\textit{class 2}\cite{rfc7228} as the biggest) , taking into account their very constrained resources on memory and energy autonomy.
 We motivate this thesis by the real need of these devices to be highly adaptable, since their usage can vary in an important way in a short period of time.
 Indeed, several domains require software that can be changed depending on various external factors, such as \textit{Smart Spaces} (Smart cities, buildings, homes, cars, and so on).
 These environments are subject to human behavior, thus requirements on the needed information from objects such as sensors, and actions performed by actuators, can vary very quickly.
@@ -29,14 +29,14 @@ Therefore, new approaches providing dynamic and automatic deployment mechanisms 
 Indeed, these efforts can make an IoT infrastructure a conceivable reality, bringing a more efficient use of energy for human activities, as well as a more comfortable lifestyle.
 
 \section{Challenges}
+This thesis proposes the adoption of Software Engineering approaches, and more specifically, Model Driven Engineering approaches such as Models@Runtime\cite{morin2010leveraging} to deal with the large software layer present in an IoT environment, taking into account the constrained resources and energy autonomy typical of IoT devices.
+
 The existing approaches coming from the Software Engineering community to manage large, distributed and heterogeneous software platforms are intended for their use on powerful computers and servers, that are not aware of the memory usage and processing power needed to run their implementations.
 
-Indeed, as the IoT can be considered a software platform with this characteristics, such management approaches are worth considering for its adoption and implementation on IoT devices.
+Indeed, as the IoT can be considered as a distributed software platform, such management approaches are worth considering for its adoption and implementation on IoT devices.
 However, the nature of these devices composing the IoT differs extremely from the machines on which these approaches are implemented.
 IoT devices are very constrained nodes featuring few KB on RAM and some hundreds of ROM for program storage, as well as small CPUs running at very low frequencies.
 Thus, direct implementations of Software Engineering approaches cannot fit these constraints.
-
-This thesis proposes the adoption of Software Engineering approaches, and more specifically, Model Driven Engineering approaches such as Models@Runtime\cite{morin2010leveraging} to deal with the large software layer present in an IoT environment, taking into account the constrained resources and energy autonomy typical of IoT devices.
 
 The first challenges faced by this research work, recognized by \textit{intra-node} challenges, can be summarized on the following research questions:
 
@@ -55,7 +55,7 @@ Thus, a third challenge can be highlighted for its study on this thesis:
 	\item RQ3: How can we decompose an IoT system into software components and modify its life-cycle through a model@runtime?
 \end{itemize}
 
-Finally, as decomposition of a system require the distribution of such components among the concerned nodes, special attention should be put when using an IoT network.
+Finally, as decomposition of a system requires the distribution of such components among the concerned nodes, special attention should be put when they are disseminated in an IoT network.
 Indeed, as the IoT network topology lacks of the robustness and bandwidth found in common Internet networks, due to the low power requirements for network interfaces, a huge amount of traffic for components distribution should be avoided.
 This last challenge, the \textit{inter-node} perspective, can be represented by our last research question:
 
@@ -81,7 +81,7 @@ Afterwards, we describe some current solutions aiming to support software deploy
 Finally, a state of the art of the current IoT solutions and protocols is discussed.
 
 \textbf{Chapter 3} gives the definitions of software deployment on three contexts: on monolithic, homogeneous systems, on non-monolithic heterogeneous and distributed systems, and finally on IoT systems.
-Moreover, it puts special attention on the benefits of software decoupling in components, and presents the most common implementations of this decomposition.
+Moreover, it puts special attention on the benefits of software decoupling in components, and presents an implementation example of this decomposition.
 In addition, it introduces the use of models@runtime along with a component model to support Dynamic Adaptive Systems, such as the IoT.
 
 \textbf{Chapter 4} presents our design and requirements towards an implementation of models@runtime for IoT devices.
@@ -91,7 +91,7 @@ It then describes how the constraints on memory and energy are met to support a 
 
 \textbf{Chapter 5} highlight the minimal requirements of the underlying system facilities to support the use of a model@runtime.
 A brief presentation of the challenges due to the intra-node constraints is presented, in order to provide a functional implementation.
-Two critical missing features on the IoT testbed available for large scale experiments are presented, as well as the technical contributions to provide them.
+Two critical missing features on the IoT testbed available for large scale experiments are presented, as well as the technical contributions to provide such missing features.
 An evaluation of the approach to show its feasibility and scalability on a large-scale IoT testbed.
 
 \textbf{Chapter 6} describes our final contribution, giving details about the software component decoupling of an IoT application, followed by the proposition of a new algorithm to distribute components taking into account the energy constraints and the inter-node network topology.
