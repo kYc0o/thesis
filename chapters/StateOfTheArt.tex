@@ -5,29 +5,28 @@ Indeed, software deployment is not a new problem, but as shown in the previous c
 In this context, deployment of monolithic, homogeneous targets will be described, followed by its main principles for distributed, non-monolithic and heterogeneous systems, leveraging software engineering approaches.
 The aim is to provide a general understanding of the issues already covered by software engineering, which are also present in IoT systems.
 Once these issues are presented, a focus on distributed systems deployment will be performed, in order to make a fine comparison on the deployment methods and its potential application to IoT systems.
-A state of the art of the deployment methods specially conceived for IoT devices is then discussed, finishing by a conclusion.
+A state of the art of the deployment methods specially conceived for IoT devices is then discussed.
 
-\section{An overview on distributed systems}
+\section{Overview}
 \label{sec:DSOverview}
 Classical distributed systems involve a high number of participating nodes and a collaborative approach to offer services.
-Thus, the existing proposed solutions to manage the software layer in classical distributed systems are of high interest for our state of the art.
-A definition of a distributed system proposed by Coulouris \textit{et al.} can be found at \cite{coulouris2005distributed}:
+Thus, the existing solutions to manage the software layer in classical distributed systems are of high interest for our state of the art.
+We can start by giving a common definition about distributed systems, followed by a wider definition including software deployment on these large information systems.
+A definition of a distributed system proposed by Coulouris \textit{et al.} can be found at  \cite{coulouris2005distributed}:
 \begin{citeverbatim}
 	" We define a distributed system as one in which hardware or software components located at networked computers communicate and coordinate their actions only by passing messages."
 \end{citeverbatim}
 
 With this definition, we can clearly recognize the main needs of these systems, especially the need to deploy software components for several nodes at the same time.
-Thus, decoupling into software components becomes the proposed way to manage deployment, but rises other challenges on the methods to actually achieve decoupling and distribution of the actual artifacts.
-%At the same time, distributed systems can be very large, thus distribution becomes an important issue.
-We need then to discuss about the current methods to deal with these challenges, taking into account the potential changes and evolutions that will come with new requirements.
+Indeed, this method allows to separate concerns to different nodes in the network, aiming to provide a specific, global service.
+Thus, communication and synchronization to achieve the tasks for what the system was designed is essential.
 
-Indeed, as the system evolves, new dynamic deployments will be required to offer adapted functionalities.
-This is challenging in single software deployments, and even more in a distributed environment.
-Kramer and Magee\cite{kramer1990evolving} provided, albeit in an informal way, in their article that introduces quiescence, a definition for what we consider to be dynamic evolution:
-\begin{citeverbatim}
-	" [Evolutionary change] may involve modifications or extensions to the system which were not envisaged at design time.
-	Furthermore, in many application domains there is a requirement that the system accommodate such change dynamically, without stopping or disturbing the operation of those parts of the system unaffected by the change. "
-\end{citeverbatim}
+For this thesis, we will give our own definition of software deployment, which covers from the availability of a binary file ready to be executed, to the distribution, dynamic loading and linking on a running platform, either as a new feature or to perform an update.
+
+
+%Thus, decoupling into software components becomes the proposed way to manage deployment, but rises other challenges on the methods to actually achieve decoupling and distribution of the actual artefacts
+
+
 %This kind of evolutions will be systematically present in IoT systems, as we stated for instance in the case of building automation in Section \ref{sec:BAScenario}.
 
 %\section{Software deployment}
@@ -37,7 +36,62 @@ Kramer and Magee\cite{kramer1990evolving} provided, albeit in an informal way, i
 %Its main properties are based on hiding certain complexities such as network details for distributed systems or simply the overall application development.
 %The evolution of these middlewares have come to hide heterogeneity, mobility, data processing and scalability, in the form of blocks, easier to maintain.
 %Several software engineering principles such as separation of concerns and modularity have been adopted by middlewares, to manage the increasing complexity of applications and to ease programmability.
-%Moreover, runtime support for managing applications during their execution are proposed by recent works in this domain\cite{mikalsen2006putting}.
+%Moreover, runtime support for managing applications during their execution are proposed by recent works in this domain \cite{mikalsen2006putting}.
+
+
+\subsection*{Deployment definitions}
+%\label{sec:DeployDefs}
+In the last years, software deployment has suffered several changes in its execution environment.
+As today, it is not a "one-time" process, but rather an iterative operation for the sake of improvement and continuous evolution.
+As a result, consecutive cycles of software re-design, development and maintenance are carried through the lifespan of an application.
+Thus, we can define \textit{deployment} as the process of bringing a new information service and maintaining it through the life-cycle for what it was designed, by providing updates and adaptation mechanisms.
+
+To formalize these evolutions and the process itself, several definitions of software deployment have been proposed, every one empathizing different aspects. A more general definition was proposed by Carzaniga in  \cite{carzaniga1997characterization}:
+\begin{citeverbatim}
+	" Informally, the term software deployment refers to all the activities that make a software system available for use. [...] The delivery, assembly and management at a site of the resources is necessary to use a version of a software system. "
+\end{citeverbatim}
+We can find in this definition the notion of \textit{assembly, delivery} and \textit{management}, as well as an emphasis on a site where those activities are applied.
+Details of these activities are given by Hall \textit{et al.} \cite{hall1999cooperative} in our last definition:
+\begin{citeverbatim}
+	" Software deployment is actually a collection of interrelated activities that form the software deployment life cycle. 
+	The software deployment life cycle, as we have defined it, is an evolving definition that consists of the following processes: release, retire, install, activate, deactivate, reconfigure, update, adapt, and remove. "
+\end{citeverbatim}
+
+In the context of component-based systems, Szypersky \cite{szyperski2003component} define it as follows:
+\begin{citeverbatim}
+	" Deployment is the process of readying such a component for installation in a specific environment. 
+	The degrees of deployment freedom are typically captured in deployment descriptors, where deployment corresponds to filling in parameters of a deployment descriptor. "
+\end{citeverbatim}
+This definition highlights the use of components as a form of deployment, based on the concept of \textit{descriptor}.
+Moreover, it describes the process as the installation and configuration of these components in an environment.
+Another definition coming from the Object Management Group Deployment and Configuration of Component-based Distributed Applications Specification (OMG D+C) is broadly used as a reference.
+In the specification  \cite{specification2006deployment}, it states the following:
+\begin{citeverbatim}
+	" Deployment is defined as the processes between acquisition of software and its execution. [...] In order to instantiate, or deploy, a component-based application, instances of each subcomponent must first be created, then interconnected and configured. "
+\end{citeverbatim}
+
+The previously cited definitions in this Section are a good guidance to establish a more complete and proper definition in our context of an IoT environment.
+The process of deployment is described as a development of a software product until its distribution and execution.
+Indeed, this process is known as \textit{system's life-cycle}.
+In the case of IoT systems, the process would be the same, although the methods are very different.
+Componentization, distribution and installation of an IoT application have platform-specific constraints which avoid a generalization of the process.
+
+In order to take into account these constraints, a definition of software deployment in IoT environments can be proposed as:
+\begin{citeverbatim}
+	" The process between the production and execution of platform-dependent software systems, following similar activities as in classical deployment consisting in making configurations and bringing the software to its desired execution state. The process can continue along the lifetime of the software system in order to bring it to a new state via reconfigurations and updates, which are subject to the platform resources constraints. "
+\end{citeverbatim}
+It is then necessary to deal with these platform-specific constraints, using abstractions such as component-based development and deployment management, which are already proposed by software engineering tools for classical distributed systems.
+
+We need then to discuss about the current methods to deal with these challenges, taking into account the potential changes and evolutions that will come with new requirements.
+
+Indeed, as the system evolves, new dynamic deployments will be required to offer adapted functionalities.
+This is challenging in single software deployments, and even more in a distributed environment.
+Kramer and Magee \cite{kramer1990evolving} provided, albeit in an informal way, in their article that introduces quiescence, a definition for what we consider to be dynamic evolution:
+\begin{citeverbatim}
+	" [Evolutionary change] may involve modifications or extensions to the system which were not envisaged at design time.
+	Furthermore, in many application domains there is a requirement that the system accommodate such change dynamically, without stopping or disturbing the operation of those parts of the system unaffected by the change. "
+\end{citeverbatim}
+
 As software complexity has increased over the years from old computing systems managed only by experts to today's personal computers managed by end users, new methods for software development and deployment appeared.
 Moreover, the need of reliable, robust, and fixed production costs of software motivated various research fields on software engineering, which helped to build large projects fulfilling such characteristics.
 %Indeed, several tools were developed to facilitate software production during the life cycle of the applications.
@@ -58,46 +112,16 @@ In order to give a better understanding of an application's life cycle, we can d
 	\item \textbf{Administration tools.} Finally, administration encompasses the configuration of hardware and low-level software stack, mainly dealing with the continuous growth of types of actions and configurations when using multiple machines for distributed applications.
 \end{itemize}
 
-Thus, deployment must be defined in our context, in order to study the typical approaches with a focus on distributed environments.
-Discussion on this topic is carried through the next Section.
-
-\section{Deployment definitions}
-\label{sec:DeployDefs}
-In the last years, software deployment has suffered several changes in its execution environment.
-As today, it is not a "one-time" process, but rather an iterative operation for the sake of improvement and continuous evolution.
-As a result, consecutive cycles of software re-design, development and maintenance are carried through the lifespan of an application.
-To formalize these evolutions and the process itself, several definitions of software deployment have been proposed, every one empathizing different aspects.
-In the context of component-based systems, Szypersky\cite{szyperski2003component} define it as follows:
-\begin{citeverbatim}
-	" Deployment is the process of readying such a component for installation in a specific environment. 
-	The degrees of deployment freedom are typically captured in deployment descriptors, where deployment corresponds to filling in parameters of a deployment descriptor. "
-\end{citeverbatim}
-This definition highlights the use of components as a form of deployment, based on the concept of \textit{descriptor}.
-Moreover, it describes the process as the installation and configuration of these components in an environment.
-Another definition coming from the Object Management Group Deployment and Configuration of Component-based Distributed Applications Specification (OMG D+C) is broadly used as a reference.
-In the specification \cite{specification2006deployment}, it states the following:
-\begin{citeverbatim}
-	" Deployment is defined as the processes between acquisition of software and its execution. [...] In order to instantiate, or deploy, a component-based application, instances of each subcomponent must first be created, then interconnected and configured. "
-\end{citeverbatim}
-A more general definition was proposed by Carzaniga in \cite{carzaniga1997characterization}:
-\begin{citeverbatim}
-	" Informally, the term software deployment refers to all the activities that make a software system available for use. [...] The delivery, assembly and management at a site of the resources is necessary to use a version of a software system. "
-\end{citeverbatim}
-We can find in this definition the notion of \textit{assembly, delivery} and \textit{management}, as well as an emphasis on a site where those activities are applied.
-Details of these activities are given by Hall \textit{et al.}\cite{hall1999cooperative} in our last definition:
-\begin{citeverbatim}
-	" Software deployment is actually a collection of interrelated activities that form the software deployment life cycle. 
-	The software deployment life cycle, as we have defined it, is an evolving definition that consists of the following processes: release, retire, install, activate, deactivate, reconfigure, update, adapt, and remove. "
-\end{citeverbatim}
-
-Taking into account this last definition, we need to state the actual scenarios where software deployment will take place.
-We highlight two kinds of environments where software is usually deployed:
+%Taking into account this last definition, we need to state the actual scenarios where software deployment will take place.
+We highlight two kinds of environments where software is usually deployed using the previously defined tools:
 \begin{enumerate}
 	\item Monolithic, homogeneous systems.
 	\item Non-monolithic heterogeneous systems
 \end{enumerate}
 
+Indeed, these two kind of environments differ considerably one from each other, thus we need to discuss where the differences are, in order to place our research work on one of these fields.
 We will discuss the current approaches to manage deployment on these scenarios in the next sections.
+First, by defining these scenarios, a state of the art will be presented to review the current approaches dealing with software deployment challenges, followed by a specific approach for the latter environment, on which our research work has been based.
 
 \section{Deployment of monolithic, homogeneous systems}
 \label{subsec:singleDeployment}
@@ -109,39 +133,45 @@ However, it is important to study these approaches as a foundational effort for 
 We can divide these technologies into three main principles:
 \begin{itemize}
 	\item \textbf{Package managers.} Mainly used in Linux and UNIX-like OSs, these tools have as goal the deployment of software previously packaged in a standard format. 
-	RPM package manager\cite{bailey1997maximum} and dpkg\cite{murdock1994overview} are examples of standard package managers.
-	In order to manage multiple packages, usually required as dependencies, an application can be modeled as a graph of interdependent packages.
-	High level tools such as Yellowdog Updater Modified (YUM)\cite{vidalyellow} and Advanced Packaging Tool(APT)\cite{silva2001apt} are used to automate the deployment process, which consists in retrieving, installing, updating and uninstalling applications, by calculating the tree of dependencies.
+	RPM package manager \cite{bailey1997maximum} and dpkg \cite{murdock1994overview} are examples of standard package managers.
+	In order to manage multiple packages, usually required as dependencies, an application can be modelled as a graph of interdependent packages.
+	High level tools such as Yellowdog Updater Modified (YUM) \cite{vidalyellow} and Advanced Packaging Tool(APT) \cite{silva2001apt} are used to automate the deployment process, which consists in retrieving, installing, updating and uninstalling applications, by calculating the tree of dependencies.
 	\item \textbf{Application installers.} They are based on an application-centric deployment model, in contrast to package managers which are based on dependencies.
-	Windows Installer\cite{kelly1998gain} and InstallShield\cite{baker2001official} are examples of tools using this approach, on the basis of features and components.
+	Windows Installer \cite{kelly1998gain} and InstallShield \cite{baker2001official} are examples of tools using this approach, on the basis of features and components.
 	Features are the functionalities that can be or not installed according to the user, and components are the parts to compose such features.
 	The composing mechanisms such as the needed components and the order to install features, which are hidden to the user, are determined from the installer.
 	\item \textbf{Web-centric deployers.} In order to transfer software in a controlled, secured way, web-centric deployers appeared with the growth of the Internet.
-	The purpose of this approach is to transfer executable software artifacts from a remote (web) server to an end-user's computer.
+	The purpose of this approach is to transfer executable software artefacts from a remote (web) server to an end-user's computer.
 	With a view to secure the application deployment due to the web-based approach, only trusted applications can run within a protective environment, which is well isolated from the local resources.
 	Implementations of this method are, for instance, Java Applets, ActiveX components, Java Web Start (a reference implementation of Java Network Launching Protocol (JNLP) standard), .Net ClickOnce\footnote{MS .Net ClickOnce \url{http://msdn.microsoft.com/en-us/library/t71a733d(v=vs.80).ASPX}} and ZeroInstall\footnote{Zero Install: \url{http://0install.net/}}.
 \end{itemize}
 
 As we can see from the above principles of deployment, the high dependency of the execution environment forces the development of automated tools targeting only a specific platform.
-However, making some abstractions from the platform such as web-centric and Virtual Machine (VM) execution environments, it is possible to deploy artifacts independently of the running OS.
+However, making some abstractions from the platform such as web-centric and Virtual Machine (VM) execution environments, it is possible to deploy artefacts independently of the running OS.
 Indeed, we can also point out the fact that component-based principles are independent of the deployment platform and execution environment, thus it results interesting to explore this approach to study its main features.
 
-The high acceptance of Component Based Software Engineering (CBSE) approaches\cite{crnkovic2002building} to deal with the large size of a distributed software architecture, led our investigations to explore its main features, in order to find reliable methods to manage the life cycle of these large information systems.
-The next Section will present it, followed by its common implementations.
+\section{Deployment of non-monolithic, heterogeneous and distributed systems}
+The second environment presented on this state of the art encompasses deployment of non-monolithic, heterogeneous and distributed systems.
+Indeed, the previously presented deployment mechanisms cannot be applied into this kind of scenario.
+This is due to the resources needed by complex software which in turn needs to be distributed into different calculation units (nodes), in order to achieve and accelerate the delivery of a specific service.
+Indeed, decoupling software into components distributed in several nodes is one of the most used techniques, which will deal with the complexity through the separation of concerns.
 
-\section{Component Based Software Engineering (CBSE)}
+Therefore, the high acceptance of Component Based Software Engineering (CBSE) approaches \cite{crnkovic2002building} to deal with the large size of a distributed software architecture, led our investigations to explore its main features, in order to find reliable methods to manage the life cycle of these large information systems.
+The next Subsection will present it, followed by a common implementation.
+
+\subsection{Component Based Software Engineering (CBSE)}
 \label{sec:CBSE}
-As discussed in Section \ref{sec:DSOverview}, we can observe that highly dinamic and distributed systems are hard to deploy and maintain through the time.
+As discussed in Section \ref{sec:DSOverview}, we can observe that highly dynamic and distributed systems are hard to deploy and maintain through the time.
 Thus, the use of CBSE approaches to support such evolutions is worth considering, since decoupling the large distributed system into small components results in an easier software life-cycle management.
 However, managing the deployment of these components is a known issue, which has been addressed by several investigations on this specific domain.
 
-We will first introduce some definitions of CBSE that have been proposed in the literature, being the notion of \textit{component} the main principle.
-In a general way, CBSE aims to leverage the main benefits of SE in terms of development, integration, maintenance, reusability and separation of concerns, among others.
-However, a more specific definition was proposed by Szyperski\cite{szyperski2002component}, being one of the most used:
+We will first introduce some definitions of CBSE that have been proposed in the literature, introducing the notion of \textit{component} as the main principle.
+In a general way, CBSE aims to leverage the main benefits of SE in terms of development, integration, maintenance, re-usability and separation of concerns, among others.
+However, a more specific definition was proposed by Szyperski \cite{szyperski2002component}, being one of the most used:
 \begin{citeverbatim}
 	" A software component is a unit of composition with contractually specified interfaces and explicit context dependencies only. A software component can be deployed independently and is subject to composition by third parties. "
 \end{citeverbatim}
-In another definition, Heineman \textit{et al.}\cite{heineman2001cbse} define a component as:
+In another definition, Heineman \textit{et al.} \cite{heineman2001cbse} define a component as:
 \begin{citeverbatim}
 	" A component model defines a set of standards for component implementation, naming interoperability, customization, composition, evolution and deployment. "
 \end{citeverbatim}
@@ -164,7 +194,7 @@ The main characteristics of a component, shown in \ref{fig:CBSE} can be summariz
 \end{figure}
 
 Moreover, a component-based approach can define an \textit{Architecture Description Language (ADL)}.
-This is useful to describe the structure of a software, in a formal way\cite{taylor2009architectural}\cite{len2003software}\cite{medvidovic2000classification}.
+This is useful to describe the structure of a software, in a formal way \cite{taylor2009architectural} \cite{len2003software} \cite{medvidovic2000classification}.
 ADLs are declarative languages that describe a system's architecture as a set of components, connectors, bindings and configurations.
 Such a language can be used to assemble components, based in two elements:
 
@@ -175,42 +205,41 @@ Such a language can be used to assemble components, based in two elements:
 
 In an ADL, the specified interfaces can be bound between component instances through connectors, which are identified as "required" and "provided" interfaces.
 The complexity management can be achieved using a descriptive hierarchical composition, allowing scalability.
-For instance, Fractal\cite{bruneton2006fractal} provides a structural description of software architecture.
-However, the needs can differ between systems, in order to associate functional, behavioral and system properties with the architecture.
+For instance, Fractal \cite{bruneton2006fractal} provides a structural description of software architecture.
+However, the needs can differ between systems, in order to associate functional, behavioural and system properties with the architecture.
 
 In the case of big architectures, their division into small pieces can be very useful from a development and maintenance point of view, leveraging the component decoupling and the use of bindings between components to provide services.
 Indeed, an ADL can ease the task of composing this layer, giving a complete management of the component's life cycle, from the deployment to the instantiation.
 Moreover, we can associate to the defined characteristics of components and its composition to an execution environment, which is in charge of the exploitation.
 However, the component's implementation is not defined at this level.
-The next section will describe some of the most common resources used to develop and deploy component-based applications.
+The next Subsection will describe some of the most common resources used to develop and deploy component-based applications.
 
-\subsection{Resources for CBSE artifacts deployment}
+\subsubsection{Resources for CBSE artefacts deployment}
 The deployment facilities already introduced in section \ref{subsec:singleDeployment} are intended for deploying traditional applications.
 Indeed, the necessary deployment information is managed by these deployment systems, such as dependencies, geographical distribution on target sites, availability of required resources on these sites etc.
 Thus, programming of component-based software follows modular design principles, providing a broader view of the system.
 Afterwards, the objective is to predict the deployment state during development, which is facilitated using component-based programming.
 Moreover, the models present in component execution platforms provide explicit means to describe components and their dependencies.
-One example of an execution platform is presented in this section, in which a modular development is used in order to fit the execution environment that host the components:
+One typical example of a component based execution platform is presented in this section, in which a modular development is used in order to fit the execution environment that host the components.
 
-\begin{itemize}
-	\item \textbf{OSGi (Open Service Gateway initiative)} was originally created to provide a general component model for Java platforms, running on top of domotic residential gateways.
-	This model aims to implement a dynamic module deployment based in \textit{Bundles}.
-	Moreover, the OSGi specification defines a life-cycle manager of these bundles, which are a set of encapsulated components.
-	A Bundle designates a specific package from a JAR, which is mandatory for the deployment.
-	Also, dependency contracts can be declared using manifest files, leveraging the notion of Java packages pointing to other bundles or parts of them.
-	An \textit{Activator} class represents the internal code of a component, which defines the life-cycle of the Java module including code to start and stop the application.
-	Moreover, the OSGi framework defines the Java modules that can be deployed at runtime whose granularity dependency is represented using either the JAR or the Java package of the Activator class.
-	This framework also defines the notion of internal service, using a central services registry as shown in figure \ref{fig:OSGI}, allowing dynamic inscription of new services.
-	Thus, OSGi component contracts are dependency oriented.
-	Two main implementations of this framework are Apache Felix\footnote{\url{ http://felix.apache.org}} and Eclipse Equinox\footnote{\url{ http://www.eclipse.org/equinox}}, being the first used in several Enterprise Service Bus and the latter the architecture of the Eclipse development environment.
+\subsubsection*{OSGi (Open Service Gateway initiative)}
+It was originally created to provide a general component model for Java platforms, running on top of domotic residential gateways.
+This model aims to implement a dynamic module deployment based in \textit{Bundles}.
+Moreover, the OSGi specification defines a life-cycle manager of these bundles, which are a set of encapsulated components.
+A Bundle designates a specific package from a JAR, which is mandatory for the deployment.
+Also, dependency contracts can be declared using manifest files, leveraging the notion of Java packages pointing to other bundles or parts of them.
+An \textit{Activator} class represents the internal code of a component, which defines the life-cycle of the Java module including code to start and stop the application.
+Moreover, the OSGi framework defines the Java modules that can be deployed at runtime whose granularity dependency is represented using either the JAR or the Java package of the Activator class.
+This framework also defines the notion of internal service, using a central services registry as shown in figure \ref{fig:OSGI}, allowing dynamic inscription of new services.
+Thus, OSGi component contracts are dependency oriented.
+Two main implementations of this framework are Apache Felix\footnote{\url{ http://felix.apache.org}} and Eclipse Equinox\footnote{\url{ http://www.eclipse.org/equinox}}, being the first used in several Enterprise Service Bus and the latter the architecture of the Eclipse development environment.
 	
-	A project called OpenTheBox\footnote{\url{http://openthebox.org/}} is the result of a OSGi platform implementation dedicated to domotics.
-	It is based on the OSGi platform Knopflerfish\footnote{\url{http://www.knopflerfish.org/}}.
-	Indeed, the core of this project relies in a central manager called Apam\cite{damou2013apam} running in a home automation box, which provides an isolated collaboration environment between applications\cite{estublier2012managing} and controls the conflicting accesses to the shared devices\cite{estublier2013resource}.
+A project called OpenTheBox\footnote{\url{http://openthebox.org/}} is the result of a OSGi platform implementation dedicated to domotics.
+It is based on the OSGi platform Knopflerfish\footnote{\url{http://www.knopflerfish.org/}}.
+Indeed, the core of this project relies in a central manager called Apam \cite{damou2013apam} running in a home automation box, which provides an isolated collaboration environment between applications \cite{estublier2012managing} and controls the conflicting accesses to the shared devices \cite{estublier2013resource}.
 	
-	The specification allows interactions anticipated by the services architecture, but they must be managed manually by the developer.
-	This task is very delicate and requires a deep knowledge of the OSGi mechanisms in order to finely handle all the possible cases to avoid errors.
-\end{itemize}
+The specification allows interactions anticipated by the services architecture, but they must be managed manually by the developer.
+This task is very complex and requires a deep knowledge of the OSGi mechanisms in order to finely handle all the possible cases to avoid errors.
 
 \begin{figure}[htb]
 	\centering
@@ -222,14 +251,14 @@ One example of an execution platform is presented in this section, in which a mo
 Since our goal in this state of the art is to discuss the management of a large set of software services using components bound to each other, runtime control on the deployment of new components is mandatory.
 Thus, managing software deployment in highly distributed environments, should be defined, highlighting the current challenges for non-monolithic, heterogeneous systems software deployment.
 
-\subsection{Towards highly distributed environments}
+\subsubsection{Towards highly distributed environments}
 \label{sec:distDeployment}
 Distributed systems cannot be managed as centralized systems or single desktop machines, for instance as described in section \ref{subsec:singleDeployment}.
 This is due to the very different application domain in which a distributed approach is needed.
 Indeed, while desktop applications can be easily deployed through local package and update managers (either at application or OS levels), distributed applications cannot be deployed nor updated using the same methods.
 Let's take the example of a set of desktop machines running a typical OS, in which basic functionalities are the same, as well as provided services.
-When a new feature is released for such OS, a single binary including the new feature is deployed in all the machines running the OS, regardless of the underlying hardware.
-On the other hand, a distributed application cannot be spread among all nodes within the same binary, since each one can offer a different service, or can be in charge of only a part of a bigger system, being the node's hardware capabilities not enough to run such a big application.
+When a new feature is released for such OS, a single binary including the new feature is deployed on all the machines running the OS, regardless of the underlying hardware.
+On the other hand, a distributed application cannot be spread among all nodes through the same binary, since each one can offer a different service, or can be in charge of only a part of a bigger system, on which the nodes' hardware capabilities are not enough to run such a big application.
 This is true for most of the distributed applications, since the goal is to share the resources of several machines (servers) to provide more and better services.
 Thus, software complexity can be divided among several machines, deploying different parts of the application in different nodes.
 A big challenge appears when it is necessary to deploy new features or update the current ones in this distributed environments, since it is not possible to manually add or update this features for each machine: first due to the quantity and often the physical location of the equipment and second to the uninterrupted use of the application, which cannot be stopped.
@@ -244,10 +273,10 @@ Usually this problem is solved by deploying more servers in order to increase th
 
 The difficulties presented in this section must be taken into account while developing a solution charged of the distributed applications' deployment.
 This solution requires support by some kind of automation tool that should cover as much of deployment activities as possible.
-We can then explore the state of the art approaches for deployment in highly distributed envoronments, for heterogeneous and non-monolithic systems, which are the focus of our study.
-This is carried through the next Section.
+We can then explore the state of the art approaches for deployment in highly distributed environments, for heterogeneous and non-monolithic systems, which are the focus of our study.
+This is carried through the next Subsection.
 
-\section{Deployment on non-monolithic, heterogeneous and distributed systems}
+\subsection{Current deployment techniques}
 \label{sec:dynamicDeploymentDAS}
 Most of the critical systems currently deployed in highly distributed environments need to be accessed without any interruption.
 Thus, stopping it to make changes such as updates, add new features or other improvements is not allowed.
@@ -267,24 +296,25 @@ Another approach is proposed for interpreted languages, in which the compilation
 The code in this case is directly executed through an interpreter, which can also use an hybrid approach mixing compilation and interpretation (i.e. Java and .NET).
 In this case, the source code is compiled to an intermediate bytecode format, which can be interpreted by a Virtual Machine (VM).
 Some optimizations are done in the case of Java, where classes are loaded only when needed.
+A graphical description of a deployment process as defined on Section \ref{sec:DSOverview} is shown on figure \ref{fig:DeployActivities}, on which we can observe the sequence of the steps, and the possible transitions that can take place during the software life cycle.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=1\columnwidth]{chapters/stateOfTheArt.images/DeploymentActivities.pdf}
-	\caption{Software Deployment Activities (from \cite{gunalp2014continuous})}
+	\caption{Software Deployment Activities (from  \cite{gunalp2014continuous})}
 	\label{fig:DeployActivities}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\columnwidth]{chapters/stateOfTheArt.images/TradeoffsDeployment.pdf}
-	\caption{Tradeoffs between distributed deployment approaches (from \cite{talwar2005approaches})}
+	\caption{Trade-offs between distributed deployment approaches (from  \cite{talwar2005approaches})}
 	\label{fig:tradeoffsDeployment}
 \end{figure}
 
 Thus far, the proposed deployment concept was explained, which can be represented in figure \ref{fig:DeployActivities}, including the creation, distribution and maintenance of a given application.
 This process can be valid for any application in classical distributed systems.
-Moreover, three categories of solutions are studied\cite{talwar2005approaches}: script based, language-based and model-based deployment.
+Moreover, three categories of solutions are studied \cite{talwar2005approaches}: script based, language-based and model-based deployment.
 The trade-offs presented in this Section for these different approaches are shown in figure \ref{fig:tradeoffsDeployment}.
 As depicted, required time to establish a language-based and model-based approaches is clearly higher than manual and script-based, but can scale easily and handle deployment of complex systems.
 \begin{itemize}
@@ -301,7 +331,7 @@ As depicted, required time to establish a language-based and model-based approac
 	
 	\item \textbf{Language-based Deployment.} One of the improvements of script-based deployment is the use of language-based approaches.
 	The deployment tasks are performed leveraging a configuration language, parsers and other tools.
-	Deployers such as SmartFrog\cite{goldsack2003smartfrog} and the one proposed in  \cite{wang2006language} are examples of the utility of this approach.
+	Deployers such as SmartFrog \cite{goldsack2003smartfrog} and the one proposed in   \cite{wang2006language} are examples of the utility of this approach.
 	Specialized deployment languages offer an easier usage of these tools.
 	Nevertheless, execution of this method and scripted deployment are very similar, apart from the specialized language.
 	
@@ -310,26 +340,22 @@ As depicted, required time to establish a language-based and model-based approac
 	Indeed, a dedicated agent can then coordinate the deployment tasks according to the provided workflow, which is then executed by the distributed deployment engine achieving the maintenance of a desired application state.
 	A higher level of abstraction is then provided by this language-based approaches, describing the actions of the deployment process, in contrast with script-based approaches.
 %	Software reconfiguration, automated updates and on-demand deployment are then associated to provide management strategies.
-	However, language-based deployment modeling does not allow for full deployment automation.
-	Indeed, association between custom automation policies seems to be difficult, even if the language facilitates it by specifying the deployment.
+	However, language-based deployment modelling does not allow for full deployment automation.
+	Indeed, association between several custom automation policies seems to be difficult, even if the language facilitates it by specifying the deployment, as the system grows on complexity.
 	Moreover, heterogeneity of resources and components is not well handled by the language-based approach, as the engine that executes the language should still cope with heterogeneous products and site models.
 	These final issues are addressed by model-based deployment techniques.
 	
-	\item \textbf{Model-based Deployment.} An architectural model is used by model-based deployment for modeling structure of a software application together with the target execution environment.
+	\item \textbf{Model-based Deployment.} An architectural model is used by model-based deployment for modelling structure of a software application together with the target execution environment.
 	Two sides of the architectural model can be highlighted, one including components, connectors, component configurations and their requirements, while the other side targets execution nodes, network connections and resources.
 	One of the key advantages of this approach is the decoupling of software and environment models.
 	Moreover, the relationship between applications and the target environment are also represented.
 	The requirements for composing components are declared on the software model, and target environment descriptions including features and resources are exposed by the runtime model.
-	A high automation level of the process is achieved by using these models, while the reusability is improved.
+	A high automation level of the process is achieved by using these models, while the re-usability is improved.
 	When the software is deployed in different execution environments, the re-usability of the model is of importance.
 	In the same way, the model of the execution environment may be reused for deployment of many different applications. 
 	Based on the architectural model created during the development phase, component-based systems are helpful to define the software deployment model.
 	Thus, model-based approaches and component-based approaches are specially suitable to conceive an automated tool for distributed software deployment.
 \end{itemize}
-
-We can highlight that, even if the initial cost as well as in time as in resources can be very high, the use of model-based approaches provides better handling of a distributed system.
-Thus, exploration of these methods is of high interest in our study.
-The next sections aim to provide a good understanding of these model-based approaches.
 
 %\subsection{Service-Oriented Components (SOC)}
 %As stated in the CBSE definition, decoupling software in pieces defining roles and interfaces reduces complexity, and allows the construction of compatible implementations.
@@ -338,7 +364,7 @@ The next sections aim to provide a good understanding of these model-based appro
 %In a service-oriented approach, this coupling is avoided delegating the searching and instantiation of a required functionality to a central entity.
 %Indeed, service-oriented components are the composition between Service-Oriented Architecture (SOA) and component models, which results in high decoupling and increased flexibility.
 
-%The general principles of a Service-Oriented Component Model were described by Cervantes \textit{et al.}\cite{cervantes2004autonomous}, seen as a SOA extension to component based development.
+%The general principles of a Service-Oriented Component Model were described by Cervantes \textit{et al.} \cite{cervantes2004autonomous}, seen as a SOA extension to component based development.
 %These principles are:
 %\begin{itemize}
 %	\item \textbf{A service is a provided functionality.} A service is a set of reusable operations.
@@ -361,37 +387,59 @@ The next sections aim to provide a good understanding of these model-based appro
 %Je mettrais le CBSE en premier car cela correspond à l'approche traditionnel pour faire du déploiment en système distribué, et je pense que c'est ce qu'il faut dire au début.
 %Ensuite tu parles du M@R (en le présentant comme une évolution du CBSE) et à l'intérieur tu peux parler du MDE. Mais le MDE dans l'absolu ce n'est pas important pour toi. etc...
 
-\section{M@R in Dynamic Adaptive Systems (DAS)}
-\label{sec:MARinDAS}
-With a view to ease software development and deployment for these very complex information systems, Model Driven Engineering (MDE) focus on, at first, giving simple, abstract and different points of view of information systems, without modify the actual system. 
-In a second place, a variant of the MDE approach, called Model Driven Architecture (MDA)\cite{kleppe2003mda} aims to provide, through Domain Specific Languages (DSLs) coupled with code generators, software development tools and methods.
-This approach is able to generate executable code from the abstract model, that can be generated for different hardware architectures.
-Moreover, while heterogeneity of target architectures is taken into account through multiple generators, they also imposes a V cycle of development\cite{fouquet2013kevoree}, which consists in:
-\begin{itemize}
-	\item Context design of the abstract system ("Meta-model" and code generators)
-	\item Use-case design (model)
-	\item Executable code from the model
-\end{itemize}
-Even if this V cycle responds to the large system complexity, it could not be enough to respond in terms of software plasticity that will be present in a highly dynamic environment.
+\subsection{Docker}
+Following the idea of automated deployment, Docker, a client-server engine which provides deployment of applications in form of containers, has recently caught the attention of the software engineering community.
+Indeed, it allows rapid deployment of containers which provides a complete environment isolated from the host machine, on which a preloaded application can run from a pre-packaged image.
+This allows to distribute software packages using any of the methods cited previously (scripted, language or model based), since it is possible to organize the self-contained packages and deploy them as needed.
 
-We can consider this critical systems as \textit{Dynamic Adaptive Systems} (DAS)\cite{mckinley2004composing}, \cite{morin2009taming}.
+Docker is intended to provide the following services \cite{turnbull2014docker}:
+
+\begin{description}
+	\item[An easy and lightweight way to model reality.] It's minimalistic \textit{copy-on-write} model allows to create and modify docker applications very quickly.
+	Indeed, the application built on top of docker will use only the strictly necessary dependencies to run, and since no hypervisor is running, the use of resources is improved.
+	\item[A logical segregation of duties.] Operations and Developers are now separated, since the code will run in a specific container, which was specifically designed to run a specific application.
+	\item[Fast, efficient development life cycle.] Code maintenance is simpler, since portability is one of the main advantages of Docker.
+	\item[Encourages service orientated architectures.] Docker also encourages service-oriented and microservices architectures.
+	Docker recommends that each container run a single application or process.
+	This promotes a distributed application model where an application or service is represented by a series of interconnected containers.
+	This makes it easy to distribute, scale, debug and provides introspection for the applications.
+\end{description}
+
+After a review of different deployment methods from manual to model-based using components or containers, we can highlight that, even if the initial cost as well as in time as in resources can be very high, the use of model-based approaches provides better handling of a distributed system.
+Thus, exploration of these methods is of high interest in our study.
+The next sections aim to provide a good understanding of these model-based approaches.
+
+\subsection{M@R in Dynamic Adaptive Systems (DAS)}
+\label{sec:MARinDAS}
+With a view to ease software development and deployment for very large and complex information systems, Model Driven Engineering (MDE) focus on, at first, giving simple, abstract and different points of view of information systems, without modifying the actual system. 
+In a second place, a branch of MDE, called Model Driven Architecture (MDA) \cite{kleppe2003mda} aims to provide, through Domain Specific Languages (DSLs) coupled with code generators, software development tools and methods.
+This approach is able to generate executable code from the abstract model, that can be generated for different hardware architectures.
+
+Indeed, information systems have become, in only two decades, an indispensable tool for multiple human organisations.
+The gravity on the economical and social impacts when a dysfunction or stop occurs make them evolve into "eternal systems", virtually permanently available, which on practice can be translated into a per year availability rate of 99,9\%  \cite{van2001metrics}.
+Strongly correlated with the usability evolution, and the very short duration of the functionalities, these constraints impose to let these systems open to non-predictable evolutions, from the time of the first design.
+For instance, it is now very complicated to anticipate the next services to be offered by an airport to its users.
+It is even more difficult to design the connectors or interfaces which will allow future modules to be connected and leverage the airport data in order to provide such a new service.
+However, in 5 years this system should integrate it for the needs of a non-stop market without any interruption or alteration of the running services.
+
+We can then consider these critical systems as \textit{Dynamic Adaptive Systems} (DAS) \cite{mckinley2004composing},  \cite{morin2009taming}.
 Continuous update mechanisms are then carried into the target platforms, in order to change at runtime the software already deployed.
-Taking into account this dynamic behavior, DAS are defined using a paradigm based on components, being the management of these components' deployment an evolution of the approach. %which allows to decouple this big systems into software pieces that are easily maintainable\cite{crnkovic2002building}.
+Taking into account this dynamic behaviour, DAS are defined using a paradigm based on components, on which the management of these components' deployment is considered as an evolution of the approach. %which allows to decouple this big systems into software pieces that are easily maintainable \cite{crnkovic2002building}.
 
 DAS were typically deployed on critical platforms such as airports or banks, which had no tolerance to downtimes.
-However, in the last years the pervasiveness of software in all domains demand a downtime rate near to zero, including phones, domestic Internet gateways and domotic services\cite{nain2008using}.
+However, in the last years the pervasiveness of software in all domains demand a downtime rate near to zero, including phones, domestic Internet gateways and domotic services \cite{nain2008using}.
 This requirements need to be supported by continuous updates, even for this non-critical systems.
 %Even if today IoT systems are not widely deployed, its importance in the near future justify its design in the form of a DAS.
 
 The development model was also changed drastically, in order to follow the software plasticity present in this systems.
-When V cycle was widely used and preferred over other development methods in the 80's, coming from the design and initial specification to the code generation or implementation, nowadays Agile methods\cite{stolberg2009enabling}, which aim to bring in shorter development cycles, are more recommended and used, in order to respond more quickly to specification evolutions thanks to users feedback.
-Combined to this, the new approach of Continuous Integration (CI) introduces a new test system able to be updated with new artifacts of continuous development.
+When V cycle was widely used and preferred over other development methods in the 80's, coming from the design and initial specification to the code generation or implementation, nowadays Agile methods \cite{stolberg2009enabling}, which aim to bring in shorter development cycles, are more recommended and used, in order to respond more quickly to specification evolutions thanks to users feedback.
+Combined to this, the new approach of Continuous Integration (CI) introduces a new test system able to be updated with new artefacts of continuous development.
 By adopting such a methodology, non-critical systems and DAS specified constraints are brought more closely, converging in the idea of moving together abstractions of this two domains.
 
 Therefore, the V approach from the 80's is becoming obsolete, while agile methods tend to expand it at every development cycle.
 It is then possible to develop and deploy software for critical and non-critical systems in a continuous manner.
 MDE approaches to generate code, and especially the MDA unidirectional approach which leverages a model to produce code, must take into account the inherent bidirectional development model of this continuous cycle.
-Moreover, generators must provide reverse operations to allow cyclic code, which can be present at design time.
+Moreover, code generators must provide reverse operations to allow cyclic code, which can be present at design time.
 This can be useful to deal with legacy code as much as at design time, which is one of the main concerns of MDE, as in the tooling, beyond an approach of \textit{design-to-code}.
 
 \begin{figure}[htb]
@@ -400,13 +448,14 @@ This can be useful to deal with legacy code as much as at design time, which is 
 	\caption{Model@runtime principle \label{fig:MAROverview}} 
 \end{figure}
 
-A paradigm called \textit{Models@Runtime} (M@R) aim to combine MDE techniques with tangible systems, in order to respond to the problem of cyclic design stated previously.
-As MDE, M@R were useful at first as a thoughtful visualization of a system, for simulation purposes\cite{oreizy1999architecture}, \cite{blair2009models}, \cite{zhang2006model}.
+As a response to the problem of cyclic design stated previously, a paradigm called \textit{Models@Runtime} (M@R) appeared, aiming to combine MDE techniques with tangible systems.
+As MDE, M@R were useful at first as a thoughtful visualization of a system, for simulation purposes \cite{oreizy1999architecture},  \cite{blair2009models},  \cite{zhang2006model}.
 A \textit{permanent updated} model is then used to represent abstractly a DAS at runtime.
 Every different element composing this model can be represented in a schema, providing an easy navigation and an introspective analysis through the model layer.
 Reasoning about the state of the system is also possible using the same layer.
-Leveraging not only the introspection capability of the model, but also the intersection, Brice Morin\cite{morin2010leveraging} worked with this Model@Runtime layer aiming to modify it, through the reflexive model representation.
-Using intersection allows to modify the internal state of a system\cite{paepcke1993object}.
+
+Leveraging not only the introspection capability of the model, but also the intersection between computational reflection and models, Brice Morin \cite{morin2010leveraging} worked with this Model@Runtime layer aiming to modify it, through the reflexive model representation.
+Using this intersection allows to modify the internal state of a system \cite{paepcke1993object}.
 Morin's M@R approach aim to build systems with reflexive capacities, having also intersection and introspection features present in the same layer.
 As an abstract layer, the proposed reflexivity can be asynchronous, allowing modifications before affecting the real system, i.e. for testing purposes. 
 The principle of model@runtime is illustrated on figure \ref{fig:MAROverview}.
@@ -417,13 +466,13 @@ This modification can be in the form of component's adding or removal in the ext
 A bidirectional connexion also exists, since any modification to the external platform will be reflected in the M@R layer.
 Modifications in the model can be manipulated before the deployment allowing verifications, in addition to a more flexible way to test different configurations.
 For instance, if we want to deploy components with dependencies, the platform itself will avoid the deployment if any of the dependencies are not met.
-At the model level, the same changes can be executed regardless of the order, if the adaptation execution is done after the adding/removal of the components, being the model less constrained than the platform.
-While the restrictions of the platform avoid the direct use of MDE approaches to manage the adaptations, the model can be manipulated to delay this restrictions in the application of the reflexive model, allowing to MDE approaches manipulate the model without following any order.
+At the model level, the same changes can be executed regardless of the order, if the adaptation execution is done after the adding/removal of the components, on which the model is less constrained than the platform.
+While the restrictions of the platform avoid the direct use of MDE approaches to manage the adaptations, the model can be manipulated to delay these restrictions in the application of the reflexive model, allowing MDE approaches to manipulate the model without following any order.
 
-Approaches such as feature models or aspects\cite{morin2009taming} coupled with composition algorithms, can leverage the asynchronous capabilities of M@R in order to compose a model from the DAS architecture.
+Approaches such as feature models or aspects \cite{morin2009taming} coupled with composition algorithms, can leverage the asynchronous capabilities of M@R in order to compose a model from the DAS architecture.
 Since all operations can be done \textit{offline}, no constraints are imposed by the tangible platform before the deployment, while the system can decide when to synchronize.
 Conceiving and composing models is then essential to assemble a whole DAS.
-Indeed, several paradigms of composition are also needed, based in previous works\cite{morin2009mar},\cite{ko2012low},\cite{rouvoy2009music}, that encourage the use of software components to encapsulate the life cycle and composition operators.
+Indeed, several paradigms of composition are also needed, based on previous works \cite{morin2009mar}, \cite{ko2012low}, \cite{rouvoy2009music}, that encourage the use of software components to encapsulate the life cycle and composition operators.
 Moreover, these paradigms are also needed to explore the exploitation viability at this granularity level, in order to manage the different parts of DAS application layer. 
 In the next Section, we will explore a concrete approach of the M@R paradigm, called Kevoree, which aims to provide a complete development and deployment framework for DAS.
 
@@ -433,37 +482,37 @@ In the next Section, we will explore a concrete approach of the M@R paradigm, ca
 %The very hard task to decouple an embedded application into small pieces should be coped using a CBSE approach, since works converge in the use of this method for DAS
 
 %\subsection{Special distributed systems: Wireless Sensor Networks}
-\section{Kevoree as a flexible models@runtime approach}
+\subsection{Kevoree as a flexible models@runtime approach}
 \label{sec:MAR_overview}
 Kevoree is a component-based development framework for applications running on DAS, based on the paradigm of Models@Runtime.
 This approach proposes an abstract model through which it is possible to manipulate the different concepts that characterizes a distributed system.
-It provides the following concepts to design a distributed system featuring dynamic adpatations:
+It provides the following concepts to design a distributed system featuring dynamic adaptations:
 \begin{itemize}
 	\item \textbf{The Node concept} is used to model the infrastructure topology.
 	\item \textbf{The Group concept} is used to model the semantics of inter-node communication, particularly when synchronizing the reflection model among nodes.
 	\item \textbf{A Channel concept} is included in Kevoree to allow for different communication semantics between remote Components deployed on heterogeneous nodes. 
 \end{itemize}
-All Kevoree concepts \textit{(Component, Channel, Node, Group)} obey the object type design pattern\cite{woolf1996type} in order to separate deployment artifacts from running artifacts.
+All Kevoree concepts \textit{(Component, Channel, Node, Group)} obey the object type design pattern \cite{woolf1996type} in order to separate deployment artefacts from running artefacts
 
-\subsubsection{Main Kevoree features}
+%\subsubsection{Main Kevoree features}
 Kevoree aims to provide an abstraction able to manipulate the main concepts of a distributed system, in order to ease the adaptations management for this system.
 To do that, Kevoree proposes several features: synchronization and de-synchronization between the reflexive model and the actual system at runtime, separation of concerns between the business logic and its interactions and finally the dissemination of reconfigurations and resource heterogeneity on which the system is being executed.
 \begin{description}
 	\item [Separation of concerns.] A distributed application is composed of specific business logic but also communication means (code).
 	Unlike business logic, communication means does not have necessarily specific code due to the application.
-	Thus, it results interesting to separate these two entities, which allows to reuse the different software blocks.
-	This simplifies the component's business logic development, since the communication concerns are separated thus hidden.
+	Thus, it is interesting to separate these two entities, which allows to reuse the different software blocks.
+	This simplifies the component's business logic development, since the communication concerns are separated.
 	Moreover, the adaptation of the communication means between components regarding the context is required for a distributed application.
-	\item [Distribution management.] In order to distribute different functionalities to the different nodes in a system, an abstract representation is provided, in which this characteristics are modeled and can be manipulated at runtime.
-	\item [De-synchronization.] A process of validation carried in the reflexive model before the application is one of the main advantages of this feature.
+	\item [Distribution management.] In order to distribute different functionalities to the different nodes in a system, an abstract representation is provided, in which these characteristics are modelled and can be manipulated at runtime.
+	\item [De-synchronization.] A process of validation carried in the reflexive model before its application is one of the main advantages of this feature.
 	This de-synchronization is possible thanks to the concept of models@runtime that is the base of Kevoree, in which an adaptation is defined through a model that can be validated.
-	Coherence of the configurations is then validated to be sure that an unstable behavior can be reached or a complete breakdown can happen.
+	Coherence of the configurations is then validated to be sure that no unstable behaviour can be reached or a complete breakdown can happen.
 	In a distributed context, this is of high importance, in order to avoid an adaptation that cannot be executed by all nodes.
 	\item [Adaptations dissemination.] Once an adaptation is executed, every node must be notified of this change, so it can be taken into account by the whole system.
-	However, in a distributed system it is not possible to guarantee an uninterrupted communication between nodes, since networks are sometimes a subject of communication errors or disconnections.
+	However, in a distributed system it is not possible to guarantee an uninterrupted communication between nodes, since networks are subject to communication errors or disconnections.
 	This constraints are considered in the dissemination of the adaptations, to provide a coherent evolution.
 	Different synchronization methods are then used regarding the communication means between nodes.
-	\item [Execution platforms heterogeneity.] Distributed systems are composed of several execution platforms, such as mobile nodes (smartphones), PC, servers or embedded systems. 
+	\item [Execution platforms heterogeneity.] Distributed systems are composed of several execution platforms, such as mobile nodes (smart phones), PC, servers or embedded systems. 
 	%In the particular case of the IoT all this kind of systems are involved, since the tasks are distributed according to the hardware capacities of the available platforms.
 	It is then necessary to represent in the Kevoree model the differences between platforms and their specific characteristics.
 \end{description}
@@ -479,89 +528,62 @@ In addition, each node can have instances of one or more components and its para
 Once we have discussed how software deployment on a highly distributed and heterogeneous system can be managed, we need to discuss about the existing approaches to deploy software on very constrained environments which were already introduced in the previous chapter.
 The IoT is a part of this very constrained systems, thus we will present in the next Section how software can be deployed onto these systems.
 
-\section{Summary of current IoT application deployment approaches}
-Once a state of the art discussing the current approaches to provide dynamical behavior at the application level for highnly distributed systems has been conducted, a summary of current deployment techniques used on constrained environments will be presented.
+\section{Towards software deployment on the IoT}
+Once a state of the art discussing the current approaches to provide dynamical behaviour at the application level for highly distributed systems has been conducted, a summary of current deployment techniques used on constrained environments will be presented.
 Indeed, several research works propose component models coupled with code distribution approaches, in order to manage the software layer in a constrained environment.
-However, this existing works are rather intended for WSN.
-While this represents smaller networks without IP connectivity, WSNs are composed of devices typical of the IoT, thus the applicability of this approaches into larger, IP enabled networks such as the IoT is worth considering.
-We will then introduce two of the most common deployment approaches present in the litterature, and their main features:
+However, these existing works are rather intended for WSN.
+While this represents smaller networks without IP connectivity, WSNs are composed of devices typical of the IoT, thus the applicability of these approaches on larger, IP enabled networks such as the IoT is worth considering.
+We will then introduce two aspects of software deployment on IoT systems: a static and a dynamic approach.
+% of the most common deployment approaches present in the litterature, and their main features:
 
-\begin{description}
-	\item[Full image distribution and reprogramming.] \textit{Deluge}\cite{hui2004dynamic}, a very popular protocol using this approach, supports distribution and flashing of a binary image for constrained devices, through the TOSBoot bootloader.
-	It was mainly developed for TinyOS\cite{levis2005tinyos} a WSN OS.
-	As stated previously, this technique incurs in a high energy overhead while distributing the entire image through the network.
-	Moreover, reinstallation of a new firmware requires a system reboot, disrupting any running applications which can lead to data loss of those applications.
-	In order to solve the first problem, some approaches \cite{jeong2004incremental}, \cite{reijers2003efficient} leverage a code image comparison in order to provide incremental updates, reducing the size of the update.
-	Indeed, the main drawback of such approach is the significant increase of CPU energy consumption, due to the complexity of the difference calculation mechanism.
-	
-	\item[Component-based module dissemination and deployment.] An effort to provide component models for WSN were already done by the FiGaRo approach\cite{mottola2008figaro}.
-	It aims at providing both a component model for modules development and a distribution mechanism using a new dissemination protocol.
-	A very complex component model relying on the use of C macros handled at compile time is proposed for modules development, which are directly used by the developer.
-	Indeed, this programming model demands a deep knowledge of the set of features supported by the approach, increasing complexity.
-	Moreover, node's updates and reconfigurations are determined by the programmer using a Domain Specific Language (DSL).
-	Dependencies in other components should be explicitly declared also using such DSL, which are not managed by the node itself.
-	Thus, a dependency graph is built by the node to find if a dependency is not met, but the approach does not explain if any action will be performed in case of a non-satisfied dependency.
-	It rather performs a recursive graph parsing, until the needed dependency is met, otherwise it excludes the new component or update.
-	In order to achieve non-monolithic deployment in an heterogeneous network, the approach provides a mechanism of rules that are declared using the same DSL, in order to filter the targeted nodes, instead of a fine selection of the nodes to be updated.
-	Even if the approach relies on the Contiki's ELF loader, the extensive use of this DSL incurs in an overhead since system function calls are not done directly, but rather using the macros provided by the component model.
-	
-	As for the component's distribution mechanisms, a routing protocol is proposed to find the best path to distribute a component.
-	Thus, It relies in a mesh topology which is built by piggybacking the current value of a node's attributes on every outgoing message.
-	Moreover, the proposed protocol makes use of complex message passing between nodes in order to calculate the best path for the component's chunks to be transmitted.
-	Indeed, this can result in lots of redundant paths, although some efforts are made to reduce them.
-	The presented protocol strongly depends on other application's traffic to exploit enough messages in order to determine a representative topology of the mesh.
-	Therefore, if there is no enough traffic, the protocol can ignore the whole network topology, resulting in an inaccurate components distribution.
-\end{description}
+\subsection{Static deployment}
+\label{subsec:deluge}
+This is a straightforward solution to deploy new features or bug fixes in embedded systems, an essential part of the IoT infrastructure presented in this thesis.
+It consists in changing the entire kernel image for a new one, which must be either flashed physically or transmitted through the network, followed by a complete reboot of the system.
+Indeed, sharing a large kernel image can be very energy consuming for wireless battery powered devices.
+Advantages of this technique are the possibility of deep changes into the kernel or applications, as well as deployment of a complete different OS.
 
-After the analysis on these two approaches, we can observe that they succeed on the goal of deploying new software on very constrained nodes, althought they have several drawbacks.
-We need then to state what are the main challeges while designing a new approach to cope with this drawbacks.
-As presented on Section \ref{sec:MARinDAS}, the Models@Runtime approach deal with most of these drawbacks, so it is worth considering to analyse if the existing implementations can be adapted to provide a way to manage and enact software deployment on IoT systems.
-The next section will do this analysis, aiming to review the current alternatives and challenges.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.5 \columnwidth]{chapters/stateOfTheArt.images/delugePages.pdf}
+	\caption{Deluge's Data Management Hierarchy (from  \cite{hui2004dynamic}) \label{fig:DelugePages}} 
+\end{figure}
 
-\section{A DAS for the IoT: Challenges}
-In the previous chapter we addressed the issues raised while managing the software layer of complex distributed systems, and more specifically Internet of Things systems.
-For instance, classical information systems are nowadays a critical piece of many important processes as well as industrial than commercial.
-Downtime of this systems can represent a big economic loss, therefore robustness and continuous availability should be assured.
-Thus, the evolution of the needs and the rapid obsolescence of features imposes an openness to new functionalities that were not predictable at design time.
+Through a full kernel replacement, \textit{Deluge} \cite{hui2004dynamic}, a very popular protocol using this approach, supports distribution and flashing of a binary image for constrained devices, through the TOSBoot bootloader.
+It was mainly developed for TinyOS \cite{levis2005tinyos} a WSN OS.
+Indeed, this protocol divides large objects into \textit{pages}, which is the basic unit of transfer and provides three advantages: (i) it limits the amount of states a receiver must maintain while receiving data, (ii) it enables efficient incremental upgrades from prior versions and (iii) allows for spatial multiplexing.
+Moreover, each page is divided into smaller packets of a fixed size, as we can observe on figure \ref{fig:DelugePages}.
+Each packed is checked with a 16-bit Cyclic Redundancy Check, in order to ensure consistency.
+The protocol establish three operation modes: \textit{MAINTAIN}, \textit{RX} or \textit{TX}.
+The \textit{MAINTAIN} state provides the information about the pages and version of them, while putting them available and ready to be shared.
+Indeed, when a page is correctly received, it can be shared again to another node requesting it, thus having the entire object is not necessary to share parts of it.
+The \textit{RX} state will be enabled when a node is requesting pages of an object.
+Moreover, it ensures the reception by choosing actively a trusted source, which can be changed if it is not reachable anymore.
+Finally, during \textit{TX}, a node is responsible to broadcast any requested packets for a given page until it finishes to send all packets.
+Then it comes back to the \textit{MAINTAIN} state.
 
-Taking into account the distributed systems deployment definitions stated on Section \ref{sec:DeployDefs}, we can clearly realize an IoT system that fit into this concept, being an IoT device a computing machine which is part of a network including other IoT devices.
-Thus, the challenges arose by classical distributed systems will be the same for the IoT based systems.
-Therefore, it is possible to explore existing solutions that are most adapted to IoT systems, regarding the main differences stated in the synthesis of the previous chapter.
-Since they share both the high number of participating nodes and the collaborative approach to offer services, the existing proposed solutions to manage the software layer in classical distributed systems are of high interest, and provide a good insight for their adoption in the IoT.
+As stated previously, this technique incurs in a high energy overhead while distributing the entire image through the network.
+Moreover, re-installation of a new firmware requires a system reboot, disrupting any running applications which can lead to data loss of those applications.
+In order to solve the first problem, some approaches  \cite{jeong2004incremental},  \cite{reijers2003efficient} leverage a code image comparison in order to provide incremental updates, reducing the size of the update.
+Indeed, the main drawback of such approach is the significant increase of CPU energy consumption, due to the complexity of the difference calculation mechanism.
 
-In IoT systems, we can take the example given in Subsection \ref{sec:BAScenario}, in which evolutions of a building were complicated to predict.
-It was even more difficult to provide a prepared software platform able to deal with new features and devices, preventing a managed deployment of new services.
-However, this new behavior must be implemented in the future due to new government energy consumption policies, without alter the current given services.
+We will then discuss, through the next Subsection, the current possibilities in IoT devices to actually allow dynamic behaviour by deploying new software at runtime, while focusing on the decomposition of these software artefacts in smaller deploy units to cope with the main drawbacks of the static deployment.
 
-Given the complexity and the vast heterogeneity of an IoT architecture, this thesis proposes the use of a M@R approach to manage the life cycle of the software deployed in this systems.
-The approach will follow the directions given by the research already done by Fran{\c{c}}ois Fouquet\cite{fouquet2013kevoree}, previously based on Brice Morin's thesis\cite{morin2010leveraging}.
-The DAS representation of the IoT will result, as in the mentioned thesis, in a Dynamic DAS (DDAS), in which we found a very different behavior than in traditional DDAS, such as Data Centers or Cloud Computing.
-The challenges raised by such an approach in an IoT environment are, first of all, linked to the constrained environment already described in section \ref{subsec:constrainedObj}.
-As the current implementations of the M@R paradigm are done in high level languages, one main challenge is to adapt such implementations to development environments for embedded systems in which we cannot make use of such high-level languages, resulting in a difficult development task.
-Moreover, the decoupling of components in modern operating systems is facilitated by Inter Process Communication (IPC) APIs already provided.
-In the OS described in section \ref{subsec:IoTOS}, and more particularly in Contiki, IPC are less evident nor standard.
-Thus, a new way to implement components must be proposed following the directions discussed in section \ref{sec:CBSE}.
-A second challenge resides in the network topology typical of IoT.
-Being a multi-hop communication the mainly used approach to reach nodes in the IoT, different abstractions are needed to take it into account.
-Furthermore, the network traffic must be reduced to a minimum, since wireless devices use batteries to work and, as we discussed before, communication is the most energy consuming task of an IoT node.
-
-We will then discuss, through the next Section, the current possibilities in IoT devices to actually allow dynamic behaviour by deploying new software at runtime, while focusing in the decomposition of these software artifacts in smaller deploy units.
-
-\section{Dynamic deployment in the IoT}
+\subsection{Dynamic deployment}
 \label{sec:IoTDeployment}
 The process of software deployment can differ significantly from classical distributed systems to IoT systems.
 This is due to the underlying hardware differences discussed throughout this state of the art.
-While non-constrained nodes present in classical distributed systems are able to run VMs to execute precompiled bytecode, written in high level languages such as Java, IoT devices are not able to run a complete JVM, but rather very limited ones\cite{levis2002mate}\cite{brouwers2009darjeeling}.
-Moreover, related research\cite{oliver2014reprogramming} found JVMs very resource consuming in small devices typical of IoT, since they add a considerable CPU overhead while running, which avoids a long-term use for battery powered nodes.
+While non-constrained nodes present in classical distributed systems are able to run VMs to execute precompiled bytecode, written in high level languages such as Java, IoT devices are not able to run a complete JVM, but rather very limited ones such as Mat\'e  \cite{levis2002mate} and Darjeeling  \cite{brouwers2009darjeeling}.
+Moreover, related research \cite{oliver2014reprogramming} found JVMs very resource consuming in small devices typical of IoT, since they add a considerable CPU overhead while running, which avoids a long-term use for battery powered nodes.
 Thus, we will focus on software deployment for applications compiled as binary code, which can be executed directly by the native platform.
 Indeed, in the embedded systems domain, which embodies most of the devices used in IoT, bare metal applications are the most common procedure to provide services or functionalities.
 Physical flashing of the binary image is the usual deployment method, since it can be done at the manufacturing step of the embedded system, without considering any further firmware changes.
 With this limitation, it is even more complicated to distribute applications among several nodes which are physically separated, since manual flashing of every node in a typical IoT system cannot be worth considering due to the huge amount of nodes.
 Thus, we need to study the current alternatives to deal with this problem.
 
-Operating systems used in embedded systems and Wireless Sensor Networks (WSN) provide several methods to deploy new applications at runtime, being the most common:
+Operating systems used in embedded systems and Wireless Sensor Networks (WSN) provide several methods to deploy new applications at runtime, such as:
 \begin{enumerate}
-	\item Scripting languages \cite{dunkels2006low}\cite{kovatsch2012actinium}.
+	\item Scripting languages  \cite{dunkels2006low} \cite{kovatsch2012actinium}.
 	\item Virtual Machines.
 	\item Kernel replacement.
 	\item Position Independent Code.
@@ -569,24 +591,21 @@ Operating systems used in embedded systems and Wireless Sensor Networks (WSN) pr
 \end{enumerate}
 As we discussed in this section, research shows that only non-interpreted code is worth considering for long term applications.
 Thus scripting languages and VM approaches will be discarded as a method to deploy new features, in the context of this thesis.
+Moreover, kernel replacement has been discarded due to its very high energy consumption while transmitting large kernel images.
 
 As presented in this section, applications deployment for IoT systems differs in several ways from classical distributed systems.
 In order to cope with this differences, which are mostly hardware and network related, approaches coming from the embedded systems and WSN domains have been proposed.
-We will discuss three methods already introduced above: 
+We will discuss the two last methods already introduced above, aiming to provide dynamic deployment: 
 \begin{itemize}
-	\item \textbf{Kernel replacement.} This is a straightforward solution to deploy new features or bug fixes in embedded systems, an essential part of the IoT infrastructure presented in this thesis.
-	It consists in change the entire kernel image for a new one, which must be either flashed physically or transmitted through the network, followed by a complete reboot of the system.
-	Indeed, sharing a large kernel image can be very energy consuming for wireless battery powered devices.
-	Advantages of this technique are the possibility of deep changes into the kernel or applications, as well as deployment of a complete different OS.
 	\item \textbf{Position Independent Code (PIC).} As mentioned previously in this chapter, the executable code usually follows the process of dynamic relocation to find the needed symbol's addresses, then execute the code. 
 	PIC follow a different approach to run applications. 
 	It consists in the use of relative jumps rather than absolute addresses to find symbols, mitigating the need of run-time relocation.
 	Several overheads can be introduced by the use of this technique, such as pre-loading of addresses before making jumps, more needed jumps while calling kernel or another module, functions registration and de-registration and the necessity of a jump table.
 	Furthermore, a PIC compatible compiler should be used, in order to produce a loadable module using this method, which can be unavailable for certain CPU architectures.
 	For instance, AVR microcontrollers supports this type of compilation, but it is limited to a 4KB program size, while it is not known a compiler supporting PIC for MSP430 CPUs.
-	Applications running non-PIC methods to deploy new modules have shown a 13\% better performance compared to PIC\cite{dong2009dynamic}.
+	Applications running non-PIC methods to deploy new modules have shown a 13\% better performance compared to PIC \cite{dong2009dynamic}.
 	However, the global efficiency while running most of PIC modules is the same as if they were flashed directly on the device.
-	\item \textbf{Relocatable code.} This technique is the one used by classical OSs such as Unix based and Windows, also implemented for IoT devices\cite{dunkels06runtime}. 
+	\item \textbf{Relocatable code.} This technique is the one used by classical OSs such as Unix based and Windows, also implemented for IoT devices \cite{dunkels06runtime}. 
 	It uses run-time dynamic linking, relocation and loading of modules compiled using the standard Executable and Linkable Format (ELF).
 	This format includes the program code and data, as well as detailed information about unresolved symbols.
 	To resolve them, the OS must adjust properly the absolute addresses included in the file, depending on the module's location in memory.
@@ -601,19 +620,19 @@ We will discuss three methods already introduced above:
 \begin{table}[htb]
 	\scriptsize
 	\centering
-	\caption{Feature Comparison (adapted from \cite{oliver2014reprogramming})}
+	\caption{Feature Comparison (adapted from  \cite{oliver2014reprogramming})}
 	\label{tab:deployMethods}
 	\begin{tabular}{lccccccc}
 		& \multicolumn{3}{c}{\textbf{Mechanism}}       & \multicolumn{4}{c}{}                                                                                          \\
 		& \textbf{VM} & \textbf{PIC} & \textbf{Reloc.} & \textbf{OS Protection} & \textbf{Kernel Modif.} & \textbf{Kernel Replacement} & \textbf{Loose Coupling} \\ \hline
-		Mat\'e\cite{levis2002mate}      & $\bullet$           &              &                 & $\bullet$                      &                              &                             & $\bullet$                      \\ \hline
-		TOSBoot\cite{hui2004dynamic}    &             &              &                 &                        &                              & $\bullet$                           &                         \\ \hline
-		SOS\cite{han2005dynamic}        &             & $\bullet$            &                 &                        & $\bullet$                            &                             & $\bullet$                       \\ \hline
-		Contiki\cite{dunkels2004contiki}    &             &              & $\bullet$               &                        &                              & $\bullet$                           & $\bullet$                       \\ \hline
-		RETOS\cite{cha2007retos}      &             &              & $\bullet$               & $\bullet$                      & $\bullet$                            &                             & $\bullet$                       \\ \hline
-		Darjeeling\cite{brouwers2009darjeeling} & $\bullet$           &              &                 & $\bullet$                      &                              &                             & $\bullet$                       \\ \hline
-		SenSpire\cite{dong2009dynamic}   &             &              & $\bullet$               &                        & $\bullet$                            &                             & $\bullet$                       \\ \hline
-		Enix\cite{chen2010enix}       &             & $\bullet$            &                 &                        &                              &                             &                         \\ \hline
+		Mat\'e \cite{levis2002mate}      & $\bullet$           &              &                 & $\bullet$                      &                              &                             & $\bullet$                      \\ \hline
+		TOSBoot \cite{hui2004dynamic}    &             &              &                 &                        &                              & $\bullet$                           &                         \\ \hline
+		SOS \cite{han2005dynamic}        &             & $\bullet$            &                 &                        & $\bullet$                            &                             & $\bullet$                       \\ \hline
+		Contiki \cite{dunkels2004contiki}    &             &              & $\bullet$               &                        &                              & $\bullet$                           & $\bullet$                       \\ \hline
+		RETOS \cite{cha2007retos}      &             &              & $\bullet$               & $\bullet$                      & $\bullet$                            &                             & $\bullet$                       \\ \hline
+		Darjeeling \cite{brouwers2009darjeeling} & $\bullet$           &              &                 & $\bullet$                      &                              &                             & $\bullet$                       \\ \hline
+		SenSpire \cite{dong2009dynamic}   &             &              & $\bullet$               &                        & $\bullet$                            &                             & $\bullet$                       \\ \hline
+		Enix \cite{chen2010enix}       &             & $\bullet$            &                 &                        &                              &                             &                         \\ \hline
 	\end{tabular}
 \end{table}
 
@@ -621,30 +640,54 @@ Other features of the proposed approaches can be considered, such as OS protecti
 The loose coupling between new added modules and the underlying kernel is also important, since added flexibility of development allows scalability and fast upgrade of components.
 Several operating systems using the discussed approaches are shown in table \ref{tab:deployMethods}.
 VMs are included in this table since they offer high loose coupling and OS protection, and can be suitable for very short life-cycle applications running on IoT devices.
+Moreover, SOS, RETOS, SensSpire and Enix, are included as a matter of comparison, but the implementation and design details are out of the scope of this state of the art. 
 
+\subsubsection*{Component based approaches}
+As for Component-based module dissemination and deployment, an effort to provide component models for WSN were already done by the FiGaRo approach \cite{mottola2008figaro}, implemented on top of the Contiki OS.
+It aims at providing both a component model for modules development and a distribution mechanism using a new dissemination protocol.
+A very complex component model relying on the use of C macros handled at compile time is proposed for modules development, which are directly used by the developer.
+Indeed, this programming model demands a deep knowledge of the set of features supported by the approach, increasing development complexity.
+Moreover, node's updates and reconfigurations are determined by the programmer using a Domain Specific Language (DSL).
+Dependencies in other components should be explicitly declared also using such DSL, which are not managed by the node itself.
+Thus, a dependency graph is built by the node to find if a dependency is not met, but the approach does not explicitly explain if any action will be performed in case of a non-satisfied dependency.
+It rather performs a recursive graph parsing, until the needed dependency is met, otherwise it excludes the new component or update.
+In order to achieve non-monolithic deployment in an heterogeneous network, the approach provides a mechanism of rules that are declared using the same DSL, in order to filter the targeted nodes, instead of a fine selection of the nodes to be updated.
+Moreover, even if the approach relies on the Contiki's ELF loader, the extensive use of this DSL incurs in an overhead since system function calls are not done directly, but rather using the macros provided by the component model.
+	
+As for the component's distribution mechanisms, a routing protocol is proposed to find the best path to distribute a component.
+Thus, It relies in a mesh topology which is built by piggybacking the current value of a node's attributes on every outgoing message.
+Moreover, the proposed protocol makes use of complex message passing between nodes in order to calculate the best path for the component's chunks to be transmitted.
+Indeed, this can result in lots of redundant paths, although some efforts are made to reduce them.
+The presented protocol strongly depends on other application's traffic to exploit enough messages in order to determine a representative topology of the mesh.
+Therefore, if there is no enough traffic, the protocol can ignore the whole network topology, resulting in an inaccurate components distribution.
+
+The main found drawbacks can be summarized as follows:
+\begin{itemize}
+	\item Complex component model relying on C macros, which must be well known by the developer,
+	\item Use of pre-defined rules to achieve fine selection of deployment targets,
+	\item High CPU overhead caused by the use of non-direct function calls,
+	\item Component distribution relies on complex routing dependent on network traffic.
+\end{itemize}
+
+After the analysis on the static and dynamic approaches, we can observe that they succeed on the goal of deploying new software on very constrained nodes, although they have several drawbacks.
+Indeed, most of them are related to the energy they need to succeed, and lacking of efficient ways to distribute and manage whole firmwares or parts of it.
+Moreover, the programming model of the proposed approaches can also be difficult to learn, compared to traditional C programming.
+We need then to state what are the main challenges while designing a new approach to cope with this drawbacks.
+
+As presented on Section \ref{sec:MARinDAS}, the Models@Runtime approach can deal with most of these drawbacks.
+Indeed, it proposes a way to model the network and the software layer, without being dependent on the programming model and language used to develop components.
+Moreover, the network information is also modelled, thus there is no dependency on the topology to localize a specific node.
+Therefore, it is worth considering to analyse if the existing M@R implementations can be adapted to provide a way to manage and enact software deployment on IoT systems.
 
 \section{Conclusion}
 The focus of this work is to propose IoT solutions based on the three tools discussed on Section \ref{sec:DSOverview}: runtime, management, and administration of the software layer on top of this constrained systems.
 % while development tools will be covered in future work.
 More specifically, a management tool is proposed to deal with the deployment issues typical of IoT systems, leveraging software engineering existing approaches to solve very similar issues.
 
-For this thesis, we will give our own definition of software deployment, which covers from the availability of a binary file ready to be executed, to the distribution, dynamic loading and linking on a running platform, either as a new feature or to perform an update.
-
-The cited definitions in Section \ref{sec:DeployDefs} are a good guidance to establish a more complete and proper definition in our context of an IoT environment.
-The process of deployment is described as a development of a software product until its distribution and execution.
-Throughout this process the life cycle of the system is performed.
-In the case of IoT systems, the process can be the same, although the methods are very different.
-Componentization, distribution and installation of an IoT application have platform-specific constraints which avoid a generalization of the process.
-
-In order to take into account these constraints, a definition of software deployment in IoT environments can be proposed as:
-\begin{citeverbatim}
-	" The process between the production and execution of platform-dependent software systems, following similar activities as in classical deployment consisting in making configurations and bringing the software to its desired execution state. The process can continue along the lifetime of the software system in order to bring it to a new state via reconfigurations and updates, which are subject to the platform resources constraints. "
-\end{citeverbatim}
-It is then necessary to deal with these platform-specific constraints, using abstractions such as component-based development and deployment management, which are already proposed by software engineering tools for classical distributed systems.
-Indeed, decoupling IoT environments into software components and manage their deployment is not an easy task, since memory constraints, processing power, energy autonomy and network topology prevents the direct implementation of the same approaches, being one of the motivations to conduct this research.
+Indeed, decoupling IoT environments into software components and managing their deployment is not an easy task, since memory constraints, processing power, energy autonomy and network topology prevents the direct implementation of the same approaches used in classical distributed systems, which is one of the motivations to conduct this research.
 
 Since there are no widely used IoT OS or execution environments for constrained devices, it is very complicated to develop automatic deployment methods using the same abstractions.
-Moreover, the use of high level execution environments such as VMs it is not worth considering, due to the scarce resources found on this devices face to the high resourced needed by a VM.
+Moreover, the use of high level execution environments such as VMs is not worth considering, due to the scarce resources found on this devices face to the high resourced needed by a VM.
 
 In conclusion, even if deployment mechanisms for IoT devices exist and can be improved to reach a good reliability level and ease to use, manual firmware flashing for updates and new features should not be worth considering, as it was explained in the previous section.
 Moreover, figure \ref{fig:tradeoffsDeployment} already shows that in classical distributed systems manual deployment is not suitable for large-scale systems.
@@ -652,6 +695,7 @@ Moreover, figure \ref{fig:tradeoffsDeployment} already shows that in classical d
 Given the available methods of deployment for new applications or feature updates, it is then necessary to evaluate which is the most advisable approach for its use and adaptation in an automated deployment manager.
 Taking into account the already described model-based techniques, the criterion to evaluate the previously presented approaches will be based on the capability of such approach to be easily decoupled into components, that can be disseminated over the network using a minimum of transfers.
 Moreover, it is very important to have a good implementation of the local deployment procedures, as well as the necessary tools to share deploy units to the entire network.
+We also highlight the need of specific code distribution, since each node can perform a different task, thus needs different software components to be deployed.
 %As presented in the previous chapter, the Contiki OS seems to provide the necessary tools required above.
 %Thus, for this thesis, the use of Contiki as the underlying platform to validate our approaches has been chosen.
 %This leads to a deeper understanding of the OS internals and a big effort to implement the high level abstractions required by the use of model-based deployment approaches.
