@@ -1,2 +1,84 @@
-\chapter*{Résumé en fraçais}
-\addcontentsline{toc}{chapter}{Résumé en fraçais}
+\chapter*{R\'esum\'e en fran\c{c}ais}
+\addcontentsline{toc}{chapter}{R\'esum\'e en fra\c{c}ais}
+Nos vies quotidiennes sont entour\'es par de nombreux dispositifs qui embarquent des unit\'ees centrales de traitement (CPU) et une capacit\'ee de stockage d'informations (m\'emoire).
+Ces appareils jouent un r\^ole important dans nos activit\'es quotidiennes, tels que les t\'el\'ephones intelligents \cite{sarwar2013impact}, car nous les utilisons pour nous aider \`a accomplir de nombreuses t\^aches (obtenir l'information de transport public en temps r\'eel, m\'et\'eo, e-mail, messagerie instantan\'ee, etc.).
+En outre, d'autres types d'appareils prennent part de ce nouveau monde num\'erique, car ils sont introduits sous forme de \textit{"objets connect\'es"}, qui sont destinées \`a communiquer non seulement avec les personnes par le biais des interfaces homme-machine, mais aussi \`a envoyer et recevoir directement des informations provenant d'autres objets similaires.
+En effet, les moyens de communication ont \'evolu\'e depuis l'introduction de l'acc\`es Internet aux appareils autres que des ordinateurs, en utilisant la m\^eme infrastructure et protocoles.
+Ce nouveau acc\`es \`a Internet a apport\'e des nouvelles possibilit\'es pour les dispositifs capables d'ex\'ecuter le protocole Internet standard (IP).
+Cependant, ces nouveaux objets connect\'es ne sont souvent pas en mesure de mettre en œuvre ce moyen standard de communication, en raison de leurs contraintes en puissance du processeur et de m\'emoire, confiant leur moyen de communication aux dispositifs plus sophistiqu\'es (\textit{i.e.} t\'el\'ephones intelligents, des tablettes ou des ordinateurs personnels) visant un acc\`es fiable \`a Internet.
+
+L'\textbf{\textit{Internet des Objets}} (IdO) vise \`a fournir une connectivit\'e Internet \`a ces dispositifs \`a ressources limit\'ees, en introduisant des protocoles plus efficaces tout en restant interop\'erable avec les protocoles internet actuels.
+En effet, ces nouvelles capacit\'es de communication rendent ces objets accessibles de partout, maintenant capables de fournir des services du type web.
+Par cons\'equent, les objets faisant partie de l'IdO sont destin\'es \`a offrir des services web d'une manière standard, en tirant parti des API tels que REST \cite{Fielding02REST}.
+Cependant, tr\`es peu de services sur Internet sont destin\'es \`a \^etre statiques.
+Au contraire, ils sont tr\`es dynamiques et ont tendance \`a \'evoluer tr\`es rapidement en fonction des besoins de l'utilisateur.
+Cela r\'epresente un grand d\'efi dans l'utilisation de dispositifs contraints dans cet environnement, car ils ont \'et\'e con\c{c}us pour ex\'ecuter des systèmes d'exploitation et des applications qui ne sont pas capables de fournir des caractéristiques dynamiques.
+Ainsi, des nouveaux d\'efis dans la recherche sur la fa\c{c}on dont ces objets peuvent s'adapter aux nouvelles exigences apparaissent.
+En fait, l'adaptation dynamique des syst\'emes logiciels est un domaine de recherche bien connu, et plusieurs \oe{}uvres proposent des approches diff\'erentes pour fournir des solutions \`a ce probl\`eme.
+Cependant, la plupart de ces solutions sont destin\'ees aux machines non contraintes telles que les serveurs et plates-formes de cloud computing.
+
+Les principales diff\'erences peuvent \^etre reconnues comme suit :
+
+\begin{itemize}
+	\item \textbf{M\'emoire : } Kilo-octets au lieu de Giga-octets,
+	\item \textbf{\'Energie : } Miliwatts au lieu de Watts et 
+	\item \textbf{CPU : } Megahertz au lieu de Gigahertz.
+\end{itemize}
+
+\section*{Motivations}
+Ce travail de recherche vise \` proposer un nouveau moyen de rendre possible le comportement dynamique et des capacit\'es d'auto-adaptation dans les dispositifs de l'IdO de bord (\textit{class 2} \cite{rfc7228} au maximum), en tenant compte de leurs ressources tr\`es limit\'ees de mémoire et d'autonomie \'energ\'etique .
+Les motivations de cette th\`ese se fondent dans la n\'ecessit\'ee réelle de ces dispositifs d'\^etre hautement adaptables, puisque leur utilisation peut varier de fa\c{c}on importante dans un court laps de temps.
+En effet, plusieurs domaines ont besoin du logiciel qui peut \^etre modifi\'e en fonction de divers facteurs externes, tels que les \textit{Espaces intelligents} (villes intelligentes, b\^atiments, maisons, voitures, etc.).
+Ces environnements sont soumis au comportement humain, donc les exigences sur les informations n\'ecessaires \`a partir d'objets tels que des capteurs, et les actions effectu\'ees par des actionneurs, peuvent varier tr\`es rapidement.
+Ainsi, le logiciel en cours d'ex\'ecution sur ces appareils doit être facilement modifiable, sans avoir besoin d'une intervention physique tels que le changement manuel de firmware ou le remplacement de l'appareil.
+
+Le co\^ut en temps et en efforts pour changer le logiciel en cours d'ex\'ecution dans les appareils faisant partie d'un espace intelligent peut \^etre tr\`es \'elev\'e, et devrait \^etre r\'eduit puisque les estimations sur la croissance des appareils dans l'IdO dans ces environnements est exponentielle, ce qui rend impossible d'adapter manuellement chaque appareil.
+Par conséquent, de nouvelles approches fournissant des m\'ecanismes de d\'eploiement dynamique et automatique dans les environnements de l'IdO sont d'un grand int\'er\^et.
+En effet, ces efforts peuvent contribuer \`a la cr\'eation d'une infrastructure IdO envisageable, ce qui porte \`a une utilisation plus efficace de l'\'energie pour les activités humaines, ainsi que d'un mode de vie plus confortable.
+
+
+\section*{Challenges}
+Cette th\`ese propose l'adoption des approches génie logiciel, et plus sp\'ecifiquement, de l'ingénierie dirig\'e par les mod\`eles telles que les modèles en temps d'ex\'ecution \cite{morin2010leveraging} pour g\'er\'er la tr\`es grande couche logicielle pr\'esente dans un environnement IdO, en tenant compte des ressources limit\'ees et l'autonomie \'energ\'etique typique des dispositifs de l'IdO.
+
+Les approches existantes provenant de la communaut\'e du g\'enie logiciel pour g\'erer des grandes plateformes logicielles distribu\'ees et h\'et\'erog\`enes, sont destin\'es \`a leur utilisation sur des ordinateurs et des serveurs puissants, qui ne sont pas au courant de l'utilisation de la m\'emoire et de la puissance de traitement n\'ecessaire pour faire fonctionner leurs impl\'ementations.
+
+En effet, l'IdO peut \^etre consid\'er\'e comme une plateforme logiciel distribu\'ee, donc ces approches de gestion sont \`a consid\'erer pour leur adoption et mise en \oe{}uvre sur les appareils de l'IdO.
+Cependant, la nature de ces dispositifs composant l'IdO diff\`ere extr\^emement des machines sur lesquelles ces approches sont normalement mises en \oe{}uvre.
+Les dispositifs IdO sont des n\oe{}uds tr\`es contraints comportant quelques Ko en RAM et quelques centaines de ROM pour le stockage de programmes, ainsi que des petites unit\'es centrales fonctionnant \`a tr\`es basses fr\'equences.
+
+Ainsi, les impl\'ementations directes des approches du g\'enie logiciel ne peuvent pas r\'epondre \`a ces contraintes.
+
+Les premi\`eres difficult\'es rencontr\'ees par ce travail de recherche, que l'on a reconnu comme des d\'efis \textit{intra-n\oe{}ud}, peuvent \^etre r\'esum\'ees par les questions de recherche suivantes:
+
+\begin{itemize}
+	\item QR1 : Est-il possible d'adapter une approche mod\`eles en temps d'ex\'ecution pour la gestion de la couche logicielle dans les environnements IdO? 
+	\item QR2 : Est cette approche assez petite en termes de mémoire et d'utilisation du processeur pour permettre l'\'evolutivit\'e?
+\end{itemize}
+
+En r\'epondant \`a ces questions, nous pouvons continuer \`a explorer les possibilit\'es offertes par l'utilisation des mod\`eles pour g\'er\'er la couche logicielle des grands syst\`emes distribu\'es.
+En effet, les mod\`eles en temps d'ex\'ecution proposent l'utilisation d'un mod\`ele de composants pour permettre des fonctions d'adaptation sur la plate-forme en cours d'ex\'ecution, en modifiant le mod\`ele r\'efl\'echi et en fait adopter ces modifications sur le système sous-jacent.
+Ces modifications visent \`a affecter le cycle de vie des composants logiciels afin de les adapter aux nouvelles exigences.
+
+Ainsi, un troisi\`eme d\'efi peut \^etre mis en \'evidence pour son \'etude dans cette th\`ese:
+
+\begin{itemize}
+	\item QR3 : Comment pouvons-nous d\'ecomposer un syst\`eme informatique en composants logiciels et modifier son cycle de vie gr\^ace \`a un mod\`ele en temps d'ex\'ecution?
+\end{itemize}
+
+Enfin, comme la d\'ecomposition d'un syst\`eme n\'ecessite la distribution des composants entre les n\oe{}uds concern\'es, une attention particuli\`ere devrait \^etre mis au moment de les distribuer dans un r\'eseau IdO.
+En effet, comme la topologie du r\'eseau IdO manque de la robustesse et la bande passante trouv\'ee dans les r\'eseaux Internet communs, en raison des exigences de faible puissance pour les interfaces r\'eseau, une \'enorme quantit\'e de trafic pour la distribution des composants doit \^etre \'evit\'ee.
+Ce dernier d\'efi, la perspective \textit{inter-n\oe{}ud}, peut \^etre repr\'esent\'ee par la derni\`ere question de recherche :
+
+\begin{itemize}
+	\item QR4 : Comment distribuer \textit{efficacement}, d\'eployer et configurer les composants logiciels pour les appareils IdO.
+\end{itemize}
+
+\section*{Contributions}
+Le r\'esultats de cette th\`ese sont deux principales contributions qui visent \`a fournir un moteur d'ex\'ecution des mod\`eles en temps d'ex\'ecution qui soit capable de reconfigurer et de d\'eployer des composants logiciels sur les environnements IdO.
+\begin{description}
+	\item[Premi\`ere contribution : Un moteur de mod\`eles en temps d'ex\'ecution] repr\'esentant une application de l'IdO en cours d'ex\'ecution sur les n\oe{}uds \`a ressources limit\'ees. La transformation du méta-modèle Kevoree en code C pour r\'epondre aux contraintes de m\'emoire sp\'ecifiques d'un dispositif IdO a \'et\'e r\'ealis\'ee, ainsi que la proposition des outils de mod\'elisation pour manipuler un mod\`ele en temps d'ex\'ecution.
+	Cette contribution r\'epond aux questions de recherche 1 et 2.
+	\item[Deuxième contribution : découplage en composants] d'un syst\`eme IdO ainsi qu'un algorithme de distribution de composants efficace. Le découplage en composants d'une application dans le contexte de l'IdO facilite sa repr\'esentation sur le mod\`ele en temps d'ex\'ecution, alors qu'il fournit un moyen de changer facilement son comportement en ajoutant/supprimant des composants et de modifier leurs param\`etres.
+	En outre, un m\'ecanisme pour distribuer ces composants en utilisant un nouvel algorithme appel\'e \emph{Calpulli} est proposée.
+	Cette contribution r\'epond aux questions de recherche 3 et 4.
+\end{description}
