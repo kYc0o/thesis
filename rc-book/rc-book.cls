@@ -1000,30 +1000,30 @@
 
 \RequirePackage[mathcal,mathbf]{euler}%
 
-\def\RCBooKContactMessage{%
-        This document was typeset on
-        \oldstyle{\the\year}/\oldstyle{\the\month}/\oldstyle{\the\day}
-        using \RCBook~$\alpha$\oldstyle{\rc@majorversion}.\oldstyle{\rc@minorversion} for
-        \LaTeX$_{2\epsilon}$. Should you want to use this document
-        class, please send mail to \email{contact@tdg-seville.info}.
-}
+%\def\RCBooKContactMessage{%
+%        This document was typeset on
+%        \oldstyle{\the\year}/\oldstyle{\the\month}/\oldstyle{\the\day}
+%        using \RCBook~$\alpha$\oldstyle{\rc@majorversion}.\oldstyle{\rc@minorversion} for
+%        \LaTeX$_{2\epsilon}$. Should you want to use this document
+%        class, please send mail to \email{contact@tdg-seville.info}.
+%}
 
-\AtEndDocument{%
-    \cleardoublepage%
-    \markboth{}{}%
-    \mbox{}%
-    \pagestyle{empty}%
-    \cleardoublepage%
-    \markboth{}{}%
-    \mbox{}%
-    \pagestyle{empty}%
-    \cleardoublepage%
-    \mbox{}%
-    \vfill%
-    \begin{bodywide}[ad]
-        \centerblock{\RCBooKContactMessage}
-    \end{bodywide}
-}
+%\AtEndDocument{%
+%    \cleardoublepage%
+%    \markboth{}{}%
+%    \mbox{}%
+%    \pagestyle{empty}%
+%    \cleardoublepage%
+%    \markboth{}{}%
+%    \mbox{}%
+%    \pagestyle{empty}%
+%    \cleardoublepage%
+%    \mbox{}%
+%    \vfill%
+    %\begin{bodywide}[ad]
+    %    \centerblock{\RCBooKContactMessage}
+    %\end{bodywide}
+%}
 
 \AtEndOfPackage{%
     \if@draft
@@ -1279,17 +1279,17 @@
 
 % A few useful shorthands
 
-\newcommand{\RCBook}
-{%
-    R%
-    \kern-.1667em\raise.25ex\hbox{C}%
-    \kern-.25em\raise.25ex\hbox{--}%
-    B%
-    \lower.5ex\hbox{O}%
-    \kern-.125em\raise.5ex\hbox{O}%
-    \kern-.5em\lower.5ex\hbox{K}%
-    \xspace%
-}
+%\newcommand{\RCBook}
+%{%
+ %   R%
+ %   \kern-.1667em\raise.25ex\hbox{C}%
+ %   \kern-.25em\raise.25ex\hbox{--}%
+%    B%
+%    \lower.5ex\hbox{O}%
+%    \kern-.125em\raise.5ex\hbox{O}%
+%    \kern-.5em\lower.5ex\hbox{K}%
+%    \xspace%
+%}
 
 %\newcommand{\smalltt}[1]{{\usefont{T1}{pcr}{m}{n} #1}}
 \newcommand{\product}[1]{{\scshape #1}}

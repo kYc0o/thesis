@@ -1013,16 +1013,16 @@
     \markboth{}{}%
     \mbox{}%
     \pagestyle{empty}%
-    \cleardoublepage%
-    \markboth{}{}%
-    \mbox{}%
-    \pagestyle{empty}%
-    \cleardoublepage%
-    \mbox{}%
-    \vfill%
-    \begin{bodywide}[ad]
-        \centerblock{\RCBooKContactMessage}
-    \end{bodywide}
+%    \cleardoublepage%
+%    \markboth{}{}%
+%    \mbox{}%
+%    \pagestyle{empty}%
+%    \cleardoublepage%
+%    \mbox{}%
+%    \vfill%
+%    \begin{bodywide}[ad]
+%        \centerblock{\RCBooKContactMessage}
+%    \end{bodywide}
 }
 
 \AtEndOfPackage{%
